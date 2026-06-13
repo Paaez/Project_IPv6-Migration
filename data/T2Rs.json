@@ -376,5 +376,119 @@
         "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
         "run": 2,
         "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_MSS_Clamping_Value",
+        "run": 1,
+        "value": 1440.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_MSS_Clamping_Value",
+        "run": 1,
+        "value": 1440.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_iperf3_Throughput_Mbps",
+        "run": 2,
+        "value": 6.29
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
+        "run": 2,
+        "value": 0.626056
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
+        "run": 2,
+        "value": 6.998712
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
+        "run": 2,
+        "value": 22.88012
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_200KB_Speed_Mbps",
+        "run": 2,
+        "value": 1.975192
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_200KB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_300KB_Speed_Mbps",
+        "run": 2,
+        "value": 1.445136
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_300KB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_400KB_Speed_Mbps",
+        "run": 2,
+        "value": 1.25848
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_400KB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_500KB_Speed_Mbps",
+        "run": 2,
+        "value": 1.165912
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_500KB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
+        "run": 2,
+        "value": 1.026696
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
+        "run": 2,
+        "value": 200.0
     }
 ]
