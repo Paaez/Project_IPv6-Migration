@@ -20,11 +20,11 @@
         
         .drop-panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
         .drop-panel{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden}
-        .drop-panel-header{padding:8px 12px;font-weight:600;font-size:0.7rem;border-bottom:1px solid #2d3a4a;display:flex;align-items:center;gap:6px}
-        .drop-panel-body{padding:8px 10px;max-height:200px;overflow-y:auto}
-        .drop-panel-body table{width:100%;font-size:0.58rem}
-        .drop-panel-body th{background:transparent;color:#94a3b8;padding:3px 5px;font-size:0.52rem;border:none}
-        .drop-panel-body td{padding:3px 5px;font-size:0.55rem;border:none}
+        .drop-panel-header{padding:8px 12px;font-weight:600;font-size:0.72rem;border-bottom:1px solid #2d3a4a;display:flex;align-items:center;gap:6px}
+        .drop-panel-body{padding:8px 10px;max-height:260px;overflow-y:auto;font-size:0.58rem}
+        .drop-panel-body table{width:100%;font-size:0.55rem}
+        .drop-panel-body th{background:transparent;color:#94a3b8;padding:2px 4px;font-size:0.5rem;border:none}
+        .drop-panel-body td{padding:2px 4px;font-size:0.53rem;border:none}
         
         .header-ds{color:#3b82f6;border-bottom:2px solid #3b82f6}
         .header-dl{color:#10b981;border-bottom:2px solid #10b981}
@@ -41,10 +41,14 @@
         .val-bad{color:#ef4444;font-weight:600}
         .val-neutral{color:#38bdf8;font-weight:600}
         .highlight{color:#f1f5f9;font-weight:600}
-        .drop-critical{background:rgba(239,68,68,0.12);color:#ef4444;font-weight:700}
-        .drop-moderate{background:rgba(245,158,11,0.08);color:#f59e0b}
-        .drop-info{font-size:0.52rem;color:#64748b;padding:4px 6px}
+        .drop-critical{background:rgba(239,68,68,0.12)}
+        .drop-moderate{background:rgba(245,158,11,0.06)}
+        .drop-info{font-size:0.5rem;color:#64748b;padding:2px 4px;line-height:1.4}
+        .drop-causes{font-size:0.48rem;color:#94a3b8;margin-top:4px;padding:4px 6px;background:rgba(0,0,0,0.2);border-radius:4px;line-height:1.5}
+        .drop-causes li{margin-left:12px}
         .status-ok{color:#10b981}
+        .mss-badge{font-size:0.5rem;padding:1px 5px;border-radius:3px;background:rgba(56,189,248,0.15);color:#38bdf8}
+        .eff-good{color:#10b981}.eff-warn{color:#f59e0b}.eff-bad{color:#ef4444}
     </style>
 </head>
 <body>
@@ -53,7 +57,7 @@
     <div class="card-body">
         
         <!-- Drop Analysis Panels -->
-        <div class="section-title">⚠️ Speed Drop Detection (per Strategy)</div>
+        <div class="section-title">⚠️ Speed Drop Detection & Performance Summary</div>
         <div class="drop-panels" id="dropPanels">
             <div class="drop-panel"><div class="drop-panel-header header-ds">🔵 Dual Stack</div><div class="drop-panel-body" id="dropDS">Loading...</div></div>
             <div class="drop-panel"><div class="drop-panel-header header-dl">🟢 DS-Lite</div><div class="drop-panel-body" id="dropDL">Loading...</div></div>
@@ -93,37 +97,62 @@ function dropClass(prev,curr){
     return'';
 }
 
-function changeText(prev,curr){
-    if(!prev||prev===0||curr===0)return'Baseline';
-    const pct=((curr-prev)/prev)*100;
-    return (pct>=0?'+':'')+pct.toFixed(1)+'%';
-}
-
 async function loadDropAnalysis(strategy, elementId){
     try{
         const r=await fetch(`/api/drop-analysis/${strategy}`);
         const data=await r.json();
-        if(data.error){document.getElementById(elementId).innerHTML='<span class="drop-info">No drop data</span>';return;}
+        if(data.error){document.getElementById(elementId).innerHTML='<span class="drop-info">No drop analysis data available</span>';return;}
         
         const mss=data.mss_clamping||'N/A';
         const drops=data.drops||[];
         const speeds=data.speed_history||[];
         const baseline=data.iperf_baseline_mbps||0;
+        const perf=data.performance_summary||{};
         
-        let h=`<div class="drop-info">MSS: ${mss}B | Threshold: 30% | iperf3: ${baseline.toFixed(1)} Mbps</div>`;
+        let h='';
+        
+        // MSS & Baseline
+        h+=`<div class="drop-info"><strong>MSS:</strong> <span class="mss-badge">${mss}B</span> &nbsp; <strong>iperf3:</strong> ${baseline.toFixed(1)} Mbps</div>`;
+        
+        // Performance Summary
+        if(perf.max_speed_mbps){
+            const eff=perf.http_efficiency_percent||0;
+            const effCls=eff>=50?'eff-good':eff>=25?'eff-warn':'eff-bad';
+            h+=`<div class="drop-info" style="margin-top:4px">
+                <strong>Max:</strong> ${perf.max_speed_mbps.toFixed(1)} &nbsp; <strong>Min:</strong> ${perf.min_speed_mbps.toFixed(1)}<br>
+                <strong>Avg:</strong> ${perf.avg_speed_mbps.toFixed(1)} &nbsp; <strong>Eff:</strong> <span class="${effCls}">${eff.toFixed(1)}%</span>
+            </div>`;
+        }
+        
+        // Speed History Table
         if(speeds.length>0){
-            h+=`<table><thead><tr><th>File</th><th>Mbps</th><th>Δ</th></tr></thead><tbody>`;
+            h+=`<table style="margin-top:4px"><thead><tr><th>File</th><th>Mbps</th><th>Δ%</th></tr></thead><tbody>`;
             speeds.forEach((s,i)=>{
                 const prev=i>0?speeds[i-1].speed_mbps:null;
                 const cls=dropClass(prev,s.speed_mbps);
-                const chg=changeText(prev,s.speed_mbps);
-                h+=`<tr class="${cls}"><td>${s.file}</td><td>${s.speed_mbps.toFixed(1)}</td><td>${chg}</td></tr>`;
+                const chg=prev&&prev>0?(((s.speed_mbps-prev)/prev)*100).toFixed(1):'—';
+                const chgSign=chg>0?'+':'';
+                h+=`<tr class="${cls}"><td>${s.file}</td><td>${s.speed_mbps.toFixed(1)}</td><td>${chg!=='—'?chgSign+chg+'%':'—'}</td></tr>`;
             });
             h+=`</tbody></table>`;
         }
+        
+        // Drops Detected
         if(drops.length>0){
-            h+=`<div class="drop-info" style="color:#ef4444;margin-top:4px">📍 Drop: ${drops[0].drop_size_range} (${drops[0].drop_percentage}%)</div>`;
+            drops.forEach((drop,i)=>{
+                h+=`<div class="drop-info" style="color:#ef4444;margin-top:4px;font-weight:600">
+                    📍 Drop #${i+1}: ${drop.drop_size_range} (${drop.drop_percentage}%)
+                </div>`;
+                if(drop.possible_causes&&drop.possible_causes.length>0){
+                    h+=`<ul class="drop-causes">`;
+                    drop.possible_causes.slice(0,3).forEach(c=>h+=`<li>${c}</li>`);
+                    h+=`</ul>`;
+                }
+            });
+        }else{
+            h+=`<div class="drop-info" style="color:#10b981;margin-top:4px">✅ No significant drops detected</div>`;
         }
+        
         document.getElementById(elementId).innerHTML=h;
     }catch(e){
         document.getElementById(elementId).innerHTML='<span class="drop-info">Error loading</span>';
@@ -135,7 +164,7 @@ async function load(){
         const r=await fetch('/api/test2');const d=await r.json();
         if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px;text-align:center">❌ No data available</p>';return}
         
-        // Load drop analysis for all 3 strategies
+        // Load drop analysis
         loadDropAnalysis('dualstack','dropDS');
         loadDropAnalysis('dslite','dropDL');
         loadDropAnalysis('nat64','dropN64');
