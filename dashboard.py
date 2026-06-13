@@ -1,22 +1,12 @@
 import json
 import os
 import re
-import socket
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
-# Automatically detect if running locally or on cloud
-def get_project_dir():
-    # Check if we're on Render (cloud)
-    if os.environ.get('RENDER') or os.environ.get('IS_PRODUCTION'):
-        # Cloud: use 'data' folder in same directory
-        return os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-    else:
-        # Local: use your Windows path
-        return r"C:\Users\user\OneDrive\Documents\Abg Paeez\CSP 600\FYP_IPv6_Project\Project Directory\data"
-
-PROJECT_DIR = get_project_dir()
+# Cloud-compatible path - uses 'data' folder in same directory
+PROJECT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 JSON_FILES = {
     "test1": os.path.join(PROJECT_DIR, "T1Rs.json"),
@@ -24,16 +14,6 @@ JSON_FILES = {
     "test3": os.path.join(PROJECT_DIR, "T3Rs.json"),
     "test5": os.path.join(PROJECT_DIR, "T5Rs.json")
 }
-
-def get_local_ip():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-        s.close()
-        return ip
-    except:
-        return "127.0.0.1"
 
 def load_json_file(filepath):
     print(f"Attempting to load: {filepath}")
@@ -194,7 +174,7 @@ def debug5():
 
 @app.route('/health')
 def health_check():
-    """Health check endpoint"""
+    """Health check endpoint to verify data files"""
     file_status = {}
     for name, path in JSON_FILES.items():
         file_status[name] = {
@@ -205,7 +185,6 @@ def health_check():
     
     return jsonify({
         "status": "healthy",
-        "environment": "cloud" if os.environ.get('RENDER') else "local",
         "data_directory": PROJECT_DIR,
         "files": file_status
     })
@@ -220,13 +199,10 @@ if __name__ == '__main__':
         os.makedirs(templates_dir)
         print("📁 Created 'templates' folder.")
 
-    YOUR_IP = get_local_ip()
-    
     print("="*60)
     print("🚀 IPv6 Migration Dashboard Server")
     print("="*60)
     print(f"📁 Data Directory: {PROJECT_DIR}")
-    print(f"🌍 Environment: {'Cloud' if os.environ.get('RENDER') else 'Local'}")
     
     for test_name, filepath in JSON_FILES.items():
         exists = "✅" if os.path.exists(filepath) else "❌"
