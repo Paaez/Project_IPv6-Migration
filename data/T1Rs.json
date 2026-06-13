@@ -553,5 +553,320 @@
         "run": 1,
         "value": 99.0,
         "timestamp": "2026-06-07 04:18:01"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_5M_Throughput_Mbps",
+        "run": 2,
+        "value": 1.57,
+        "timestamp": "2026-06-14 04:21:00"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_5M_Retransmissions",
+        "run": 2,
+        "value": 217.0,
+        "timestamp": "2026-06-14 04:21:00"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_5M_Jitter_ms",
+        "run": 2,
+        "value": 0.744,
+        "timestamp": "2026-06-14 04:21:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_5M_Loss_Percent",
+        "run": 2,
+        "value": 76.0,
+        "timestamp": "2026-06-14 04:21:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_5M_Loss_Percent",
+        "run": 2,
+        "value": 0.0,
+        "timestamp": "2026-06-14 04:22:46"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_5M_RTT_Min_ms",
+        "run": 2,
+        "value": 3.401,
+        "timestamp": "2026-06-14 04:22:46"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_5M_RTT_Avg_ms",
+        "run": 2,
+        "value": 5.058,
+        "timestamp": "2026-06-14 04:22:46"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_5M_RTT_Max_ms",
+        "run": 2,
+        "value": 7.024,
+        "timestamp": "2026-06-14 04:22:46"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_5M_RTT_Mdev_ms",
+        "run": 2,
+        "value": 0.818,
+        "timestamp": "2026-06-14 04:22:46"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_7M_Throughput_Mbps",
+        "run": 2,
+        "value": 1.57,
+        "timestamp": "2026-06-14 04:23:41"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_7M_Retransmissions",
+        "run": 2,
+        "value": 230.0,
+        "timestamp": "2026-06-14 04:23:41"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_7M_Jitter_ms",
+        "run": 2,
+        "value": 1.183,
+        "timestamp": "2026-06-14 04:24:35"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_7M_Loss_Percent",
+        "run": 2,
+        "value": 83.0,
+        "timestamp": "2026-06-14 04:24:35"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_7M_Loss_Percent",
+        "run": 2,
+        "value": 0.0,
+        "timestamp": "2026-06-14 04:25:27"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_7M_RTT_Min_ms",
+        "run": 2,
+        "value": 3.841,
+        "timestamp": "2026-06-14 04:25:27"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_7M_RTT_Avg_ms",
+        "run": 2,
+        "value": 5.541,
+        "timestamp": "2026-06-14 04:25:27"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_7M_RTT_Max_ms",
+        "run": 2,
+        "value": 8.142,
+        "timestamp": "2026-06-14 04:25:27"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_7M_RTT_Mdev_ms",
+        "run": 2,
+        "value": 0.98,
+        "timestamp": "2026-06-14 04:25:27"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_10M_Throughput_Mbps",
+        "run": 2,
+        "value": 1.89,
+        "timestamp": "2026-06-14 04:26:23"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_10M_Retransmissions",
+        "run": 2,
+        "value": 211.0,
+        "timestamp": "2026-06-14 04:26:23"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_10M_Jitter_ms",
+        "run": 2,
+        "value": 2.03,
+        "timestamp": "2026-06-14 04:27:17"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_10M_Loss_Percent",
+        "run": 2,
+        "value": 88.0,
+        "timestamp": "2026-06-14 04:27:17"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_10M_Loss_Percent",
+        "run": 2,
+        "value": 0.0,
+        "timestamp": "2026-06-14 04:28:09"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_10M_RTT_Min_ms",
+        "run": 2,
+        "value": 4.082,
+        "timestamp": "2026-06-14 04:28:09"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_10M_RTT_Avg_ms",
+        "run": 2,
+        "value": 5.844,
+        "timestamp": "2026-06-14 04:28:09"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_10M_RTT_Max_ms",
+        "run": 2,
+        "value": 8.878,
+        "timestamp": "2026-06-14 04:28:09"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_10M_RTT_Mdev_ms",
+        "run": 2,
+        "value": 1.174,
+        "timestamp": "2026-06-14 04:28:09"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_15M_Throughput_Mbps",
+        "run": 2,
+        "value": 1.71,
+        "timestamp": "2026-06-14 04:29:03"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_15M_Retransmissions",
+        "run": 2,
+        "value": 214.0,
+        "timestamp": "2026-06-14 04:29:03"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_15M_Jitter_ms",
+        "run": 2,
+        "value": 4.1,
+        "timestamp": "2026-06-14 04:29:58"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_15M_Loss_Percent",
+        "run": 2,
+        "value": 92.0,
+        "timestamp": "2026-06-14 04:29:58"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_15M_Loss_Percent",
+        "run": 2,
+        "value": 0.0,
+        "timestamp": "2026-06-14 04:30:49"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_15M_RTT_Min_ms",
+        "run": 2,
+        "value": 3.492,
+        "timestamp": "2026-06-14 04:30:49"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_15M_RTT_Avg_ms",
+        "run": 2,
+        "value": 5.117,
+        "timestamp": "2026-06-14 04:30:49"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_15M_RTT_Max_ms",
+        "run": 2,
+        "value": 10.299,
+        "timestamp": "2026-06-14 04:30:49"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_15M_RTT_Mdev_ms",
+        "run": 2,
+        "value": 1.323,
+        "timestamp": "2026-06-14 04:30:49"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_20M_Throughput_Mbps",
+        "run": 2,
+        "value": 1.82,
+        "timestamp": "2026-06-14 04:31:45"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_TCP_PC1_20M_Retransmissions",
+        "run": 2,
+        "value": 214.0,
+        "timestamp": "2026-06-14 04:31:45"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_20M_Jitter_ms",
+        "run": 2,
+        "value": 7.201,
+        "timestamp": "2026-06-14 04:32:39"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_UDP_PC1_20M_Loss_Percent",
+        "run": 2,
+        "value": 94.0,
+        "timestamp": "2026-06-14 04:32:39"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_20M_Loss_Percent",
+        "run": 2,
+        "value": 0.0,
+        "timestamp": "2026-06-14 04:33:31"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_20M_RTT_Min_ms",
+        "run": 2,
+        "value": 3.748,
+        "timestamp": "2026-06-14 04:33:31"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_20M_RTT_Avg_ms",
+        "run": 2,
+        "value": 5.171,
+        "timestamp": "2026-06-14 04:33:31"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_20M_RTT_Max_ms",
+        "run": 2,
+        "value": 7.979,
+        "timestamp": "2026-06-14 04:33:31"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T1_ICMP_PC1_20M_RTT_Mdev_ms",
+        "run": 2,
+        "value": 0.918,
+        "timestamp": "2026-06-14 04:33:31"
     }
 ]
