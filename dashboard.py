@@ -1,12 +1,13 @@
 import json
 import os
 import re
+import threading
+import webbrowser
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
-# Cloud-compatible path - uses 'data' folder in same directory
-PROJECT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+PROJECT_DIR = r"C:\Users\user\OneDrive\Documents\Abg Paeez\CSP 600\FYP_IPv6_Project\Project Directory"
 
 JSON_FILES = {
     "test1": os.path.join(PROJECT_DIR, "T1Rs.json"),
@@ -16,19 +17,18 @@ JSON_FILES = {
 }
 
 def load_json_file(filepath):
-    print(f"Attempting to load: {filepath}")
     if not os.path.exists(filepath):
-        print(f"❌ File not found: {filepath}")
+        print(f"File not found: {filepath}")
         return None
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
         try:
             data = json.loads(content)
-            print(f"✅ Loaded {len(data)} entries from {os.path.basename(filepath)}")
+            print(f"Loaded {len(data)} entries from {os.path.basename(filepath)}")
             return data
         except json.JSONDecodeError as e:
-            print(f"⚠️ JSON error at line {e.lineno}, attempting recovery...")
+            print(f"JSON error at line {e.lineno}, attempting recovery...")
             data = []
             lines = content.split('\n')
             current_obj = ""
@@ -52,10 +52,10 @@ def load_json_file(filepath):
                             pass
                         current_obj = ""
                         in_object = False
-            print(f"✅ Recovered {len(data)} entries from {os.path.basename(filepath)}")
+            print(f"Recovered {len(data)} entries from {os.path.basename(filepath)}")
             return data if data else None
     except Exception as e:
-        print(f"❌ Error loading {filepath}: {e}")
+        print(f"Error loading {filepath}: {e}")
         return None
 
 def process_test_data(raw_data):
@@ -86,49 +86,70 @@ def process_test_data(raw_data):
 # ─────────────────────────────────────────────
 
 @app.route('/')
-def index(): 
-    return render_template('index.html')
+def index(): return render_template('index.html')
 
 @app.route('/test1')
-def test1_page(): 
-    return render_template('test1.html')
+def test1_page(): return render_template('test1.html')
 
 @app.route('/test2')
-def test2_page(): 
-    return render_template('test2.html')
+def test2_page(): return render_template('test2.html')
 
 @app.route('/test3')
-def test3_page(): 
-    return render_template('test3.html')
+def test3_page(): return render_template('test3.html')
 
 @app.route('/test5')
-def test5_page(): 
-    return render_template('test5.html')
+def test5_page(): return render_template('test5.html')
 
 @app.route('/summary')
-def summary_page(): 
-    return render_template('summary.html')
+def summary_page(): return render_template('summary.html')
+
+@app.route('/health')
+def health():
+    """Health check endpoint"""
+    return jsonify({
+        "status": "healthy",
+        "timestamp": __import__('datetime').datetime.now().isoformat(),
+        "services": {
+            "test1": os.path.exists(JSON_FILES["test1"]),
+            "test2": os.path.exists(JSON_FILES["test2"]),
+            "test3": os.path.exists(JSON_FILES["test3"]),
+            "test5": os.path.exists(JSON_FILES["test5"])
+        }
+    })
 
 # API Routes
 @app.route('/api/test1')
 def api_test1():
     data = process_test_data(load_json_file(JSON_FILES["test1"]))
-    return jsonify(data) if data else (jsonify({"error": "No data found for Test 1"}), 404)
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
 
 @app.route('/api/test2')
 def api_test2():
     data = process_test_data(load_json_file(JSON_FILES["test2"]))
-    return jsonify(data) if data else (jsonify({"error": "No data found for Test 2"}), 404)
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
 
 @app.route('/api/test3')
 def api_test3():
     data = process_test_data(load_json_file(JSON_FILES["test3"]))
-    return jsonify(data) if data else (jsonify({"error": "No data found for Test 3"}), 404)
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
 
 @app.route('/api/test5')
 def api_test5():
     data = process_test_data(load_json_file(JSON_FILES["test5"]))
-    return jsonify(data) if data else (jsonify({"error": "No data found for Test 5"}), 404)
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
+
+@app.route('/api/drop-analysis/<strategy>')
+def api_drop_analysis(strategy):
+    """API endpoint for drop analysis data"""
+    drop_file = os.path.join(PROJECT_DIR, f"T2_drop_analysis_{strategy}.json")
+    if not os.path.exists(drop_file):
+        return jsonify({"error": f"No drop analysis for {strategy}"}), 404
+    try:
+        with open(drop_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/debug5')
 def debug5():
@@ -160,33 +181,8 @@ def debug5():
     
     return jsonify({
         "total_entries": len(raw_data),
-        "phase1": {
-            "sizes": sorted(list(p1_sizes)),
-            "num_sizes": len(p1_sizes),
-            "entries_per_strategy": strategies_count_p1
-        },
-        "phase2": {
-            "sizes": sorted(list(p2_sizes)),
-            "num_sizes": len(p2_sizes),
-            "entries_per_strategy": strategies_count_p2
-        }
-    })
-
-@app.route('/health')
-def health_check():
-    """Health check endpoint to verify data files"""
-    file_status = {}
-    for name, path in JSON_FILES.items():
-        file_status[name] = {
-            "exists": os.path.exists(path),
-            "path": path,
-            "size": os.path.getsize(path) if os.path.exists(path) else 0
-        }
-    
-    return jsonify({
-        "status": "healthy",
-        "data_directory": PROJECT_DIR,
-        "files": file_status
+        "phase1": {"sizes": sorted(list(p1_sizes)), "num_sizes": len(p1_sizes), "entries_per_strategy": strategies_count_p1},
+        "phase2": {"sizes": sorted(list(p2_sizes)), "num_sizes": len(p2_sizes), "entries_per_strategy": strategies_count_p2}
     })
 
 # ─────────────────────────────────────────────
@@ -203,7 +199,6 @@ if __name__ == '__main__':
     print("🚀 IPv6 Migration Dashboard Server")
     print("="*60)
     print(f"📁 Data Directory: {PROJECT_DIR}")
-    
     for test_name, filepath in JSON_FILES.items():
         exists = "✅" if os.path.exists(filepath) else "❌"
         size = os.path.getsize(filepath) if os.path.exists(filepath) else 0
@@ -212,9 +207,9 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     
     print(f"\n📊 Dashboard: http://0.0.0.0:{port}")
-    print(f"📋 Summary:  http://0.0.0.0:{port}/summary")
-    print(f"🔍 Debug T5: http://0.0.0.0:{port}/debug5")
-    print(f"💚 Health:   http://0.0.0.0:{port}/health")
+    print(f"📋 Summary:   http://0.0.0.0:{port}/summary")
+    print(f"🔍 Debug T5:  http://0.0.0.0:{port}/debug5")
+    print(f"💚 Health:    http://0.0.0.0:{port}/health")
     print("="*60)
     
     app.run(host='0.0.0.0', port=port, debug=False)

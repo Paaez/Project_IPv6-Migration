@@ -27,6 +27,8 @@
         td{padding:6px 8px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.62rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
         tr.subtotal td{border-top:2px solid #2d3a4a;font-weight:600;color:#f1f5f9}
+        tr.drop-critical{background:rgba(239,68,68,0.08)}
+        tr.drop-moderate{background:rgba(245,158,11,0.05)}
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
@@ -47,7 +49,7 @@
         .rank-1-card{border-color:#f59e0b;box-shadow:0 0 20px rgba(245,158,11,0.15)}
         
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
-        .score-bar{display:inline-block;height:8px;border-radius:4px;margin-right:4px;vertical-align:middle}
+        .drop-warn{color:#ef4444;font-size:0.55rem;margin-left:6px}
     </style>
 </head>
 <body>
@@ -94,13 +96,16 @@ function ratingText(v,good,bad,lowerIsBetter=true,excellent='Excellent',g='Good'
 
 async function loadAllData(){
     try{
-        const [t1,t2,t3,t5]=await Promise.all([
+        const [t1,t2,t3,t5,dropDS,dropDL,dropN64]=await Promise.all([
             fetch('/api/test1').then(r=>r.json()),
             fetch('/api/test2').then(r=>r.json()),
             fetch('/api/test3').then(r=>r.json()),
-            fetch('/api/test5').then(r=>r.json())
+            fetch('/api/test5').then(r=>r.json()),
+            fetch('/api/drop-analysis/dualstack').then(r=>r.json()).catch(()=>({})),
+            fetch('/api/drop-analysis/dslite').then(r=>r.json()).catch(()=>({})),
+            fetch('/api/drop-analysis/nat64').then(r=>r.json()).catch(()=>({}))
         ]);
-        allData={test1:t1,test2:t2,test3:t3,test5:t5};
+        allData={test1:t1,test2:t2,test3:t3,test5:t5,drop_dualstack:dropDS,drop_dslite:dropDL,drop_nat64:dropN64};
         document.getElementById('dataStatus').textContent='✅ All data loaded successfully';
         buildScoringTable();
         buildAllStrategies();
@@ -118,7 +123,6 @@ function buildScoringTable(){
     
     const raw={};
     strategies.forEach(s=>{
-        const t1Sizes=['5M','7M','10M','15M','20M'];
         const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
         raw[s]={
             tcp:gv(d1,'T1_TCP_PC1_20M_Throughput_Mbps',s),
@@ -230,15 +234,31 @@ function buildTest2Table(s){
     if(!d||d.error)return'';
     const files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
     
+    // Drop info
+    const dropKey=`drop_${s}`;
+    let dropInfo='';
+    if(allData[dropKey]&&allData[dropKey].drops&&allData[dropKey].drops.length>0){
+        const drops=allData[dropKey].drops;
+        dropInfo=`<span class="drop-warn">⚠️ Drop: ${drops[0].drop_size_range} (${drops[0].drop_percentage}%)</span>`;
+    }
+    
     let h=`<div class="summary-table">
-        <div class="summary-table-header"><span class="test-icon">🌐</span> TEST 2: HTTP Download Speed (Drop Detection)</div>
+        <div class="summary-table-header"><span class="test-icon">🌐</span> TEST 2: HTTP Download Speed${dropInfo}</div>
         <table><thead><tr><th>File</th><th>Speed (Mbps)</th><th>Rating</th></tr></thead><tbody>`;
     
+    let prevSpeed=null;
     files.forEach(f=>{
         const v=gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s);
-        h+=`<tr><td><strong>${f}</strong></td>
+        let dc='';
+        if(prevSpeed&&prevSpeed>0&&v>0){
+            const dropPct=((prevSpeed-v)/prevSpeed)*100;
+            if(dropPct>=30)dc='drop-critical';
+            else if(dropPct>=10)dc='drop-moderate';
+        }
+        h+=`<tr class="${dc}"><td><strong>${f}</strong></td>
             <td class="${valClass(v,10,3,false)}">${v.toFixed(2)} Mbps</td>
             <td>${ratingText(v,10,3,false,'🚀 Fast','📶 Medium','🐌 Slow')}</td></tr>`;
+        prevSpeed=v;
     });
     
     const avg=files.reduce((sum,f)=>sum+gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s),0)/files.length;
