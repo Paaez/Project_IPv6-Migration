@@ -1,0 +1,193 @@
+import json
+import os
+import re
+import threading
+import webbrowser
+from flask import Flask, render_template, jsonify
+
+app = Flask(__name__)
+
+PROJECT_DIR = r"C:\Users\user\OneDrive\Documents\Abg Paeez\CSP 600\FYP_IPv6_Project\Project Directory"
+
+JSON_FILES = {
+    "test1": os.path.join(PROJECT_DIR, "T1Rs.json"),
+    "test2": os.path.join(PROJECT_DIR, "T2Rs.json"),
+    "test3": os.path.join(PROJECT_DIR, "T3Rs.json"),
+    "test5": os.path.join(PROJECT_DIR, "T5Rs.json")
+}
+
+def load_json_file(filepath):
+    if not os.path.exists(filepath):
+        print(f"File not found: {filepath}")
+        return None
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+        try:
+            data = json.loads(content)
+            print(f"Loaded {len(data)} entries from {os.path.basename(filepath)}")
+            return data
+        except json.JSONDecodeError as e:
+            print(f"JSON error at line {e.lineno}, attempting recovery...")
+            data = []
+            lines = content.split('\n')
+            current_obj = ""
+            brace_count = 0
+            in_object = False
+            for line in lines:
+                stripped = line.strip()
+                if stripped.startswith('{'):
+                    if not in_object:
+                        in_object = True
+                        brace_count = 0
+                        current_obj = ""
+                if in_object:
+                    current_obj += line + '\n'
+                    brace_count += stripped.count('{') - stripped.count('}')
+                    if brace_count == 0 and current_obj.strip():
+                        try:
+                            obj = json.loads(current_obj.strip().rstrip(','))
+                            data.append(obj)
+                        except json.JSONDecodeError:
+                            pass
+                        current_obj = ""
+                        in_object = False
+            print(f"Recovered {len(data)} entries from {os.path.basename(filepath)}")
+            return data if data else None
+    except Exception as e:
+        print(f"Error loading {filepath}: {e}")
+        return None
+
+def process_test_data(raw_data):
+    if not raw_data: return {}
+    aggregation = {}
+    for entry in raw_data:
+        try:
+            m = entry.get('metric')
+            s = entry.get('strategy')
+            v = entry.get('value')
+            if not m or not s or v is None: continue
+            v = float(v) if not isinstance(v, (int, float)) else v
+            if m not in aggregation: aggregation[m] = {}
+            if s not in aggregation[m]: aggregation[m][s] = []
+            aggregation[m][s].append(v)
+        except (ValueError, TypeError):
+            continue
+    results = {}
+    for metric, strategies in aggregation.items():
+        results[metric] = {}
+        for strategy, values in strategies.items():
+            if len(values) > 0:
+                results[metric][strategy] = sum(values) / len(values)
+    return results
+
+# ─────────────────────────────────────────────
+# ROUTES
+# ─────────────────────────────────────────────
+
+@app.route('/')
+def index(): return render_template('index.html')
+
+@app.route('/test1')
+def test1_page(): return render_template('test1.html')
+
+@app.route('/test2')
+def test2_page(): return render_template('test2.html')
+
+@app.route('/test3')
+def test3_page(): return render_template('test3.html')
+
+@app.route('/test5')
+def test5_page(): return render_template('test5.html')
+
+@app.route('/summary')
+def summary_page(): return render_template('summary.html')
+
+# API Routes
+@app.route('/api/test1')
+def api_test1():
+    data = process_test_data(load_json_file(JSON_FILES["test1"]))
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
+
+@app.route('/api/test2')
+def api_test2():
+    data = process_test_data(load_json_file(JSON_FILES["test2"]))
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
+
+@app.route('/api/test3')
+def api_test3():
+    data = process_test_data(load_json_file(JSON_FILES["test3"]))
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
+
+@app.route('/api/test5')
+def api_test5():
+    data = process_test_data(load_json_file(JSON_FILES["test5"]))
+    return jsonify(data) if data else (jsonify({"error": "No data"}), 404)
+
+@app.route('/debug5')
+def debug5():
+    """Debug endpoint for TEST 5 data"""
+    raw_data = load_json_file(JSON_FILES["test5"])
+    if not raw_data:
+        return jsonify({"error": "No data found"})
+    
+    p1_sizes = set()
+    p2_sizes = set()
+    strategies_count_p1 = {}
+    strategies_count_p2 = {}
+    
+    for entry in raw_data:
+        metric = entry.get('metric', '')
+        strategy = entry.get('strategy', '?')
+        
+        if 'T5_P1_Frag_' in metric:
+            match = re.search(r'T5_P1_Frag_(\d+)B_', metric)
+            if match:
+                p1_sizes.add(int(match.group(1)))
+            strategies_count_p1[strategy] = strategies_count_p1.get(strategy, 0) + 1
+                
+        elif 'T5_P2_Frag_' in metric:
+            match = re.search(r'T5_P2_Frag_(\d+)B_', metric)
+            if match:
+                p2_sizes.add(int(match.group(1)))
+            strategies_count_p2[strategy] = strategies_count_p2.get(strategy, 0) + 1
+    
+    return jsonify({
+        "total_entries": len(raw_data),
+        "phase1": {
+            "sizes": sorted(list(p1_sizes)),
+            "num_sizes": len(p1_sizes),
+            "entries_per_strategy": strategies_count_p1
+        },
+        "phase2": {
+            "sizes": sorted(list(p2_sizes)),
+            "num_sizes": len(p2_sizes),
+            "entries_per_strategy": strategies_count_p2
+        }
+    })
+
+# ─────────────────────────────────────────────
+# RUNNER
+# ─────────────────────────────────────────────
+
+if __name__ == '__main__':
+    templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+    if not os.path.exists(templates_dir):
+        os.makedirs(templates_dir)
+        print("📁 Created 'templates' folder.")
+
+    print("="*60)
+    print("🚀 IPv6 Migration Dashboard Server")
+    print("="*60)
+    print(f"📁 Data Directory: {PROJECT_DIR}")
+    for test_name, filepath in JSON_FILES.items():
+        exists = "✅" if os.path.exists(filepath) else "❌"
+        size = os.path.getsize(filepath) if os.path.exists(filepath) else 0
+        print(f"   {exists} {test_name.upper()}: {os.path.basename(filepath)} ({size:,} bytes)")
+    print(f"\n📊 Dashboard: http://127.0.0.1:5000")
+    print(f"📋 Summary:  http://127.0.0.1:5000/summary")
+    print(f"🔍 Debug T5: http://127.0.0.1:5000/debug5")
+    print("="*60)
+    
+    t port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

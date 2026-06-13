@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPv6 Migration Dashboard | TEST 1,2,3,5 Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #ffffff; font-family: 'Inter', system-ui, sans-serif; }
+        .dashboard-header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 2rem 0; border-bottom: 1px solid #334155; }
+        h1 { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; margin-bottom: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .card-header { background: #0f172a; border-bottom: 1px solid #334155; padding: 1rem 1.5rem; font-weight: 600; font-size: 1.1rem; color: #ffffff; border-radius: 16px 16px 0 0; }
+        .card-body { padding: 1.5rem; color: #ffffff; }
+        .chart-container { position: relative; height: 400px; margin-bottom: 1.5rem; }
+        .stats-table { font-size: 0.85rem; margin-top: 1rem; }
+        .stats-table th { background: #0f172a; color: #ffffff; font-weight: 600; border: none; }
+        .stats-table td { border-color: #334155; color: #ffffff; }
+        .badge-metric { background: #0f172a; color: #ffffff; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.7rem; }
+        .update-time { font-size: 0.75rem; color: #ffffff; text-align: right; padding: 0.5rem 1rem; }
+        .strategy-badge { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; }
+        .legend { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
+        .legend-item { font-size: 0.8rem; display: flex; align-items: center; color: #ffffff; }
+        .nav-tabs { border-bottom: 1px solid #334155; margin-bottom: 1.5rem; }
+        .nav-tabs .nav-link { color: #ffffff; background: transparent; border: none; padding: 0.75rem 1.5rem; }
+        .nav-tabs .nav-link:hover { color: #38bdf8; border: none; }
+        .nav-tabs .nav-link.active { color: #ffffff; background: #1e293b; border-radius: 8px 8px 0 0; border-bottom: 2px solid #38bdf8; font-weight: 600; }
+        .section-title { margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1rem; color: #ffffff; border-left: 3px solid #38bdf8; padding-left: 10px; font-weight: 600; }
+        .frag-table { font-size: 0.75rem; }
+        .frag-table th { background: #0f172a; color: #ffffff; font-weight: 600; }
+        .frag-table td { color: #ffffff; }
+        .status-success { color: #10b981; font-weight: bold; }
+        .status-frag { color: #f59e0b; font-weight: bold; }
+        .status-fail { color: #ef4444; font-weight: bold; }
+        .summary-box { background: #0f172a; border-radius: 8px; padding: 15px; margin-top: 15px; border-left: 4px solid #38bdf8; color: #ffffff; }
+        .final-summary { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 12px; padding: 20px; margin-top: 20px; border: 1px solid #334155; }
+        .final-summary h5 { color: #ffffff; }
+        .final-summary p { color: #ffffff; }
+        .final-summary strong { color: #38bdf8; }
+        .text-secondary { color: #cbd5e1 !important; }
+        .text-info { color: #38bdf8 !important; }
+        .alert-warning { background-color: #1e293b; color: #ffffff; border-color: #f59e0b; }
+        .badge.bg-primary { background-color: #3b82f6 !important; color: #ffffff; }
+        .graph-highlight { border: 2px solid #38bdf8; border-radius: 12px; padding: 10px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-header">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1>IPv6 Migration Performance Dashboard</h1>
+                <p class="text-secondary mb-0">TEST 1: Packet Size | TEST 2: HTTP | TEST 3: RTT | TEST 5: Fragmentation</p>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-primary">FYP CSP600</span>
+                <div class="update-time mt-2" id="last-update">Loading data...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <!-- Legend -->
+    <div class="legend">
+        <div class="legend-item"><span class="strategy-badge" style="background: #3b82f6;"></span> Dual Stack</div>
+        <div class="legend-item"><span class="strategy-badge" style="background: #10b981;"></span> DS-Lite</div>
+        <div class="legend-item"><span class="strategy-badge" style="background: #f59e0b;"></span> NAT64</div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="testTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="test1-tab" data-bs-toggle="tab" data-bs-target="#test1" type="button" role="tab">📦 TEST 1: Packet Size</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="test2-tab" data-bs-toggle="tab" data-bs-target="#test2" type="button" role="tab">🌐 TEST 2: HTTP</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="test3-tab" data-bs-toggle="tab" data-bs-target="#test3" type="button" role="tab">🔴 TEST 3: RTT</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="test5-tab" data-bs-toggle="tab" data-bs-target="#test5" type="button" role="tab">💥 TEST 5: Fragmentation</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="testTabsContent">
+        
+        <!-- TEST 1: Packet Size -->
+        <div class="tab-pane fade show active" id="test1" role="tabpanel">
+            <div class="card">
+                <div class="card-header">📦 TEST 1: Packet Size Performance (PC1) - T1Rs.json</div>
+                <div class="card-body">
+                    <div class="section-title">📊 TCP Throughput vs Packet Size</div>
+                    <div class="chart-container"><canvas id="tcpThroughputChart"></canvas></div>
+                    <div class="section-title">📊 UDP Jitter vs Packet Size</div>
+                    <div class="chart-container"><canvas id="udpJitterChart"></canvas></div>
+                    <div class="section-title">📊 ICMP RTT vs Packet Size</div>
+                    <div class="chart-container"><canvas id="icmpRttChart"></canvas></div>
+                    <div class="section-title">📋 Summary Table</div>
+                    <div class="stats-table">
+                        <table class="table table-bordered">
+                            <thead><tr><th>Size</th><th>Metric</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                            <tbody id="test1-summary"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEST 2: HTTP -->
+        <div class="tab-pane fade" id="test2" role="tabpanel">
+            <div class="card">
+                <div class="card-header">🌐 TEST 2: HTTP Performance (PC2) - T2Rs.json</div>
+                <div class="card-body">
+                    <div class="section-title">📊 HTTP Download Speed</div>
+                    <div class="chart-container"><canvas id="httpSpeedChart"></canvas></div>
+                    <div class="section-title">📋 Summary Table</div>
+                    <div class="stats-table">
+                        <table class="table table-bordered">
+                            <thead><tr><th>File Size</th><th>Dual Stack (Mbps)</th><th>DS-Lite (Mbps)</th><th>NAT64 (Mbps)</th></tr></thead>
+                            <tbody id="test2-summary"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEST 3: RTT -->
+        <div class="tab-pane fade" id="test3" role="tabpanel">
+            <div class="card">
+                <div class="card-header">🔴 TEST 3: RTT Consistency (PC1) - T3Rs.json</div>
+                <div class="card-body">
+                    <div class="section-title">📊 RTT Min/Avg/Max Comparison</div>
+                    <div class="chart-container"><canvas id="rttChart"></canvas></div>
+                    <div class="section-title">📊 RTT Variation (Mdev)</div>
+                    <div class="chart-container"><canvas id="mdevChart"></canvas></div>
+                    <div class="section-title">📋 Summary Table</div>
+                    <div class="stats-table">
+                        <table class="table table-bordered">
+                            <thead><tr><th>Metric</th><th>Dual Stack (ms)</th><th>DS-Lite (ms)</th><th>NAT64 (ms)</th></tr></thead>
+                            <tbody id="test3-summary"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEST 5: Fragmentation -->
+        <div class="tab-pane fade" id="test5" role="tabpanel">
+            <div class="card">
+                <div class="card-header">💥 TEST 5: Fragmentation Boundary (PC1) - T5Rs.json</div>
+                <div class="card-body">
+                    
+                    <!-- PHASE 1: SIZE vs LOSS -->
+                    <div class="graph-highlight">
+                        <div class="section-title">📊 Packet Size vs Packet Loss - No Fragmentation (DF Set)</div>
+                        <div class="chart-container"><canvas id="packetLossChart"></canvas></div>
+                    </div>
+                    
+                    <!-- PHASE 1: SIZE vs RTT -->
+                    <div class="section-title">📊 Packet Size vs RTT - No Fragmentation (DF Set)</div>
+                    <div class="chart-container"><canvas id="packetRttChart"></canvas></div>
+                    
+                    <!-- PHASE 2: SIZE vs LOSS -->
+                    <div class="graph-highlight">
+                        <div class="section-title">📊 Packet Size vs Packet Loss - With Fragmentation Allowed</div>
+                        <div class="chart-container"><canvas id="packetLossPhase2Chart"></canvas></div>
+                    </div>
+                    
+                    <!-- PHASE 2: SIZE vs RTT -->
+                    <div class="section-title">📊 Packet Size vs RTT - With Fragmentation Allowed</div>
+                    <div class="chart-container"><canvas id="packetRttPhase2Chart"></canvas></div>
+                    
+                    <!-- PHASE 1 TABLE -->
+                    <div class="section-title">🔬 PHASE 1: Don't Fragment (No Fragmentation) - NAT64 Results</div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered frag-table">
+                            <thead>
+                                <tr><th>Size(B)</th><th>Total(B)</th><th>DF</th><th>Status</th><th>Sent</th><th>Recv</th><th>Loss%</th><th>RTT Avg</th><th>Frag</th><th>Notes</th></tr>
+                            </thead>
+                            <tbody id="test5-phase1-table"></tbody>
+                        </table>
+                    </div>
+                    <div class="summary-box"><strong>📊 Phase 1 Summary:</strong> <span id="phase1-summary-text">Loading...</span></div>
+                    
+                    <!-- PHASE 2 TABLE -->
+                    <div class="section-title mt-4">🔬 PHASE 2: Fragmentation Allowed - NAT64 Results</div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered frag-table">
+                            <thead>
+                                <tr><th>Size(B)</th><th>Total(B)</th><th>DF</th><th>Status</th><th>Sent</th><th>Recv</th><th>Loss%</th><th>RTT Avg</th><th>Frag</th><th>Notes</th></tr>
+                            </thead>
+                            <tbody id="test5-phase2-table"></tbody>
+                        </table>
+                    </div>
+                    <div class="summary-box"><strong>📊 Phase 2 Summary:</strong> <span id="phase2-summary-text">Loading...</span></div>
+                    
+                    <!-- FINAL SUMMARY -->
+                    <div class="final-summary">
+                        <h5 class="text-info mb-3">📈 FINAL FRAGMENTATION SUMMARY</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Max payload without fragmentation:</strong> <span id="final-max-no-frag">-</span> bytes</p>
+                                <p><strong>Max payload with fragmentation:</strong> <span id="final-max-with-frag">-</span> bytes</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>MTU:</strong> <span id="final-mtu">-</span> bytes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let charts = {};
+
+    async function fetchAggregatedData(endpoint) {
+        try {
+            const response = await fetch(endpoint);
+            if (!response.ok) return null;
+            return await response.json();
+        } catch (e) {
+            console.warn("Aggregated data not available", e);
+            return null;
+        }
+    }
+
+    function getValue(data, metric, strategy, defaultValue = 0) {
+        if (data && data[metric] && data[metric][strategy] !== undefined) {
+            return parseFloat(data[metric][strategy]);
+        }
+        return defaultValue;
+    }
+
+    function updateChart(canvasId, type, data, yLabel, xLabel = null) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        if (charts[canvasId]) charts[canvasId].destroy();
+        
+        charts[canvasId] = new Chart(canvas, {
+            type: type,
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { position: 'top', labels: { color: '#ffffff', font: { size: 12 } } }, 
+                    tooltip: { mode: 'index', intersect: false } 
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: '#334155' }, 
+                        title: { display: true, text: yLabel, color: '#ffffff' }, 
+                        ticks: { color: '#ffffff' } 
+                    },
+                    x: { 
+                        grid: { color: '#334155' }, 
+                        title: xLabel ? { display: true, text: xLabel, color: '#ffffff' } : null, 
+                        ticks: { color: '#ffffff' } 
+                    }
+                }
+            }
+        });
+    }
+
+    function getFragmentationData(data, strategy) {
+        const phase1 = [];
+        const phase2 = [];
+        if (!data) return { phase1, phase2 };
+        
+        const phase1Sizes = [64, 128, 256, 512, 768, 1024, 1280, 1290, 1300, 1310, 1320, 1330, 1340, 1350, 1360, 1370, 1380, 1390, 1400, 1410, 1420, 1430, 1440, 1450, 1460, 1470, 1480, 1490, 1500, 1510, 1520];
+        const phase2Sizes = [1500, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 12000, 15000, 20000, 30000, 40000, 50000, 60000];
+        
+        for (const size of phase1Sizes) {
+            const success = getValue(data, `T5_P1_Frag_${size}B_Success`, strategy, 0);
+            const totalSize = getValue(data, `T5_P1_Frag_${size}B_Total_Size`, strategy, size + 28);
+            const dfSet = getValue(data, `T5_P1_Frag_${size}B_DF_Set`, strategy, 1);
+            const loss = getValue(data, `T5_P1_Frag_${size}B_Loss_Pct`, strategy, 0);
+            const rtt = getValue(data, `T5_P1_Frag_${size}B_RTT_Avg_ms`, strategy, 0);
+            const sent = getValue(data, `T5_P1_Frag_${size}B_Packets_Sent`, strategy, 4);
+            const recv = getValue(data, `T5_P1_Frag_${size}B_Packets_Received`, strategy, 0);
+            const fragmented = getValue(data, `T5_P1_Frag_${size}B_Fragmented`, strategy, 0);
+            
+            let status = '', statusClass = '';
+            if (success === 1 && loss === 0) { status = '✅ INTACT'; statusClass = 'status-success'; }
+            else if (loss === 100) { status = '❌ FAILED'; statusClass = 'status-fail'; }
+            else if (loss > 0) { status = '⚠️ PARTIAL'; statusClass = 'status-frag'; }
+            else { status = '❌ FAILED'; statusClass = 'status-fail'; }
+            
+            phase1.push({
+                size, total: totalSize, df: dfSet === 1 ? 'Yes' : 'No',
+                status, statusClass, sent, recv, loss,
+                rtt: success === 1 && rtt > 0 ? rtt : 0,
+                rttDisplay: success === 1 && rtt > 0 ? rtt.toFixed(3) : 'N/A',
+                frag: fragmented === 1 ? 'YES' : 'NO',
+                notes: success === 1 ? 'Success' : (loss === 100 ? 'All packets lost' : `${loss}% loss`)
+            });
+        }
+        
+        for (const size of phase2Sizes) {
+            const success = getValue(data, `T5_P2_Frag_${size}B_Success`, strategy, 0);
+            const totalSize = getValue(data, `T5_P2_Frag_${size}B_Total_Size`, strategy, size + 28);
+            const dfSet = getValue(data, `T5_P2_Frag_${size}B_DF_Set`, strategy, 0);
+            const loss = getValue(data, `T5_P2_Frag_${size}B_Loss_Pct`, strategy, 0);
+            const rtt = getValue(data, `T5_P2_Frag_${size}B_RTT_Avg_ms`, strategy, 0);
+            const sent = getValue(data, `T5_P2_Frag_${size}B_Packets_Sent`, strategy, 4);
+            const recv = getValue(data, `T5_P2_Frag_${size}B_Packets_Received`, strategy, 0);
+            const fragmented = getValue(data, `T5_P2_Frag_${size}B_Fragmented`, strategy, 0);
+            
+            let status = '', statusClass = '';
+            if (success === 1) { status = '⚠️ FRAGMENTED'; statusClass = 'status-frag'; }
+            else { status = '❌ FAILED'; statusClass = 'status-fail'; }
+            
+            phase2.push({
+                size, total: totalSize, df: dfSet === 1 ? 'Yes' : 'No',
+                status, statusClass, sent, recv, loss,
+                rtt: rtt > 0 ? rtt : 0,
+                rttDisplay: rtt > 0 ? rtt.toFixed(3) : 'N/A',
+                frag: fragmented === 1 ? 'YES' : 'NO',
+                notes: success === 1 ? 'Fragmentation detected' : 'Failed'
+            });
+        }
+        
+        return { phase1, phase2 };
+    }
+
+    async function updateDashboard() {
+        const [test1Data, test2Data, test3Data, test5Data] = await Promise.all([
+            fetchAggregatedData('/api/test1'),
+            fetchAggregatedData('/api/test2'),
+            fetchAggregatedData('/api/test3'),
+            fetchAggregatedData('/api/test5')
+        ]);
+
+        document.getElementById('last-update').innerHTML = "Last updated: " + new Date().toLocaleTimeString();
+
+        // TEST 1
+        if (test1Data && !test1Data.error) {
+            const sizes = ['50M', '100M', '150M'];
+            updateChart('tcpThroughputChart', 'line', {
+                labels: sizes,
+                datasets: [
+                    { label: 'Dual Stack', data: sizes.map(s => getValue(test1Data, `T1_TCP_PC1_${s}_Throughput_Mbps`, 'dualstack')), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, tension: 0.3, fill: true },
+                    { label: 'DS-Lite', data: sizes.map(s => getValue(test1Data, `T1_TCP_PC1_${s}_Throughput_Mbps`, 'dslite')), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, tension: 0.3, fill: true },
+                    { label: 'NAT64', data: sizes.map(s => getValue(test1Data, `T1_TCP_PC1_${s}_Throughput_Mbps`, 'nat64')), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2, tension: 0.3, fill: true }
+                ]
+            }, 'Throughput (Mbps)', 'Packet Size');
+            
+            updateChart('udpJitterChart', 'line', {
+                labels: sizes,
+                datasets: [
+                    { label: 'Dual Stack', data: sizes.map(s => getValue(test1Data, `T1_UDP_PC1_${s}_Jitter_ms`, 'dualstack')), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, tension: 0.3, fill: true },
+                    { label: 'DS-Lite', data: sizes.map(s => getValue(test1Data, `T1_UDP_PC1_${s}_Jitter_ms`, 'dslite')), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, tension: 0.3, fill: true },
+                    { label: 'NAT64', data: sizes.map(s => getValue(test1Data, `T1_UDP_PC1_${s}_Jitter_ms`, 'nat64')), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2, tension: 0.3, fill: true }
+                ]
+            }, 'Jitter (ms)', 'Packet Size');
+            
+            updateChart('icmpRttChart', 'line', {
+                labels: sizes,
+                datasets: [
+                    { label: 'Dual Stack', data: sizes.map(s => getValue(test1Data, `T1_ICMP_PC1_${s}_RTT_Avg_ms`, 'dualstack')), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, tension: 0.3, fill: true },
+                    { label: 'DS-Lite', data: sizes.map(s => getValue(test1Data, `T1_ICMP_PC1_${s}_RTT_Avg_ms`, 'dslite')), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, tension: 0.3, fill: true },
+                    { label: 'NAT64', data: sizes.map(s => getValue(test1Data, `T1_ICMP_PC1_${s}_RTT_Avg_ms`, 'nat64')), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2, tension: 0.3, fill: true }
+                ]
+            }, 'RTT (ms)', 'Packet Size');
+            
+            let test1Html = '';
+            for (const size of sizes) {
+                test1Html += `
+                    <tr><td rowspan="3">${size}</td><td>TCP Throughput (Mbps)</td><td>${getValue(test1Data, `T1_TCP_PC1_${size}_Throughput_Mbps`, 'dualstack').toFixed(2)}</td><td>${getValue(test1Data, `T1_TCP_PC1_${size}_Throughput_Mbps`, 'dslite').toFixed(2)}</td><td>${getValue(test1Data, `T1_TCP_PC1_${size}_Throughput_Mbps`, 'nat64').toFixed(2)}</td></tr>
+                    <tr><td>UDP Jitter (ms)</td><td>${getValue(test1Data, `T1_UDP_PC1_${size}_Jitter_ms`, 'dualstack').toFixed(3)}</td><td>${getValue(test1Data, `T1_UDP_PC1_${size}_Jitter_ms`, 'dslite').toFixed(3)}</td><td>${getValue(test1Data, `T1_UDP_PC1_${size}_Jitter_ms`, 'nat64').toFixed(3)}</td></tr>
+                    <tr><td>ICMP RTT Avg (ms)</td><td>${getValue(test1Data, `T1_ICMP_PC1_${size}_RTT_Avg_ms`, 'dualstack').toFixed(2)}</td><td>${getValue(test1Data, `T1_ICMP_PC1_${size}_RTT_Avg_ms`, 'dslite').toFixed(2)}</td><td>${getValue(test1Data, `T1_ICMP_PC1_${size}_RTT_Avg_ms`, 'nat64').toFixed(2)}</td></tr>`;
+            }
+            document.getElementById('test1-summary').innerHTML = test1Html;
+        }
+
+        // TEST 2
+        if (test2Data && !test2Data.error) {
+            const httpFiles = ['1KB', '10KB', '100KB', '1MB'];
+            updateChart('httpSpeedChart', 'bar', {
+                labels: httpFiles,
+                datasets: [
+                    { label: 'Dual Stack', data: httpFiles.map(f => getValue(test2Data, `T2_HTTP_PC2_${f}_Speed_Mbps`, 'dualstack')), backgroundColor: '#3b82f6', borderRadius: 8 },
+                    { label: 'DS-Lite', data: httpFiles.map(f => getValue(test2Data, `T2_HTTP_PC2_${f}_Speed_Mbps`, 'dslite')), backgroundColor: '#10b981', borderRadius: 8 },
+                    { label: 'NAT64', data: httpFiles.map(f => getValue(test2Data, `T2_HTTP_PC2_${f}_Speed_Mbps`, 'nat64')), backgroundColor: '#f59e0b', borderRadius: 8 }
+                ]
+            }, 'Speed (Mbps)');
+            
+            let test2Html = '';
+            for (const file of httpFiles) {
+                test2Html += `<tr><td>${file}</td><td>${getValue(test2Data, `T2_HTTP_PC2_${file}_Speed_Mbps`, 'dualstack').toFixed(2)}</td><td>${getValue(test2Data, `T2_HTTP_PC2_${file}_Speed_Mbps`, 'dslite').toFixed(2)}</td><td>${getValue(test2Data, `T2_HTTP_PC2_${file}_Speed_Mbps`, 'nat64').toFixed(2)}</td></tr>`;
+            }
+            document.getElementById('test2-summary').innerHTML = test2Html;
+        }
+
+        // TEST 3
+        if (test3Data && !test3Data.error) {
+            updateChart('rttChart', 'bar', {
+                labels: ['Dual Stack', 'DS-Lite', 'NAT64'],
+                datasets: [
+                    { label: 'Min RTT (ms)', data: [getValue(test3Data, 'T3_RTT_PC1_Min_ms', 'dualstack'), getValue(test3Data, 'T3_RTT_PC1_Min_ms', 'dslite'), getValue(test3Data, 'T3_RTT_PC1_Min_ms', 'nat64')], backgroundColor: '#3b82f6', borderRadius: 6 },
+                    { label: 'Avg RTT (ms)', data: [getValue(test3Data, 'T3_RTT_PC1_Avg_ms', 'dualstack'), getValue(test3Data, 'T3_RTT_PC1_Avg_ms', 'dslite'), getValue(test3Data, 'T3_RTT_PC1_Avg_ms', 'nat64')], backgroundColor: '#10b981', borderRadius: 6 },
+                    { label: 'Max RTT (ms)', data: [getValue(test3Data, 'T3_RTT_PC1_Max_ms', 'dualstack'), getValue(test3Data, 'T3_RTT_PC1_Max_ms', 'dslite'), getValue(test3Data, 'T3_RTT_PC1_Max_ms', 'nat64')], backgroundColor: '#f59e0b', borderRadius: 6 }
+                ]
+            }, 'RTT (ms)');
+            
+            updateChart('mdevChart', 'bar', {
+                labels: ['Dual Stack', 'DS-Lite', 'NAT64'],
+                datasets: [{ label: 'Mdev (ms)', data: [getValue(test3Data, 'T3_RTT_PC1_Mdev_ms', 'dualstack'), getValue(test3Data, 'T3_RTT_PC1_Mdev_ms', 'dslite'), getValue(test3Data, 'T3_RTT_PC1_Mdev_ms', 'nat64')], backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'], borderRadius: 8 }]
+            }, 'Mdev (ms)');
+            
+            document.getElementById('test3-summary').innerHTML = `
+                <tr><td>Min RTT (ms)</td><td>${getValue(test3Data, 'T3_RTT_PC1_Min_ms', 'dualstack').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Min_ms', 'dslite').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Min_ms', 'nat64').toFixed(3)}</td></tr>
+                <tr><td>Avg RTT (ms)</td><td>${getValue(test3Data, 'T3_RTT_PC1_Avg_ms', 'dualstack').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Avg_ms', 'dslite').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Avg_ms', 'nat64').toFixed(3)}</td></tr>
+                <tr><td>Max RTT (ms)</td><td>${getValue(test3Data, 'T3_RTT_PC1_Max_ms', 'dualstack').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Max_ms', 'dslite').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Max_ms', 'nat64').toFixed(3)}</td></tr>
+                <tr><td>Mdev (ms)</td><td>${getValue(test3Data, 'T3_RTT_PC1_Mdev_ms', 'dualstack').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Mdev_ms', 'dslite').toFixed(3)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Mdev_ms', 'nat64').toFixed(3)}</td></tr>
+                <tr><td>Loss (%)</td><td>${getValue(test3Data, 'T3_RTT_PC1_Loss_Percent', 'dualstack').toFixed(2)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Loss_Percent', 'dslite').toFixed(2)}</td><td>${getValue(test3Data, 'T3_RTT_PC1_Loss_Percent', 'nat64').toFixed(2)}</td></tr>`;
+        }
+
+        // TEST 5: Fragmentation
+        if (test5Data && !test5Data.error) {
+            const dualstackData = getFragmentationData(test5Data, 'dualstack');
+            const dsliteData = getFragmentationData(test5Data, 'dslite');
+            const nat64Data = getFragmentationData(test5Data, 'nat64');
+            const { phase1, phase2 } = nat64Data;
+            
+            // PHASE 1: Size vs Loss
+            updateChart('packetLossChart', 'line', {
+                labels: phase1.map(row => row.size),
+                datasets: [
+                    { label: 'Dual Stack Loss %', data: dualstackData.phase1.map(row => row.loss), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'DS-Lite Loss %', data: dsliteData.phase1.map(row => row.loss), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'NAT64 Loss %', data: nat64Data.phase1.map(row => row.loss), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2, fill: false, tension: 0.3 }
+                ]
+            }, 'Packet Loss (%)', 'Packet Size (bytes)');
+            
+            // PHASE 1: Size vs RTT
+            const rttLabels = phase1.filter(row => row.rtt > 0).map(row => row.size);
+            updateChart('packetRttChart', 'line', {
+                labels: rttLabels,
+                datasets: [
+                    { label: 'Dual Stack RTT (ms)', data: rttLabels.map(s => dualstackData.phase1.find(r => r.size === s)?.rtt || 0), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'DS-Lite RTT (ms)', data: rttLabels.map(s => dsliteData.phase1.find(r => r.size === s)?.rtt || 0), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'NAT64 RTT (ms)', data: rttLabels.map(s => nat64Data.phase1.find(r => r.size === s)?.rtt || 0), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2, fill: false, tension: 0.3 }
+                ]
+            }, 'RTT (ms)', 'Packet Size (bytes)');
+            
+            // PHASE 2: Size vs Loss
+            updateChart('packetLossPhase2Chart', 'line', {
+                labels: phase2.map(row => row.size),
+                datasets: [
+                    { label: 'Dual Stack Loss %', data: dualstackData.phase2.map(row => row.loss), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'DS-Lite Loss %', data: dsliteData.phase2.map(row => row.loss), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'NAT64 Loss %', data: nat64Data.phase2.map(row => row.loss), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2, fill: false, tension: 0.3 }
+                ]
+            }, 'Packet Loss (%)', 'Packet Size (bytes)');
+            
+            // PHASE 2: Size vs RTT
+            const rttLabels2 = phase2.filter(row => row.rtt > 0).map(row => row.size);
+            updateChart('packetRttPhase2Chart', 'line', {
+                labels: rttLabels2,
+                datasets: [
+                    { label: 'Dual Stack RTT (ms)', data: rttLabels2.map(s => dualstackData.phase2.find(r => r.size === s)?.rtt || 0), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'DS-Lite RTT (ms)', data: rttLabels2.map(s => dsliteData.phase2.find(r => r.size === s)?.rtt || 0), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, fill: false, tension: 0.3 },
+                    { label: 'NAT64 RTT (ms)', data: rttLabels2.map(s => nat64Data.phase2.find(r => r.size === s)?.rtt || 0), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2, fill: false, tension: 0.3 }
+                ]
+            }, 'RTT (ms)', 'Packet Size (bytes)');
+            
+            // Phase 1 Table
+            let phase1Html = '';
+            for (const row of phase1) {
+                phase1Html += `<tr><td>${row.size}</td><td>${row.total}</td><td>${row.df}</td><td class="${row.statusClass}">${row.status}</td><td>${row.sent}</td><td>${row.recv}</td><td>${row.loss}</td><td>${row.rttDisplay}</td><td>${row.frag}</td><td>${row.notes}</td></tr>`;
+            }
+            document.getElementById('test5-phase1-table').innerHTML = phase1Html;
+            
+            const maxSuccessSize = phase1.filter(row => row.status === '✅ INTACT').pop()?.size || 0;
+            const maxTotalNoFrag = phase1.filter(row => row.status === '✅ INTACT').pop()?.total || 0;
+            document.getElementById('phase1-summary-text').innerHTML = `Max payload without fragmentation: ${maxSuccessSize} bytes | Max total size: ${maxTotalNoFrag} bytes`;
+            
+            // Phase 2 Table
+            let phase2Html = '';
+            for (const row of phase2) {
+                phase2Html += `<tr><td>${row.size}</td><td>${row.total}</td><td>${row.df}</td><td class="${row.statusClass}">${row.status}</td><td>${row.sent}</td><td>${row.recv}</td><td>${row.loss}</td><td>${row.rttDisplay}</td><td>${row.frag}</td><td>${row.notes}</td></tr>`;
+            }
+            document.getElementById('test5-phase2-table').innerHTML = phase2Html;
+            
+            const maxFragSuccess = phase2.filter(row => row.status === '⚠️ FRAGMENTED').pop()?.size || 0;
+            document.getElementById('phase2-summary-text').innerHTML = `Max payload with fragmentation: ${maxFragSuccess} bytes`;
+            
+            // Final Summary
+            document.getElementById('final-max-no-frag').innerHTML = getValue(test5Data, 'T5_Final_Max_NoFrag_Payload', 'nat64', maxSuccessSize);
+            document.getElementById('final-max-with-frag').innerHTML = getValue(test5Data, 'T5_Final_Max_Frag_Allowed_Payload', 'nat64', maxFragSuccess);
+            document.getElementById('final-mtu').innerHTML = '1500';
+        }
+    }
+
+    updateDashboard();
+    setInterval(updateDashboard, 10000);
+</script>
+</body>
+</html>

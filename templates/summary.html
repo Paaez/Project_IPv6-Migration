@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Performance Summary by Strategy</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:20px 24px;overflow-y:auto;height:100vh}
+        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:10px;margin-bottom:16px;overflow:hidden}
+        .card-header{background:#151d2b;padding:12px 18px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.9rem;display:flex;align-items:center;gap:10px}
+        .card-body{padding:16px 20px}
+        .section-title{font-size:0.8rem;color:#38bdf8;font-weight:600;margin:0 0 10px 0;padding-left:10px;border-left:3px solid #38bdf8}
+        
+        .strategy-section{margin-bottom:24px}
+        .strategy-banner{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:10px;margin-bottom:14px;font-weight:700;font-size:0.95rem}
+        .banner-ds{background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+        .banner-dl{background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+        .banner-n64{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
+        .banner-icon{font-size:1.5rem}
+        
+        .summary-table{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-bottom:12px}
+        .summary-table-header{background:#0f172a;padding:10px 14px;font-weight:600;font-size:0.75rem;color:#38bdf8;border-bottom:1px solid #2d3a4a;display:flex;align-items:center;gap:8px}
+        .summary-table-header .test-icon{font-size:0.9rem}
+        table{width:100%;border-collapse:collapse;font-size:0.65rem}
+        th{background:#0f172a;color:#94a3b8;padding:6px 8px;text-align:left;font-weight:500;font-size:0.6rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a;letter-spacing:0.3px}
+        td{padding:6px 8px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.62rem}
+        tr:hover td{background:rgba(56,189,248,0.03)}
+        tr.subtotal td{border-top:2px solid #2d3a4a;font-weight:600;color:#f1f5f9}
+        .val-good{color:#10b981;font-weight:600}
+        .val-warn{color:#f59e0b;font-weight:600}
+        .val-bad{color:#ef4444;font-weight:600}
+        .val-neutral{color:#38bdf8;font-weight:600}
+        .val-highlight{color:#f1f5f9;font-weight:700;font-size:0.7rem}
+        
+        .info-box{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:6px;padding:8px 12px;font-size:0.6rem;color:#94a3b8;margin-bottom:12px}
+        
+        .verdict-box{background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:10px;padding:18px;margin-top:16px;border:1px solid #2d3a4a}
+        .verdict-box h3{color:#38bdf8;font-size:0.9rem;margin-bottom:12px;text-align:center}
+        .verdict-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+        .verdict-card{background:#151d2b;border-radius:8px;padding:14px;text-align:center;border:1px solid #2d3a4a}
+        .verdict-card .rank{font-size:1.8rem;font-weight:700}
+        .verdict-card .name{font-size:0.8rem;margin-top:4px;font-weight:600}
+        .verdict-card .score{font-size:0.7rem;margin-top:4px;font-weight:600}
+        .verdict-card .breakdown{font-size:0.52rem;color:#94a3b8;margin-top:8px;line-height:1.7;text-align:left}
+        .rank-1{color:#f59e0b}.rank-2{color:#cbd5e1}.rank-3{color:#cd853f}
+        .rank-1-card{border-color:#f59e0b;box-shadow:0 0 20px rgba(245,158,11,0.15)}
+        
+        .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
+        .score-bar{display:inline-block;height:8px;border-radius:4px;margin-right:4px;vertical-align:middle}
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="card-header">📊 Performance Summary by Strategy <span class="badge">All Tests</span></div>
+    <div class="card-body">
+        <div class="info-box" id="dataStatus">Loading data from all tests...</div>
+        
+        <div class="summary-table" id="scoringTable" style="display:none">
+            <div class="summary-table-header">📋 Scoring Breakdown (100 Points Total)</div>
+            <table>
+                <thead><tr><th>Category</th><th>Max</th><th>Formula</th><th>🔵 DS</th><th>🟢 DL</th><th>🟠 N64</th></tr></thead>
+                <tbody id="scoringBody"></tbody>
+                <tfoot id="scoringFoot"></tfoot>
+            </table>
+        </div>
+        
+        <div id="allStrategies"></div>
+        
+        <div class="verdict-box" id="verdict" style="display:none">
+            <h3>🏆 Overall Performance Ranking</h3>
+            <div class="verdict-grid" id="verdictGrid"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+let allData={};
+
+function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
+
+function valClass(v,good,bad,lowerIsBetter=true){
+    if(v===0||isNaN(v))return'';
+    if(lowerIsBetter){if(v<=good)return'val-good';if(v>=bad)return'val-bad';return'val-warn';}
+    else{if(v>=good)return'val-good';if(v<=bad)return'val-bad';return'val-warn';}
+}
+
+function ratingText(v,good,bad,lowerIsBetter=true,excellent='Excellent',g='Good',b='Poor'){
+    if(v===0||isNaN(v))return'—';
+    if(lowerIsBetter){if(v<=good)return excellent;if(v>=bad)return b;return g;}
+    else{if(v>=good)return excellent;if(v<=bad)return b;return g;}
+}
+
+async function loadAllData(){
+    try{
+        const [t1,t2,t3,t5]=await Promise.all([
+            fetch('/api/test1').then(r=>r.json()),
+            fetch('/api/test2').then(r=>r.json()),
+            fetch('/api/test3').then(r=>r.json()),
+            fetch('/api/test5').then(r=>r.json())
+        ]);
+        allData={test1:t1,test2:t2,test3:t3,test5:t5};
+        document.getElementById('dataStatus').textContent='✅ All data loaded successfully';
+        buildScoringTable();
+        buildAllStrategies();
+        buildVerdict();
+        document.getElementById('verdict').style.display='block';
+        document.getElementById('scoringTable').style.display='block';
+    }catch(e){
+        document.getElementById('dataStatus').textContent='❌ Error loading data: '+e.message;
+    }
+}
+
+function buildScoringTable(){
+    const strategies=['dualstack','dslite','nat64'];
+    const d1=allData.test1,d2=allData.test2,d3=allData.test3,d5=allData.test5;
+    
+    const raw={};
+    strategies.forEach(s=>{
+        const t1Sizes=['5M','7M','10M','15M','20M'];
+        const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+        raw[s]={
+            tcp:gv(d1,'T1_TCP_PC1_20M_Throughput_Mbps',s),
+            jitter:gv(d1,'T1_UDP_PC1_20M_Jitter_ms',s),
+            http:t2Files.reduce((sum,f)=>sum+gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s),0)/t2Files.length,
+            rtt:gv(d3,'T3_RTT_PC1_Avg_ms',s),
+            loss:gv(d3,'T3_RTT_PC1_Loss_Percent',s),
+            mtu:gv(d5,'T5_Final_Max_NoFrag_Payload',s)
+        };
+    });
+    
+    const scores={};
+    strategies.forEach(s=>{
+        const r=raw[s];
+        scores[s]={
+            tcp:Math.min(15,r.tcp*0.75),
+            jitter:Math.max(0,10-r.jitter*50),
+            http:Math.min(25,r.http*1.5),
+            rtt:Math.max(0,25-r.rtt*1.5),
+            loss:Math.max(0,10-r.loss*2),
+            mtu:Math.min(15,r.mtu/100),
+        };
+        scores[s].total=scores[s].tcp+scores[s].jitter+scores[s].http+scores[s].rtt+scores[s].loss+scores[s].mtu;
+    });
+    
+    const categories=[
+        {key:'tcp',label:'📦 TCP @ 20M',max:15,formula:'Throughput × 0.75'},
+        {key:'jitter',label:'📦 UDP Jitter @ 20M',max:10,formula:'10 - (Jitter × 50)'},
+        {key:'http',label:'🌐 HTTP Avg Speed',max:25,formula:'Avg(1KB..1MB) × 1.5'},
+        {key:'rtt',label:'🔴 RTT Avg',max:25,formula:'25 - (RTT × 1.5)'},
+        {key:'loss',label:'🔴 Packet Loss',max:10,formula:'10 - (Loss% × 2)'},
+        {key:'mtu',label:'💥 MTU Payload',max:15,formula:'Payload / 100'},
+    ];
+    
+    let bodyHtml='';
+    categories.forEach(cat=>{
+        bodyHtml+=`<tr><td><strong>${cat.label}</strong></td><td style="color:#64748b">${cat.max}</td><td style="font-size:0.55rem;color:#64748b">${cat.formula}</td>`;
+        strategies.forEach(s=>{
+            bodyHtml+=`<td class="${scores[s][cat.key]>=cat.max*0.8?'val-good':scores[s][cat.key]>=cat.max*0.4?'val-warn':'val-bad'}">${scores[s][cat.key].toFixed(1)}</td>`;
+        });
+        bodyHtml+=`</tr>`;
+    });
+    document.getElementById('scoringBody').innerHTML=bodyHtml;
+    
+    let footHtml=`<tr style="border-top:3px solid #38bdf8;font-weight:700;font-size:0.72rem"><td colspan="3"><strong>🏆 TOTAL SCORE</strong></td>`;
+    strategies.forEach(s=>{
+        const cls=scores[s].total>=70?'val-good':scores[s].total>=50?'val-warn':'val-bad';
+        footHtml+=`<td class="${cls}" style="font-size:0.8rem">${scores[s].total.toFixed(1)} / 100</td>`;
+    });
+    footHtml+=`</tr>`;
+    document.getElementById('scoringFoot').innerHTML=footHtml;
+}
+
+function buildAllStrategies(){
+    const strategies=['dualstack','dslite','nat64'];
+    const names={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
+    const icons={dualstack:'🔵',dslite:'🟢',nat64:'🟠'};
+    const bannerClass={dualstack:'banner-ds',dslite:'banner-dl',nat64:'banner-n64'};
+    
+    let html='';
+    strategies.forEach(s=>{
+        html+=`<div class="strategy-section">
+            <div class="strategy-banner ${bannerClass[s]}"><span class="banner-icon">${icons[s]}</span> ${names[s]}</div>`;
+        html+=buildTest1Table(s);
+        html+=buildTest2Table(s);
+        html+=buildTest3Table(s);
+        html+=buildTest5Table(s);
+        html+=`</div>`;
+    });
+    document.getElementById('allStrategies').innerHTML=html;
+}
+
+function buildTest1Table(s){
+    const d=allData.test1;
+    if(!d||d.error)return'';
+    const sizes=['5M','7M','10M','15M','20M'];
+    
+    let h=`<div class="summary-table">
+        <div class="summary-table-header"><span class="test-icon">📦</span> TEST 1: Packet Size Performance (5M-20M)</div>
+        <table><thead><tr><th>Size</th><th>TCP Throughput</th><th>UDP Jitter</th><th>ICMP RTT Avg</th><th>UDP Loss</th></tr></thead><tbody>`;
+    
+    sizes.forEach(sz=>{
+        const tcp=gv(d,`T1_TCP_PC1_${sz}_Throughput_Mbps`,s);
+        const jitter=gv(d,`T1_UDP_PC1_${sz}_Jitter_ms`,s);
+        const icmp=gv(d,`T1_ICMP_PC1_${sz}_RTT_Avg_ms`,s);
+        const loss=gv(d,`T1_UDP_PC1_${sz}_Loss_Percent`,s);
+        h+=`<tr><td><strong>${sz}</strong></td>
+            <td class="${valClass(tcp,15,5,false)}">${tcp.toFixed(2)} Mbps</td>
+            <td class="${valClass(jitter,0.1,0.5,true)}">${jitter.toFixed(3)} ms</td>
+            <td class="${valClass(icmp,1,5,true)}">${icmp.toFixed(3)} ms</td>
+            <td class="${valClass(loss,1,5,true)}">${loss.toFixed(1)}%</td></tr>`;
+    });
+    
+    const avgTCP=sizes.reduce((sum,sz)=>sum+gv(d,`T1_TCP_PC1_${sz}_Throughput_Mbps`,s),0)/5;
+    const avgJitter=sizes.reduce((sum,sz)=>sum+gv(d,`T1_UDP_PC1_${sz}_Jitter_ms`,s),0)/5;
+    const avgICMP=sizes.reduce((sum,sz)=>sum+gv(d,`T1_ICMP_PC1_${sz}_RTT_Avg_ms`,s),0)/5;
+    
+    h+=`<tr class="subtotal"><td>📊 Average</td>
+        <td class="val-highlight">${avgTCP.toFixed(2)} Mbps</td>
+        <td class="val-highlight">${avgJitter.toFixed(3)} ms</td>
+        <td class="val-highlight">${avgICMP.toFixed(3)} ms</td>
+        <td class="val-neutral">—</td></tr>`;
+    h+=`</tbody></table></div>`;
+    return h;
+}
+
+function buildTest2Table(s){
+    const d=allData.test2;
+    if(!d||d.error)return'';
+    const files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+    
+    let h=`<div class="summary-table">
+        <div class="summary-table-header"><span class="test-icon">🌐</span> TEST 2: HTTP Download Speed (Drop Detection)</div>
+        <table><thead><tr><th>File</th><th>Speed (Mbps)</th><th>Rating</th></tr></thead><tbody>`;
+    
+    files.forEach(f=>{
+        const v=gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s);
+        h+=`<tr><td><strong>${f}</strong></td>
+            <td class="${valClass(v,10,3,false)}">${v.toFixed(2)} Mbps</td>
+            <td>${ratingText(v,10,3,false,'🚀 Fast','📶 Medium','🐌 Slow')}</td></tr>`;
+    });
+    
+    const avg=files.reduce((sum,f)=>sum+gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s),0)/files.length;
+    h+=`<tr class="subtotal"><td>📊 Average</td><td class="val-highlight">${avg.toFixed(2)} Mbps</td><td class="val-neutral">—</td></tr>`;
+    h+=`</tbody></table></div>`;
+    return h;
+}
+
+function buildTest3Table(s){
+    const d=allData.test3;
+    if(!d||d.error)return'';
+    const metrics=[{key:'Min_ms',label:'Min RTT',good:2,bad:10},{key:'Avg_ms',label:'Avg RTT',good:5,bad:20},{key:'Max_ms',label:'Max RTT',good:10,bad:50},{key:'Mdev_ms',label:'Jitter (Mdev)',good:1,bad:5}];
+    
+    let h=`<div class="summary-table">
+        <div class="summary-table-header"><span class="test-icon">🔴</span> TEST 3: RTT Consistency (100 Pings)</div>
+        <table><thead><tr><th>Metric</th><th>Value</th><th>Rating</th></tr></thead><tbody>`;
+    
+    metrics.forEach(m=>{
+        const v=gv(d,`T3_RTT_PC1_${m.key}`,s);
+        h+=`<tr><td><strong>${m.label}</strong></td><td class="${valClass(v,m.good,m.bad,true)}">${v.toFixed(3)} ms</td><td>${ratingText(v,m.good,m.bad,true,'✅ Excellent','⚠️ Good','❌ High')}</td></tr>`;
+    });
+    
+    const loss=gv(d,'T3_RTT_PC1_Loss_Percent',s);
+    h+=`<tr><td><strong>Packet Loss</strong></td><td class="${loss===0?'val-good':loss<5?'val-warn':'val-bad'}">${loss.toFixed(1)}%</td><td>${loss===0?'✅ None':loss<5?'⚠️ Minor':'❌ High'}</td></tr>`;
+    h+=`</tbody></table></div>`;
+    return h;
+}
+
+function buildTest5Table(s){
+    const d=allData.test5;
+    if(!d||d.error)return'';
+    let maxNoFrag=0;
+    [64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500].forEach(sz=>{if(gv(d,`T5_P1_Frag_${sz}B_Success`,s)===1&&gv(d,`T5_P1_Frag_${sz}B_Loss_Pct`,s)===0)maxNoFrag=sz;});
+    let maxFrag=0;
+    [1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000].forEach(sz=>{if(gv(d,`T5_P2_Frag_${sz}B_Success`,s)===1)maxFrag=sz;});
+    const rtt64=gv(d,'T5_P1_Frag_64B_RTT_Avg_ms',s);
+    const rttMaxNoFrag=gv(d,`T5_P1_Frag_${maxNoFrag}B_RTT_Avg_ms`,s);
+    const rtt1500Frag=gv(d,'T5_P2_Frag_1500B_RTT_Avg_ms',s);
+    const overhead=rttMaxNoFrag>0&&rtt1500Frag>0?((rtt1500Frag-rttMaxNoFrag)/rttMaxNoFrag*100).toFixed(1):'—';
+    
+    let h=`<div class="summary-table">
+        <div class="summary-table-header"><span class="test-icon">💥</span> TEST 5: Fragmentation Boundary</div>
+        <table><thead><tr><th>Metric</th><th>Value</th><th>Details</th></tr></thead><tbody>
+        <tr><td><strong>Max No-Frag</strong></td><td class="val-neutral"><strong>${maxNoFrag} B</strong></td><td>Total: ${maxNoFrag+28} B</td></tr>
+        <tr><td><strong>Max With-Frag</strong></td><td class="val-neutral"><strong>${maxFrag} B</strong></td><td>Total: ${maxFrag+48} B</td></tr>
+        <tr style="border-top:2px solid #2d3a4a"><td><strong>RTT @ 64B</strong></td><td>${rtt64>0?rtt64.toFixed(2):'—'} ms</td><td>Baseline</td></tr>
+        <tr><td><strong>RTT @ ${maxNoFrag}B</strong></td><td class="${valClass(rttMaxNoFrag,5,20,true)}">${rttMaxNoFrag>0?rttMaxNoFrag.toFixed(2):'—'} ms</td><td>No fragmentation</td></tr>
+        <tr><td><strong>RTT @ 1500B (frag)</strong></td><td class="${valClass(rtt1500Frag,10,30,true)}">${rtt1500Frag>0?rtt1500Frag.toFixed(2):'—'} ms</td><td>Overhead: +${overhead}%</td></tr>
+    </tbody></table></div>`;
+    return h;
+}
+
+function buildVerdict(){
+    const strategies=['dualstack','dslite','nat64'];
+    const names={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
+    const icons={dualstack:'🔵',dslite:'🟢',nat64:'🟠'};
+    const d1=allData.test1,d2=allData.test2,d3=allData.test3,d5=allData.test5;
+    const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+    
+    const scores={},breakdown={};
+    strategies.forEach(s=>{
+        const raw={
+            tcp:gv(d1,'T1_TCP_PC1_20M_Throughput_Mbps',s),
+            jitter:gv(d1,'T1_UDP_PC1_20M_Jitter_ms',s),
+            http:t2Files.reduce((sum,f)=>sum+gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s),0)/t2Files.length,
+            rtt:gv(d3,'T3_RTT_PC1_Avg_ms',s),
+            loss:gv(d3,'T3_RTT_PC1_Loss_Percent',s),
+            mtu:gv(d5,'T5_Final_Max_NoFrag_Payload',s)
+        };
+        const pts={
+            tcp:Math.min(15,raw.tcp*0.75),
+            jitter:Math.max(0,10-raw.jitter*50),
+            http:Math.min(25,raw.http*1.5),
+            rtt:Math.max(0,25-raw.rtt*1.5),
+            loss:Math.max(0,10-raw.loss*2),
+            mtu:Math.min(15,raw.mtu/100),
+        };
+        pts.total=pts.tcp+pts.jitter+pts.http+pts.rtt+pts.loss+pts.mtu;
+        scores[s]=pts.total;breakdown[s]=pts;
+    });
+    
+    const ranked=strategies.sort((a,b)=>scores[b]-scores[a]);
+    const rankClasses={0:'rank-1 rank-1-card',1:'rank-2',2:'rank-3'};
+    const medals={0:'🥇',1:'🥈',2:'🥉'};
+    
+    let html='';
+    ranked.forEach((s,i)=>{
+        const bd=breakdown[s];
+        html+=`<div class="verdict-card ${rankClasses[i]}">
+            <div class="rank ${rankClasses[i].split(' ')[0]}">${medals[i]} #${i+1}</div>
+            <div class="name">${icons[s]} ${names[s]}</div>
+            <div class="score">Total: ${scores[s].toFixed(1)} / 100</div>
+            <div class="breakdown">
+                📦 TCP: ${bd.tcp.toFixed(1)}/15 &nbsp; 🌐 HTTP: ${bd.http.toFixed(1)}/25<br>
+                🔴 RTT: ${bd.rtt.toFixed(1)}/25 &nbsp; 📦 UDP: ${bd.jitter.toFixed(1)}/10<br>
+                🔴 Loss: ${bd.loss.toFixed(1)}/10 &nbsp; 💥 MTU: ${bd.mtu.toFixed(1)}/15
+            </div>
+        </div>`;
+    });
+    document.getElementById('verdictGrid').innerHTML=html;
+}
+
+loadAllData();
+</script>
+</body>
+</html>

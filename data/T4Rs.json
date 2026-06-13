@@ -1,0 +1,3908 @@
+[
+    {
+        "strategy": "dslite",
+        "metric": "T5_Test_Start",
+        "run": 1,
+        "value": "2026-06-07 02:57:39",
+        "timestamp": "2026-06-07 02:57:39"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Phase1_Start",
+        "run": 1,
+        "value": "2026-06-07 02:57:39",
+        "timestamp": "2026-06-07 02:57:39"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Payload_Size",
+        "run": 1,
+        "value": 64.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Total_Size",
+        "run": 1,
+        "value": 92.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_RTT_Min_ms",
+        "run": 1,
+        "value": 1.927,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.864,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.886,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_64B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.729,
+        "timestamp": "2026-06-07 02:57:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Payload_Size",
+        "run": 1,
+        "value": 128.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Total_Size",
+        "run": 1,
+        "value": 156.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.931,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_RTT_Avg_ms",
+        "run": 1,
+        "value": 4.603,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_RTT_Max_ms",
+        "run": 1,
+        "value": 7.536,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_128B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.758,
+        "timestamp": "2026-06-07 02:58:10"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Payload_Size",
+        "run": 1,
+        "value": 256.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Total_Size",
+        "run": 1,
+        "value": 284.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_RTT_Min_ms",
+        "run": 1,
+        "value": 1.948,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_RTT_Avg_ms",
+        "run": 1,
+        "value": 3.09,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_RTT_Max_ms",
+        "run": 1,
+        "value": 5.074,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_256B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.251,
+        "timestamp": "2026-06-07 02:58:26"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Payload_Size",
+        "run": 1,
+        "value": 512.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Total_Size",
+        "run": 1,
+        "value": 540.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.602,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.806,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.105,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_512B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.187,
+        "timestamp": "2026-06-07 02:58:42"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Payload_Size",
+        "run": 1,
+        "value": 768.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Total_Size",
+        "run": 1,
+        "value": 796.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.705,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.893,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.449,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_768B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.32,
+        "timestamp": "2026-06-07 02:58:58"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Payload_Size",
+        "run": 1,
+        "value": 1024.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Total_Size",
+        "run": 1,
+        "value": 1052.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_RTT_Min_ms",
+        "run": 1,
+        "value": 1.945,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.675,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.407,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1024B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.664,
+        "timestamp": "2026-06-07 02:59:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Payload_Size",
+        "run": 1,
+        "value": 1280.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Total_Size",
+        "run": 1,
+        "value": 1308.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.341,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.714,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_RTT_Max_ms",
+        "run": 1,
+        "value": 2.938,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1280B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.224,
+        "timestamp": "2026-06-07 02:59:30"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Payload_Size",
+        "run": 1,
+        "value": 1290.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Total_Size",
+        "run": 1,
+        "value": 1318.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.726,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_RTT_Avg_ms",
+        "run": 1,
+        "value": 3.531,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_RTT_Max_ms",
+        "run": 1,
+        "value": 5.213,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1290B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.998,
+        "timestamp": "2026-06-07 02:59:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Payload_Size",
+        "run": 1,
+        "value": 1300.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Total_Size",
+        "run": 1,
+        "value": 1328.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.123,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.679,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.552,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1300B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.57,
+        "timestamp": "2026-06-07 03:00:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Payload_Size",
+        "run": 1,
+        "value": 1310.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Total_Size",
+        "run": 1,
+        "value": 1338.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.452,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_RTT_Avg_ms",
+        "run": 1,
+        "value": 4.031,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_RTT_Max_ms",
+        "run": 1,
+        "value": 6.722,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1310B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.695,
+        "timestamp": "2026-06-07 03:00:18"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Payload_Size",
+        "run": 1,
+        "value": 1320.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Total_Size",
+        "run": 1,
+        "value": 1348.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.252,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_RTT_Avg_ms",
+        "run": 1,
+        "value": 3.076,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.954,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1320B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.638,
+        "timestamp": "2026-06-07 03:00:34"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Payload_Size",
+        "run": 1,
+        "value": 1330.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Total_Size",
+        "run": 1,
+        "value": 1358.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.202,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.705,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.226,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1330B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.416,
+        "timestamp": "2026-06-07 03:00:50"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Payload_Size",
+        "run": 1,
+        "value": 1340.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Total_Size",
+        "run": 1,
+        "value": 1368.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.267,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.684,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.025,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1340B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.318,
+        "timestamp": "2026-06-07 03:01:06"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Payload_Size",
+        "run": 1,
+        "value": 1350.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Total_Size",
+        "run": 1,
+        "value": 1378.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.198,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.793,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_RTT_Max_ms",
+        "run": 1,
+        "value": 4.396,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1350B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.926,
+        "timestamp": "2026-06-07 03:01:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Payload_Size",
+        "run": 1,
+        "value": 1360.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Total_Size",
+        "run": 1,
+        "value": 1388.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_RTT_Min_ms",
+        "run": 1,
+        "value": 1.982,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_RTT_Avg_ms",
+        "run": 1,
+        "value": 3.005,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_RTT_Max_ms",
+        "run": 1,
+        "value": 4.012,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1360B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.718,
+        "timestamp": "2026-06-07 03:01:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Payload_Size",
+        "run": 1,
+        "value": 1370.0,
+        "timestamp": "2026-06-07 03:01:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Total_Size",
+        "run": 1,
+        "value": 1398.0,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_RTT_Min_ms",
+        "run": 1,
+        "value": 1.971,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.72,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.142,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1370B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.471,
+        "timestamp": "2026-06-07 03:01:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Payload_Size",
+        "run": 1,
+        "value": 1380.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Total_Size",
+        "run": 1,
+        "value": 1408.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.599,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_RTT_Avg_ms",
+        "run": 1,
+        "value": 4.101,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_RTT_Max_ms",
+        "run": 1,
+        "value": 7.526,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1380B_RTT_MDev_ms",
+        "run": 1,
+        "value": 2.024,
+        "timestamp": "2026-06-07 03:02:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Payload_Size",
+        "run": 1,
+        "value": 1390.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Total_Size",
+        "run": 1,
+        "value": 1418.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.438,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_RTT_Avg_ms",
+        "run": 1,
+        "value": 3.438,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_RTT_Max_ms",
+        "run": 1,
+        "value": 5.65,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1390B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.293,
+        "timestamp": "2026-06-07 03:02:27"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Payload_Size",
+        "run": 1,
+        "value": 1400.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Total_Size",
+        "run": 1,
+        "value": 1428.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_RTT_Min_ms",
+        "run": 1,
+        "value": 2.193,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_RTT_Avg_ms",
+        "run": 1,
+        "value": 2.63,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_RTT_Max_ms",
+        "run": 1,
+        "value": 3.804,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1400B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.678,
+        "timestamp": "2026-06-07 03:02:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Payload_Size",
+        "run": 1,
+        "value": 1410.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Total_Size",
+        "run": 1,
+        "value": 1438.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1410B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:02:59"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Payload_Size",
+        "run": 1,
+        "value": 1420.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Total_Size",
+        "run": 1,
+        "value": 1448.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1420B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:03:15"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Payload_Size",
+        "run": 1,
+        "value": 1430.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Total_Size",
+        "run": 1,
+        "value": 1458.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1430B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:03:31"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Payload_Size",
+        "run": 1,
+        "value": 1440.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Total_Size",
+        "run": 1,
+        "value": 1468.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1440B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:03:47"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Payload_Size",
+        "run": 1,
+        "value": 1450.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Total_Size",
+        "run": 1,
+        "value": 1478.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1450B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:04:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Payload_Size",
+        "run": 1,
+        "value": 1460.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Total_Size",
+        "run": 1,
+        "value": 1488.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1460B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:04:19"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Payload_Size",
+        "run": 1,
+        "value": 1470.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Total_Size",
+        "run": 1,
+        "value": 1498.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1470B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:04:35"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:51"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Payload_Size",
+        "run": 1,
+        "value": 1480.0,
+        "timestamp": "2026-06-07 03:04:51"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Total_Size",
+        "run": 1,
+        "value": 1508.0,
+        "timestamp": "2026-06-07 03:04:51"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:04:51"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:51"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:51"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:04:51"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:04:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1480B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:04:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Payload_Size",
+        "run": 1,
+        "value": 1490.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Total_Size",
+        "run": 1,
+        "value": 1518.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_DF_Set",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Packets_Received",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P1_Frag_1490B_Loss_Pct",
+        "run": 1,
+        "value": 100.0,
+        "timestamp": "2026-06-07 03:05:08"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Phase1_End",
+        "run": 1,
+        "value": "2026-06-07 03:05:09",
+        "timestamp": "2026-06-07 03:05:09"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Phase2_Start",
+        "run": 1,
+        "value": "2026-06-07 03:05:09",
+        "timestamp": "2026-06-07 03:05:09"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Payload_Size",
+        "run": 1,
+        "value": 1500.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Total_Size",
+        "run": 1,
+        "value": 1528.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_RTT_Min_ms",
+        "run": 1,
+        "value": 4.372,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_RTT_Avg_ms",
+        "run": 1,
+        "value": 6.504,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_RTT_Max_ms",
+        "run": 1,
+        "value": 12.268,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_1500B_RTT_MDev_ms",
+        "run": 1,
+        "value": 3.33,
+        "timestamp": "2026-06-07 03:05:24"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Payload_Size",
+        "run": 1,
+        "value": 2000.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Total_Size",
+        "run": 1,
+        "value": 2028.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_RTT_Min_ms",
+        "run": 1,
+        "value": 5.165,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 6.865,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_RTT_Max_ms",
+        "run": 1,
+        "value": 8.24,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_2000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.112,
+        "timestamp": "2026-06-07 03:05:40"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Payload_Size",
+        "run": 1,
+        "value": 3000.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Total_Size",
+        "run": 1,
+        "value": 3028.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_RTT_Min_ms",
+        "run": 1,
+        "value": 4.825,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 6.595,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_RTT_Max_ms",
+        "run": 1,
+        "value": 8.798,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_3000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.468,
+        "timestamp": "2026-06-07 03:05:56"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Payload_Size",
+        "run": 1,
+        "value": 4000.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Total_Size",
+        "run": 1,
+        "value": 4028.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_RTT_Min_ms",
+        "run": 1,
+        "value": 4.914,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 5.496,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_RTT_Max_ms",
+        "run": 1,
+        "value": 6.373,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_4000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.536,
+        "timestamp": "2026-06-07 03:06:12"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Payload_Size",
+        "run": 1,
+        "value": 5000.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Total_Size",
+        "run": 1,
+        "value": 5028.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_RTT_Min_ms",
+        "run": 1,
+        "value": 5.654,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 6.065,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_RTT_Max_ms",
+        "run": 1,
+        "value": 6.578,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_5000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.387,
+        "timestamp": "2026-06-07 03:06:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Payload_Size",
+        "run": 1,
+        "value": 6000.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Total_Size",
+        "run": 1,
+        "value": 6028.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_RTT_Min_ms",
+        "run": 1,
+        "value": 4.696,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 6.654,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_RTT_Max_ms",
+        "run": 1,
+        "value": 8.285,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_6000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.306,
+        "timestamp": "2026-06-07 03:06:52"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Payload_Size",
+        "run": 1,
+        "value": 7000.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Total_Size",
+        "run": 1,
+        "value": 7028.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_RTT_Min_ms",
+        "run": 1,
+        "value": 6.231,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 9.359,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_RTT_Max_ms",
+        "run": 1,
+        "value": 17.878,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_7000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 4.925,
+        "timestamp": "2026-06-07 03:07:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Payload_Size",
+        "run": 1,
+        "value": 8000.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Total_Size",
+        "run": 1,
+        "value": 8028.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_RTT_Min_ms",
+        "run": 1,
+        "value": 6.694,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 7.933,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_RTT_Max_ms",
+        "run": 1,
+        "value": 9.955,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_8000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.334,
+        "timestamp": "2026-06-07 03:07:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Payload_Size",
+        "run": 1,
+        "value": 9000.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Total_Size",
+        "run": 1,
+        "value": 9028.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_RTT_Min_ms",
+        "run": 1,
+        "value": 6.464,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 7.305,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_RTT_Max_ms",
+        "run": 1,
+        "value": 8.621,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_9000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.863,
+        "timestamp": "2026-06-07 03:08:05"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Payload_Size",
+        "run": 1,
+        "value": 10000.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Total_Size",
+        "run": 1,
+        "value": 10028.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_RTT_Min_ms",
+        "run": 1,
+        "value": 6.127,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 7.434,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_RTT_Max_ms",
+        "run": 1,
+        "value": 8.9,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_10000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.169,
+        "timestamp": "2026-06-07 03:08:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Payload_Size",
+        "run": 1,
+        "value": 12000.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Total_Size",
+        "run": 1,
+        "value": 12028.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_RTT_Min_ms",
+        "run": 1,
+        "value": 7.733,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 8.883,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_RTT_Max_ms",
+        "run": 1,
+        "value": 9.821,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_12000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.763,
+        "timestamp": "2026-06-07 03:09:03"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Payload_Size",
+        "run": 1,
+        "value": 15000.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Total_Size",
+        "run": 1,
+        "value": 15028.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_RTT_Min_ms",
+        "run": 1,
+        "value": 6.549,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 7.829,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_RTT_Max_ms",
+        "run": 1,
+        "value": 9.673,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_15000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.153,
+        "timestamp": "2026-06-07 03:09:37"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Success",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Payload_Size",
+        "run": 1,
+        "value": 20000.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Total_Size",
+        "run": 1,
+        "value": 20028.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Fragmented",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Packets_Received",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_Loss_Pct",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_RTT_Min_ms",
+        "run": 1,
+        "value": 9.503,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 11.417,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_RTT_Max_ms",
+        "run": 1,
+        "value": 13.907,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_20000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 1.583,
+        "timestamp": "2026-06-07 03:10:11"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Payload_Size",
+        "run": 1,
+        "value": 30000.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Total_Size",
+        "run": 1,
+        "value": 30028.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Packets_Received",
+        "run": 1,
+        "value": 3.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_Loss_Pct",
+        "run": 1,
+        "value": 25.0,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_RTT_Min_ms",
+        "run": 1,
+        "value": 12.899,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 56.696,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_RTT_Max_ms",
+        "run": 1,
+        "value": 142.825,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_30000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 60.905,
+        "timestamp": "2026-06-07 03:10:46"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Payload_Size",
+        "run": 1,
+        "value": 40000.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Total_Size",
+        "run": 1,
+        "value": 40028.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Packets_Received",
+        "run": 1,
+        "value": 2.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_Loss_Pct",
+        "run": 1,
+        "value": 50.0,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_RTT_Min_ms",
+        "run": 1,
+        "value": 18.251,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 94.84,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_RTT_Max_ms",
+        "run": 1,
+        "value": 171.429,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_40000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 76.589,
+        "timestamp": "2026-06-07 03:11:20"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Payload_Size",
+        "run": 1,
+        "value": 50000.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Total_Size",
+        "run": 1,
+        "value": 50028.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Packets_Received",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_Loss_Pct",
+        "run": 1,
+        "value": 75.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_RTT_Min_ms",
+        "run": 1,
+        "value": 37.675,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 37.675,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_RTT_Max_ms",
+        "run": 1,
+        "value": 37.675,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_50000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:11:54"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Success",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Payload_Size",
+        "run": 1,
+        "value": 60000.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Total_Size",
+        "run": 1,
+        "value": 60028.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_DF_Set",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Frag_Required",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Fragmented",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Packets_Sent",
+        "run": 1,
+        "value": 4.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Packets_Received",
+        "run": 1,
+        "value": 1.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_Loss_Pct",
+        "run": 1,
+        "value": 75.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_RTT_Min_ms",
+        "run": 1,
+        "value": 44.821,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_RTT_Avg_ms",
+        "run": 1,
+        "value": 44.821,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_RTT_Max_ms",
+        "run": 1,
+        "value": 44.821,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_P2_Frag_60000B_RTT_MDev_ms",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 03:12:28"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Phase2_End",
+        "run": 1,
+        "value": "2026-06-07 03:12:29",
+        "timestamp": "2026-06-07 03:12:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Test_End",
+        "run": 1,
+        "value": "2026-06-07 03:12:29",
+        "timestamp": "2026-06-07 03:12:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Final_Max_NoFrag_Payload",
+        "run": 1,
+        "value": 1400.0,
+        "timestamp": "2026-06-07 03:12:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Final_Max_Frag_Allowed_Payload",
+        "run": 1,
+        "value": 20000.0,
+        "timestamp": "2026-06-07 03:12:29"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T5_Total_Duration_Seconds",
+        "run": 1,
+        "value": 890.0,
+        "timestamp": "2026-06-07 03:12:29"
+    }
+]

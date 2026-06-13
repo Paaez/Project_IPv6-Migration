@@ -1,0 +1,10 @@
+<<<<<<< HEAD
+echo __pycache__/ 
+echo *.pyc 
+echo .env 
+=======
+echo __pycache__/ 
+echo *.pyc 
+echo .env 
+>>>>>>> 6df9d934b272f42f8b56b2fc77b1b1254969381b
+echo venv/ 

@@ -1,0 +1,107 @@
+[
+    {
+        "strategy": "dualstack",
+        "metric": "T3_RTT_PC1_Loss_Percent",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-05 04:11:36"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T3_RTT_PC1_Min_ms",
+        "run": 1,
+        "value": 1.526,
+        "timestamp": "2026-06-05 04:11:36"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T3_RTT_PC1_Avg_ms",
+        "run": 1,
+        "value": 2.943,
+        "timestamp": "2026-06-05 04:11:36"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T3_RTT_PC1_Max_ms",
+        "run": 1,
+        "value": 5.753,
+        "timestamp": "2026-06-05 04:11:36"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T3_RTT_PC1_Mdev_ms",
+        "run": 1,
+        "value": 0.739,
+        "timestamp": "2026-06-05 04:11:36"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T3_RTT_PC1_Loss_Percent",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 02:56:44"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T3_RTT_PC1_Min_ms",
+        "run": 1,
+        "value": 1.449,
+        "timestamp": "2026-06-07 02:56:44"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T3_RTT_PC1_Avg_ms",
+        "run": 1,
+        "value": 2.748,
+        "timestamp": "2026-06-07 02:56:44"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T3_RTT_PC1_Max_ms",
+        "run": 1,
+        "value": 5.702,
+        "timestamp": "2026-06-07 02:56:44"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T3_RTT_PC1_Mdev_ms",
+        "run": 1,
+        "value": 0.728,
+        "timestamp": "2026-06-07 02:56:44"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T3_RTT_PC1_Loss_Percent",
+        "run": 1,
+        "value": 0.0,
+        "timestamp": "2026-06-07 04:20:45"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T3_RTT_PC1_Min_ms",
+        "run": 1,
+        "value": 1.693,
+        "timestamp": "2026-06-07 04:20:45"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T3_RTT_PC1_Avg_ms",
+        "run": 1,
+        "value": 2.931,
+        "timestamp": "2026-06-07 04:20:45"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T3_RTT_PC1_Max_ms",
+        "run": 1,
+        "value": 14.663,
+        "timestamp": "2026-06-07 04:20:45"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T3_RTT_PC1_Mdev_ms",
+        "run": 1,
+        "value": 1.385,
+        "timestamp": "2026-06-07 04:20:45"
+    }
+]
