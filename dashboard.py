@@ -6,7 +6,19 @@ from flask import Flask, render_template, jsonify
 app = Flask(__name__)
 
 # Cloud-compatible path - uses 'data' folder in same directory
-PROJECT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
+# Also check the original Project Directory path
+ORIGINAL_PROJECT_DIR = r"C:\Users\user\OneDrive\Documents\Abg Paeez\CSP 600\FYP_IPv6_Project\Project Directory"
+
+# Use data folder if it exists, otherwise use original path
+if os.path.exists(DATA_DIR) and os.listdir(DATA_DIR):
+    PROJECT_DIR = DATA_DIR
+    print(f"📁 Using data directory: {PROJECT_DIR}")
+else:
+    PROJECT_DIR = ORIGINAL_PROJECT_DIR
+    print(f"📁 Using original project directory: {PROJECT_DIR}")
 
 JSON_FILES = {
     "test1": os.path.join(PROJECT_DIR, "T1Rs.json"),
@@ -14,6 +26,19 @@ JSON_FILES = {
     "test3": os.path.join(PROJECT_DIR, "T3Rs.json"),
     "test5": os.path.join(PROJECT_DIR, "T5Rs.json")
 }
+
+def find_file(filename):
+    """Try to find a file in multiple locations"""
+    paths = [
+        os.path.join(PROJECT_DIR, filename),
+        os.path.join(ORIGINAL_PROJECT_DIR, filename),
+        os.path.join(DATA_DIR, filename),
+        os.path.join(BASE_DIR, filename),
+    ]
+    for p in paths:
+        if os.path.exists(p):
+            return p
+    return paths[0]  # Return first path as default
 
 def load_json_file(filepath):
     print(f"Attempting to load: {filepath}")
@@ -133,10 +158,27 @@ def api_test5():
 @app.route('/api/drop-analysis/<strategy>')
 def api_drop_analysis(strategy):
     """API endpoint for drop analysis data from TEST 2"""
-    drop_file = os.path.join(PROJECT_DIR, f"T2_drop_analysis_{strategy}.json")
-    print(f"Looking for drop analysis: {drop_file}")
+    filename = f"T2_drop_analysis_{strategy}.json"
+    drop_file = find_file(filename)
+    
+    print(f"🔍 Looking for drop analysis: {filename}")
+    print(f"   Trying path: {drop_file}")
+    print(f"   Exists: {os.path.exists(drop_file)}")
+    
     if not os.path.exists(drop_file):
-        return jsonify({"error": f"No drop analysis for {strategy}", "path": drop_file}), 404
+        # List files in directories for debugging
+        for d in [PROJECT_DIR, ORIGINAL_PROJECT_DIR, DATA_DIR, BASE_DIR]:
+            if os.path.exists(d):
+                files = [f for f in os.listdir(d) if 'drop' in f.lower()]
+                if files:
+                    print(f"   Found in {d}: {files}")
+        
+        return jsonify({
+            "error": f"No drop analysis for {strategy}", 
+            "path": drop_file,
+            "checked_dirs": [PROJECT_DIR, ORIGINAL_PROJECT_DIR, DATA_DIR]
+        }), 404
+    
     try:
         with open(drop_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -175,16 +217,8 @@ def debug5():
     
     return jsonify({
         "total_entries": len(raw_data),
-        "phase1": {
-            "sizes": sorted(list(p1_sizes)),
-            "num_sizes": len(p1_sizes),
-            "entries_per_strategy": strategies_count_p1
-        },
-        "phase2": {
-            "sizes": sorted(list(p2_sizes)),
-            "num_sizes": len(p2_sizes),
-            "entries_per_strategy": strategies_count_p2
-        }
+        "phase1": {"sizes": sorted(list(p1_sizes)), "num_sizes": len(p1_sizes), "entries_per_strategy": strategies_count_p1},
+        "phase2": {"sizes": sorted(list(p2_sizes)), "num_sizes": len(p2_sizes), "entries_per_strategy": strategies_count_p2}
     })
 
 @app.route('/health')
@@ -198,10 +232,10 @@ def health_check():
             "size": os.path.getsize(path) if os.path.exists(path) else 0
         }
     
-    # Also check drop analysis files
     drop_files = {}
     for strategy in ['dualstack', 'dslite', 'nat64']:
-        drop_path = os.path.join(PROJECT_DIR, f"T2_drop_analysis_{strategy}.json")
+        filename = f"T2_drop_analysis_{strategy}.json"
+        drop_path = find_file(filename)
         drop_files[strategy] = {
             "exists": os.path.exists(drop_path),
             "path": drop_path,
@@ -211,6 +245,7 @@ def health_check():
     return jsonify({
         "status": "healthy",
         "data_directory": PROJECT_DIR,
+        "original_directory": ORIGINAL_PROJECT_DIR,
         "test_files": file_status,
         "drop_analysis_files": drop_files
     })
@@ -220,12 +255,11 @@ def health_check():
 # ─────────────────────────────────────────────
 
 if __name__ == '__main__':
-    # Create data folder if not exists
     if not os.path.exists(PROJECT_DIR):
         os.makedirs(PROJECT_DIR)
         print(f"📁 Created data directory: {PROJECT_DIR}")
     
-    templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+    templates_dir = os.path.join(BASE_DIR, 'templates')
     if not os.path.exists(templates_dir):
         os.makedirs(templates_dir)
         print("📁 Created 'templates' folder.")
@@ -234,6 +268,7 @@ if __name__ == '__main__':
     print("🚀 IPv6 Migration Dashboard Server")
     print("="*60)
     print(f"📁 Data Directory: {PROJECT_DIR}")
+    print(f"📁 Original Dir:   {ORIGINAL_PROJECT_DIR}")
     
     for test_name, filepath in JSON_FILES.items():
         exists = "✅" if os.path.exists(filepath) else "❌"
