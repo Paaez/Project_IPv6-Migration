@@ -20,8 +20,9 @@
         .banner-icon{font-size:1.5rem}
         
         .summary-table{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-bottom:12px}
-        .summary-table-header{background:#0f172a;padding:10px 14px;font-weight:600;font-size:0.75rem;color:#38bdf8;border-bottom:1px solid #2d3a4a;display:flex;align-items:center;gap:8px}
+        .summary-table-header{background:#0f172a;padding:10px 14px;font-weight:600;font-size:0.75rem;color:#38bdf8;border-bottom:1px solid #2d3a4a;display:flex;align-items:center;gap:8px;justify-content:space-between}
         .summary-table-header .test-icon{font-size:0.9rem}
+        .header-left{display:flex;align-items:center;gap:8px}
         table{width:100%;border-collapse:collapse;font-size:0.65rem}
         th{background:#0f172a;color:#94a3b8;padding:6px 8px;text-align:left;font-weight:500;font-size:0.6rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a;letter-spacing:0.3px}
         td{padding:6px 8px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.62rem}
@@ -34,8 +35,10 @@
         .val-bad{color:#ef4444;font-weight:600}
         .val-neutral{color:#38bdf8;font-weight:600}
         .val-highlight{color:#f1f5f9;font-weight:700;font-size:0.7rem}
+        .val-penalty{color:#ef4444;font-weight:600;text-decoration:line-through}
         
         .info-box{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:6px;padding:8px 12px;font-size:0.6rem;color:#94a3b8;margin-bottom:12px}
+        .error-box{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:12px 16px;font-size:0.7rem;color:#ef4444;margin-bottom:12px}
         
         .verdict-box{background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:10px;padding:18px;margin-top:16px;border:1px solid #2d3a4a}
         .verdict-box h3{color:#38bdf8;font-size:0.9rem;margin-bottom:12px;text-align:center}
@@ -45,11 +48,17 @@
         .verdict-card .name{font-size:0.8rem;margin-top:4px;font-weight:600}
         .verdict-card .score{font-size:0.7rem;margin-top:4px;font-weight:600}
         .verdict-card .breakdown{font-size:0.52rem;color:#94a3b8;margin-top:8px;line-height:1.7;text-align:left}
+        .verdict-card .penalty-note{font-size:0.48rem;color:#ef4444;margin-top:4px;font-style:italic}
         .rank-1{color:#f59e0b}.rank-2{color:#cbd5e1}.rank-3{color:#cd853f}
         .rank-1-card{border-color:#f59e0b;box-shadow:0 0 20px rgba(245,158,11,0.15)}
         
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
-        .drop-warn{color:#ef4444;font-size:0.55rem;margin-left:6px}
+        .drop-badge{background:rgba(239,68,68,0.15);color:#ef4444;padding:2px 7px;border-radius:3px;font-size:0.55rem;font-weight:600}
+        .drop-info-inline{font-size:0.5rem;color:#ef4444;margin-top:2px}
+        .no-drop-badge{background:rgba(16,185,129,0.15);color:#10b981;padding:2px 7px;border-radius:3px;font-size:0.55rem;font-weight:600}
+        .change-negative{color:#ef4444;font-size:0.5rem}
+        .change-positive{color:#10b981;font-size:0.5rem}
+        .change-neutral{color:#94a3b8;font-size:0.5rem}
     </style>
 </head>
 <body>
@@ -60,7 +69,7 @@
         <div class="info-box" id="dataStatus">Loading data from all tests...</div>
         
         <div class="summary-table" id="scoringTable" style="display:none">
-            <div class="summary-table-header">📋 Scoring Breakdown (100 Points Total)</div>
+            <div class="summary-table-header">📋 Scoring Breakdown (100 Points Total) - Lower scores may indicate fragmentation failure penalty</div>
             <table>
                 <thead><tr><th>Category</th><th>Max</th><th>Formula</th><th>🔵 DS</th><th>🟢 DL</th><th>🟠 N64</th></tr></thead>
                 <tbody id="scoringBody"></tbody>
@@ -113,7 +122,12 @@ async function loadAllData(){
         document.getElementById('verdict').style.display='block';
         document.getElementById('scoringTable').style.display='block';
     }catch(e){
-        document.getElementById('dataStatus').textContent='❌ Error loading data: '+e.message;
+        document.getElementById('dataStatus').innerHTML = `❌ Error loading data: ${e.message}. <br><small>Ensure you are running this on a web server, not a local file.</small>`;
+        document.getElementById('dataStatus').style.color = '#ef4444';
+        document.getElementById('dataStatus').style.backgroundColor = 'rgba(239,68,68,0.1)';
+        document.getElementById('dataStatus').style.padding = '12px 16px';
+        document.getElementById('dataStatus').style.borderRadius = '8px';
+        document.getElementById('dataStatus').style.border = '1px solid rgba(239,68,68,0.3)';
     }
 }
 
@@ -122,6 +136,8 @@ function buildScoringTable(){
     const d1=allData.test1,d2=allData.test2,d3=allData.test3,d5=allData.test5;
     
     const raw={};
+    const fragmentationPenalty={};
+    
     strategies.forEach(s=>{
         const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
         raw[s]={
@@ -132,18 +148,26 @@ function buildScoringTable(){
             loss:gv(d3,'T3_RTT_PC1_Loss_Percent',s),
             mtu:gv(d5,'T5_Final_Max_NoFrag_Payload',s)
         };
+        
+        const maxFrag = [1500,2000,3000,4000].reduce((max, sz) => 
+            gv(d5, `T5_P2_Frag_${sz}B_Success`, s) === 1 ? sz : max, 0);
+        fragmentationPenalty[s] = maxFrag === 0;
     });
     
     const scores={};
     strategies.forEach(s=>{
         const r=raw[s];
+        let mtuScore = Math.min(15, r.mtu / 100);
+        if (fragmentationPenalty[s]) { mtuScore = mtuScore * 0.5; }
+        
         scores[s]={
             tcp:Math.min(15,r.tcp*0.75),
             jitter:Math.max(0,10-r.jitter*50),
             http:Math.min(25,r.http*1.5),
             rtt:Math.max(0,25-r.rtt*1.5),
             loss:Math.max(0,10-r.loss*2),
-            mtu:Math.min(15,r.mtu/100),
+            mtu:mtuScore,
+            fragmented:!fragmentationPenalty[s]
         };
         scores[s].total=scores[s].tcp+scores[s].jitter+scores[s].http+scores[s].rtt+scores[s].loss+scores[s].mtu;
     });
@@ -161,7 +185,14 @@ function buildScoringTable(){
     categories.forEach(cat=>{
         bodyHtml+=`<tr><td><strong>${cat.label}</strong></td><td style="color:#64748b">${cat.max}</td><td style="font-size:0.55rem;color:#64748b">${cat.formula}</td>`;
         strategies.forEach(s=>{
-            bodyHtml+=`<td class="${scores[s][cat.key]>=cat.max*0.8?'val-good':scores[s][cat.key]>=cat.max*0.4?'val-warn':'val-bad'}">${scores[s][cat.key].toFixed(1)}</td>`;
+            const score = scores[s][cat.key];
+            let cls = score>=cat.max*0.8?'val-good':score>=cat.max*0.4?'val-warn':'val-bad';
+            if (cat.key === 'mtu' && fragmentationPenalty[s]) {
+                cls += ' val-penalty';
+                bodyHtml+=`<td class="${cls}" title="Fragmentation failure penalty applied (×0.5)">${score.toFixed(1)} ⚠️</td>`;
+            } else {
+                bodyHtml+=`<td class="${cls}">${score.toFixed(1)}</td>`;
+            }
         });
         bodyHtml+=`</tr>`;
     });
@@ -201,7 +232,7 @@ function buildTest1Table(s){
     const sizes=['5M','7M','10M','15M','20M'];
     
     let h=`<div class="summary-table">
-        <div class="summary-table-header"><span class="test-icon">📦</span> TEST 1: Packet Size Performance (5M-20M)</div>
+        <div class="summary-table-header"><div class="header-left"><span class="test-icon">📦</span> TEST 1: Packet Size Performance (5M-20M)</div></div>
         <table><thead><tr><th>Size</th><th>TCP Throughput</th><th>UDP Jitter</th><th>ICMP RTT Avg</th><th>UDP Loss</th></tr></thead><tbody>`;
     
     sizes.forEach(sz=>{
@@ -210,9 +241,9 @@ function buildTest1Table(s){
         const icmp=gv(d,`T1_ICMP_PC1_${sz}_RTT_Avg_ms`,s);
         const loss=gv(d,`T1_UDP_PC1_${sz}_Loss_Percent`,s);
         h+=`<tr><td><strong>${sz}</strong></td>
-            <td class="${valClass(tcp,15,5,false)}">${tcp.toFixed(2)} Mbps</td>
-            <td class="${valClass(jitter,0.1,0.5,true)}">${jitter.toFixed(3)} ms</td>
-            <td class="${valClass(icmp,1,5,true)}">${icmp.toFixed(3)} ms</td>
+            <td class="${valClass(tcp,15,5,false)}">${tcp>0?tcp.toFixed(2)+' Mbps':'—'}</td>
+            <td class="${valClass(jitter,0.1,0.5,true)}">${jitter>0?jitter.toFixed(3)+' ms':'—'}</td>
+            <td class="${valClass(icmp,1,5,true)}">${icmp>0?icmp.toFixed(3)+' ms':'—'}</td>
             <td class="${valClass(loss,1,5,true)}">${loss.toFixed(1)}%</td></tr>`;
     });
     
@@ -232,37 +263,80 @@ function buildTest1Table(s){
 function buildTest2Table(s){
     const d=allData.test2;
     if(!d||d.error)return'';
-    const files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+    const allFiles=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
     
-    // Drop info
+    // Filter out files with no data (null/0 values)
+    const files = allFiles.filter(f => {
+        const v = gv(d, `T2_HTTP_PC2_${f}_Speed_Mbps`, s);
+        return v > 0; // Only include files with actual data
+    });
+    
+    if(files.length === 0) return ''; // Skip if no data
+    
+    // Get drop analysis
     const dropKey=`drop_${s}`;
-    let dropInfo='';
-    if(allData[dropKey]&&allData[dropKey].drops&&allData[dropKey].drops.length>0){
-        const drops=allData[dropKey].drops;
-        dropInfo=`<span class="drop-warn">⚠️ Drop: ${drops[0].drop_size_range} (${drops[0].drop_percentage}%)</span>`;
+    let dropHeader='';
+    let dropDetails='';
+    
+    if(allData[dropKey] && !allData[dropKey].error){
+        const dropData = allData[dropKey];
+        const drops = dropData.drops || [];
+        const perf = dropData.performance_summary || {};
+        const baseline = dropData.iperf_baseline_mbps || 0;
+        const mss = dropData.mss_clamping || 'N/A';
+        
+        if(drops.length > 0){
+            const d0 = drops[0];
+            dropHeader = `<span class="drop-badge">⚠️ DROP: ${d0.drop_size_range} (${d0.drop_percentage}%)</span>`;
+            dropDetails = `<div class="drop-info-inline">MSS: ${mss}B | iperf3: ${baseline.toFixed(1)} Mbps | Threshold: ${d0.threshold}%</div>`;
+        } else {
+            dropHeader = `<span class="no-drop-badge">✅ No Drops</span>`;
+            dropDetails = `<div class="drop-info-inline">MSS: ${mss}B | iperf3: ${baseline.toFixed(1)} Mbps</div>`;
+        }
     }
     
     let h=`<div class="summary-table">
-        <div class="summary-table-header"><span class="test-icon">🌐</span> TEST 2: HTTP Download Speed${dropInfo}</div>
-        <table><thead><tr><th>File</th><th>Speed (Mbps)</th><th>Rating</th></tr></thead><tbody>`;
+        <div class="summary-table-header">
+            <div class="header-left"><span class="test-icon">🌐</span> TEST 2: HTTP Download Speed</div>
+            ${dropHeader}
+        </div>
+        ${dropDetails}
+        <table><thead><tr><th>File</th><th>Speed (Mbps)</th><th>Change</th><th>Rating</th></tr></thead><tbody>`;
     
     let prevSpeed=null;
     files.forEach(f=>{
         const v=gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s);
         let dc='';
-        if(prevSpeed&&prevSpeed>0&&v>0){
-            const dropPct=((prevSpeed-v)/prevSpeed)*100;
-            if(dropPct>=30)dc='drop-critical';
-            else if(dropPct>=10)dc='drop-moderate';
+        let changeHtml='<span class="change-neutral">—</span>';
+        
+        if(prevSpeed && prevSpeed > 0 && v > 0){
+            const changePct = ((v - prevSpeed) / prevSpeed) * 100;
+            const sign = changePct >= 0 ? '+' : '';
+            if(changePct <= -30){
+                dc='drop-critical';
+                changeHtml=`<span class="change-negative">${sign}${changePct.toFixed(1)}% ⚠️</span>`;
+            } else if(changePct <= -10){
+                dc='drop-moderate';
+                changeHtml=`<span class="change-negative">${sign}${changePct.toFixed(1)}%</span>`;
+            } else if(changePct > 0){
+                changeHtml=`<span class="change-positive">${sign}${changePct.toFixed(1)}%</span>`;
+            } else {
+                changeHtml=`<span class="change-neutral">${sign}${changePct.toFixed(1)}%</span>`;
+            }
         }
+        
         h+=`<tr class="${dc}"><td><strong>${f}</strong></td>
             <td class="${valClass(v,10,3,false)}">${v.toFixed(2)} Mbps</td>
+            <td>${changeHtml}</td>
             <td>${ratingText(v,10,3,false,'🚀 Fast','📶 Medium','🐌 Slow')}</td></tr>`;
         prevSpeed=v;
     });
     
     const avg=files.reduce((sum,f)=>sum+gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s),0)/files.length;
-    h+=`<tr class="subtotal"><td>📊 Average</td><td class="val-highlight">${avg.toFixed(2)} Mbps</td><td class="val-neutral">—</td></tr>`;
+    h+=`<tr class="subtotal"><td>📊 Average (${files.length} files)</td>
+        <td class="val-highlight">${avg.toFixed(2)} Mbps</td>
+        <td class="val-neutral">—</td>
+        <td class="val-neutral">—</td></tr>`;
     h+=`</tbody></table></div>`;
     return h;
 }
@@ -273,12 +347,12 @@ function buildTest3Table(s){
     const metrics=[{key:'Min_ms',label:'Min RTT',good:2,bad:10},{key:'Avg_ms',label:'Avg RTT',good:5,bad:20},{key:'Max_ms',label:'Max RTT',good:10,bad:50},{key:'Mdev_ms',label:'Jitter (Mdev)',good:1,bad:5}];
     
     let h=`<div class="summary-table">
-        <div class="summary-table-header"><span class="test-icon">🔴</span> TEST 3: RTT Consistency (100 Pings)</div>
+        <div class="summary-table-header"><div class="header-left"><span class="test-icon">🔴</span> TEST 3: RTT Consistency (100 Pings)</div></div>
         <table><thead><tr><th>Metric</th><th>Value</th><th>Rating</th></tr></thead><tbody>`;
     
     metrics.forEach(m=>{
         const v=gv(d,`T3_RTT_PC1_${m.key}`,s);
-        h+=`<tr><td><strong>${m.label}</strong></td><td class="${valClass(v,m.good,m.bad,true)}">${v.toFixed(3)} ms</td><td>${ratingText(v,m.good,m.bad,true,'✅ Excellent','⚠️ Good','❌ High')}</td></tr>`;
+        h+=`<tr><td><strong>${m.label}</strong></td><td class="${valClass(v,m.good,m.bad,true)}">${v>0?v.toFixed(3)+' ms':'—'}</td><td>${ratingText(v,m.good,m.bad,true,'✅ Excellent','⚠️ Good','❌ High')}</td></tr>`;
     });
     
     const loss=gv(d,'T3_RTT_PC1_Loss_Percent',s);
@@ -299,8 +373,15 @@ function buildTest5Table(s){
     const rtt1500Frag=gv(d,'T5_P2_Frag_1500B_RTT_Avg_ms',s);
     const overhead=rttMaxNoFrag>0&&rtt1500Frag>0?((rtt1500Frag-rttMaxNoFrag)/rttMaxNoFrag*100).toFixed(1):'—';
     
+    const smallFrags=[1500,2000,3000,4000];
+    const canFragment=smallFrags.some(sz=>gv(d,`T5_P2_Frag_${sz}B_Success`,s)===1);
+    const fragWarning=!canFragment?'<span class="drop-badge">⚠️ Fragmentation failed</span>':'';
+    
     let h=`<div class="summary-table">
-        <div class="summary-table-header"><span class="test-icon">💥</span> TEST 5: Fragmentation Boundary</div>
+        <div class="summary-table-header">
+            <div class="header-left"><span class="test-icon">💥</span> TEST 5: Fragmentation Boundary</div>
+            ${fragWarning}
+        </div>
         <table><thead><tr><th>Metric</th><th>Value</th><th>Details</th></tr></thead><tbody>
         <tr><td><strong>Max No-Frag</strong></td><td class="val-neutral"><strong>${maxNoFrag} B</strong></td><td>Total: ${maxNoFrag+28} B</td></tr>
         <tr><td><strong>Max With-Frag</strong></td><td class="val-neutral"><strong>${maxFrag} B</strong></td><td>Total: ${maxFrag+48} B</td></tr>
@@ -318,7 +399,8 @@ function buildVerdict(){
     const d1=allData.test1,d2=allData.test2,d3=allData.test3,d5=allData.test5;
     const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
     
-    const scores={},breakdown={};
+    const scores={},breakdown={},fragPenalty={};
+    
     strategies.forEach(s=>{
         const raw={
             tcp:gv(d1,'T1_TCP_PC1_20M_Throughput_Mbps',s),
@@ -328,16 +410,27 @@ function buildVerdict(){
             loss:gv(d3,'T3_RTT_PC1_Loss_Percent',s),
             mtu:gv(d5,'T5_Final_Max_NoFrag_Payload',s)
         };
+        
+        const maxFrag = [1500,2000,3000,4000].reduce((max, sz) => 
+            gv(d5, `T5_P2_Frag_${sz}B_Success`, s) === 1 ? sz : max, 0);
+        const hasFragFailure = maxFrag === 0;
+        fragPenalty[s] = hasFragFailure;
+        
+        let mtuScore = Math.min(15, raw.mtu / 100);
+        if (hasFragFailure) { mtuScore = mtuScore * 0.5; }
+        
         const pts={
             tcp:Math.min(15,raw.tcp*0.75),
             jitter:Math.max(0,10-raw.jitter*50),
             http:Math.min(25,raw.http*1.5),
             rtt:Math.max(0,25-raw.rtt*1.5),
             loss:Math.max(0,10-raw.loss*2),
-            mtu:Math.min(15,raw.mtu/100),
+            mtu:mtuScore,
         };
         pts.total=pts.tcp+pts.jitter+pts.http+pts.rtt+pts.loss+pts.mtu;
-        scores[s]=pts.total;breakdown[s]=pts;
+        
+        scores[s]=pts.total;
+        breakdown[s]=pts;
     });
     
     const ranked=strategies.sort((a,b)=>scores[b]-scores[a]);
@@ -347,6 +440,7 @@ function buildVerdict(){
     let html='';
     ranked.forEach((s,i)=>{
         const bd=breakdown[s];
+        const penalty=fragPenalty[s];
         html+=`<div class="verdict-card ${rankClasses[i]}">
             <div class="rank ${rankClasses[i].split(' ')[0]}">${medals[i]} #${i+1}</div>
             <div class="name">${icons[s]} ${names[s]}</div>
@@ -355,8 +449,11 @@ function buildVerdict(){
                 📦 TCP: ${bd.tcp.toFixed(1)}/15 &nbsp; 🌐 HTTP: ${bd.http.toFixed(1)}/25<br>
                 🔴 RTT: ${bd.rtt.toFixed(1)}/25 &nbsp; 📦 UDP: ${bd.jitter.toFixed(1)}/10<br>
                 🔴 Loss: ${bd.loss.toFixed(1)}/10 &nbsp; 💥 MTU: ${bd.mtu.toFixed(1)}/15
-            </div>
-        </div>`;
+            </div>`;
+        if(penalty){
+            html+=`<div class="penalty-note">⚠️ Fragmentation failure penalty applied</div>`;
+        }
+        html+=`</div>`;
     });
     document.getElementById('verdictGrid').innerHTML=html;
 }
