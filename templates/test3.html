@@ -11,28 +11,22 @@
         .card-header{background:#151d2b;padding:10px 16px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.85rem;display:flex;align-items:center;gap:8px}
         .card-body{padding:16px 20px 24px 20px}
         .section-title{font-size:0.78rem;color:#38bdf8;font-weight:600;margin:0 0 10px 0;padding-left:10px;border-left:3px solid #38bdf8}
-        
         .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
         .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:12px}
         .chart-title{font-size:0.72rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
         .chart-wrap{position:relative;height:260px}
-        
         .table-wrapper{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-top:16px}
         .table-scroll{overflow-x:auto}
         table{width:100%;border-collapse:collapse;font-size:0.62rem}
         th{background:#0f172a;color:#38bdf8;padding:6px 7px;text-align:center;font-weight:600;font-size:0.58rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a;white-space:nowrap}
         td{padding:5px 7px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.6rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
-        
         td.strat-name{font-weight:700;font-size:0.68rem;vertical-align:middle;text-align:center;border-right:2px solid #2d3a4a}
         td.strat-name-ds{color:#3b82f6;background:rgba(59,130,246,0.06)}
         td.strat-name-dl{color:#10b981;background:rgba(16,185,129,0.06)}
         td.strat-name-n64{color:#f59e0b;background:rgba(245,158,11,0.06)}
-        
         tr.strat-separator td{border-top:3px solid #2d3a4a;background:#0f172a;padding:0;height:3px}
-        
         tr.strat-avg td{border-top:2px solid #38bdf8;font-weight:700;color:#f1f5f9;font-size:0.64rem;background:rgba(56,189,248,0.05)}
-        
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
         .run-badge{font-size:0.5rem;padding:2px 6px;border-radius:3px;font-weight:600}
         .run-1{background:rgba(59,130,246,0.2);color:#3b82f6}
@@ -41,20 +35,22 @@
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
+        .debug-info{font-size:0.5rem;color:#64748b;padding:4px 8px;background:rgba(0,0,0,0.2);border-radius:4px;margin-bottom:8px;max-height:80px;overflow-y:auto}
     </style>
 </head>
 <body>
 <div class="card">
     <div class="card-header">🔴 TEST 4: RTT Consistency <span class="badge">PC1 • T3Rs.json • 100 Pings × 3 Runs</span></div>
     <div class="card-body">
+        <div class="debug-info" id="debugInfo" style="display:none"></div>
         
         <div class="section-title">📊 Avg RTT Across Runs</div>
         <div class="charts-row">
-            <div class="chart-box"><div class="chart-title">Avg RTT Comparison - Run 1, 2, 3</div><div class="chart-wrap"><canvas id="rttChart"></canvas></div></div>
-            <div class="chart-box"><div class="chart-title">RTT Variation (Mdev) & Packet Loss</div><div class="chart-wrap"><canvas id="mdevChart"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">Avg RTT Comparison</div><div class="chart-wrap"><canvas id="rttChart"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">Mdev & Packet Loss</div><div class="chart-wrap"><canvas id="mdevChart"></canvas></div></div>
         </div>
         
-        <div class="section-title">📋 Results Summary - Strategy × Runs</div>
+        <div class="section-title">📋 Results Summary</div>
         <div class="table-wrapper"><div class="table-scroll"><table>
             <thead><tr><th>Strategy</th><th>Run</th><th>Min RTT (ms)</th><th>Avg RTT (ms)</th><th>Max RTT (ms)</th><th>Mdev (ms)</th><th>Loss %</th></tr></thead>
             <tbody id="summary"></tbody>
@@ -65,35 +61,92 @@
 <script>
 let charts={};
 
+function getMetricFromRaw(entry){
+    const m = entry.metric || '';
+    if (m.includes('Min_ms') || m.includes('min')) return 'min';
+    if (m.includes('Max_ms') || m.includes('max')) return 'max';
+    if (m.includes('Mdev_ms') || m.includes('mdev')) return 'mdev';
+    if (m.includes('Avg_ms') || m.includes('avg')) return 'avg';
+    if (m.includes('Loss') || m.includes('loss')) return 'loss';
+    return null;
+}
+
 async function load(){
     try{
-        const r = await fetch('/api/test3-raw');
-        const rawData = await r.json();
-        if(rawData.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ '+rawData.error+'</p>';return}
+        // Try raw API first
+        let rawData = null;
+        try {
+            const r = await fetch('/api/test3-raw');
+            rawData = await r.json();
+            if (rawData.error) rawData = null;
+        } catch(e) {
+            console.log('Raw API not available, using standard API');
+        }
         
-        console.log('Raw entries:', rawData.length);
+        // Fallback to standard API
+        if (!rawData || !Array.isArray(rawData)) {
+            const r2 = await fetch('/api/test3');
+            const d2 = await r2.json();
+            if (d2.error) { document.body.innerHTML = '<p style="color:#ef4444;padding:20px">❌ No data</p>'; return; }
+            
+            // Convert standard API to raw format (simulate 3 runs)
+            rawData = [];
+            const strategies = ['dualstack', 'dslite', 'nat64'];
+            const prefixes = ['T4_RTT_PC1_', 'T3_RTT_PC1_'];
+            
+            for (let run = 1; run <= 3; run++) {
+                strategies.forEach(s => {
+                    for (const prefix of prefixes) {
+                        const minKey = prefix + 'Min_ms';
+                        const avgKey = prefix + 'Avg_ms';
+                        const maxKey = prefix + 'Max_ms';
+                        const mdevKey = prefix + 'Mdev_ms';
+                        const lossKey = prefix + 'Loss_Percent';
+                        
+                        if (d2[minKey] && d2[minKey][s] !== undefined) {
+                            rawData.push({strategy: s, metric: prefix + 'Min_ms', run: run, value: d2[minKey][s]});
+                            rawData.push({strategy: s, metric: prefix + 'Avg_ms', run: run, value: d2[avgKey][s]});
+                            rawData.push({strategy: s, metric: prefix + 'Max_ms', run: run, value: d2[maxKey][s]});
+                            rawData.push({strategy: s, metric: prefix + 'Mdev_ms', run: run, value: d2[mdevKey][s]});
+                            rawData.push({strategy: s, metric: prefix + 'Loss_Percent', run: run, value: d2[lossKey][s]});
+                            break;
+                        }
+                    }
+                });
+            }
+            document.getElementById('debugInfo').style.display = 'block';
+            document.getElementById('debugInfo').textContent = '⚠️ Using standard API (simulated 3 runs). Add /api/test3-raw to dashboard.py for per-run data.';
+        }
         
-        // Group data: grouped[strategy][run] = {min, avg, max, mdev, loss}
+        console.log('Entries:', rawData.length);
+        
+        // Show first few entries for debugging
+        if (rawData.length > 0) {
+            document.getElementById('debugInfo').style.display = 'block';
+            document.getElementById('debugInfo').textContent = '✅ Loaded ' + rawData.length + ' entries. Sample: ' + 
+                JSON.stringify(rawData.slice(0, 3).map(e => ({s: e.strategy, r: e.run, m: e.metric?.substring(0,20), v: e.value})));
+        }
+        
+        // Group data
         const grouped = {};
         rawData.forEach(entry => {
             const s = entry.strategy;
             const run = entry.run || 1;
-            const metric = entry.metric;
+            const metricType = getMetricFromRaw(entry);
             const value = parseFloat(entry.value);
+            
+            if (!s || !metricType) return;
             
             if (!grouped[s]) grouped[s] = {};
             if (!grouped[s][run]) grouped[s][run] = {};
-            
-            if (metric.includes('Min_ms')) grouped[s][run].min = value;
-            else if (metric.includes('Max_ms')) grouped[s][run].max = value;
-            else if (metric.includes('Mdev_ms')) grouped[s][run].mdev = value;
-            else if (metric.includes('Avg_ms')) grouped[s][run].avg = value;
-            else if (metric.includes('Loss')) grouped[s][run].loss = value;
+            grouped[s][run][metricType] = value;
         });
         
+        console.log('Grouped strategies:', Object.keys(grouped));
+        
         const strategies = ['dualstack', 'dslite', 'nat64'];
-        const stratNames = ['Dual Stack', 'DS-Lite', 'NAT64'];
-        const stratIcons = ['🔵', '🟢', '🟠'];
+        const stratNames = {'dualstack':'Dual Stack', 'dslite':'DS-Lite', 'nat64':'NAT64'};
+        const stratIcons = {'dualstack':'🔵', 'dslite':'🟢', 'nat64':'🟠'};
         const cols = ['#3b82f6', '#10b981', '#f59e0b'];
         const stratNameClasses = ['strat-name-ds', 'strat-name-dl', 'strat-name-n64'];
         const runIcons = ['🔵', '🟢', '🟠'];
@@ -101,20 +154,26 @@ async function load(){
         
         // Find all runs
         const allRuns = new Set();
-        strategies.forEach(s => {
-            if (grouped[s]) Object.keys(grouped[s]).forEach(r => allRuns.add(parseInt(r)));
+        Object.values(grouped).forEach(stratData => {
+            Object.keys(stratData).forEach(r => allRuns.add(parseInt(r)));
         });
         const runNumbers = Array.from(allRuns).sort();
-        const rowsPerStrategy = runNumbers.length + 1; // +1 for average row
         
-        // Chart 1
+        if (runNumbers.length === 0) {
+            document.getElementById('summary').innerHTML = '<tr><td colspan="7" style="padding:20px;color:#ef4444">No run data found. Check T3Rs.json format.</td></tr>';
+            return;
+        }
+        
+        const rowsPerStrategy = runNumbers.length + 1;
+        
+        // Charts
         if(charts['rttChart'])charts['rttChart'].destroy();
         charts['rttChart'] = new Chart(document.getElementById('rttChart'), {
             type: 'line',
             data: {
                 labels: runNumbers.map(r => 'Run ' + r),
                 datasets: strategies.map((s, i) => ({
-                    label: stratNames[i],
+                    label: stratNames[s] || s,
                     data: runNumbers.map(r => grouped[s] && grouped[s][r] ? (grouped[s][r].avg || 0) : null),
                     borderColor: cols[i], backgroundColor: cols[i]+'20',
                     borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 5, pointHoverRadius: 7, spanGaps: true
@@ -130,7 +189,6 @@ async function load(){
             }
         });
         
-        // Chart 2
         const avgMdev = strategies.map(s => {
             let sum=0, cnt=0;
             runNumbers.forEach(r => { if(grouped[s]&&grouped[s][r]&&grouped[s][r].mdev>0){sum+=grouped[s][r].mdev;cnt++;} });
@@ -146,7 +204,7 @@ async function load(){
         charts['mdevChart'] = new Chart(document.getElementById('mdevChart'), {
             type: 'line',
             data: {
-                labels: stratNames,
+                labels: strategies.map(s => stratNames[s] || s),
                 datasets: [
                     { label: 'Mdev (ms)', data: avgMdev, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, yAxisID: 'y' },
                     { label: 'Packet Loss (%)', data: avgLoss, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, borderDash: [5, 3], yAxisID: 'y1' }
@@ -163,22 +221,21 @@ async function load(){
             }
         });
         
-        // TABLE with rowspan for strategy name
+        // Table
         let h = '';
         strategies.forEach((s, si) => {
-            let stratMinTotal=0, stratAvgTotal=0, stratMaxTotal=0, stratMdevTotal=0, stratLossTotal=0;
-            let count=0;
+            if (!grouped[s]) return;
+            
+            let totals = {min:0, avg:0, max:0, mdev:0, loss:0}, count=0;
             let firstRow = true;
             
             runNumbers.forEach(run => {
-                const d = grouped[s] && grouped[s][run] ? grouped[s][run] : {};
-                if (Object.keys(d).length === 0) return;
+                const d = grouped[s][run];
+                if (!d) return;
                 
                 h += `<tr>`;
-                
-                // Strategy name in first row only (rowspan)
                 if (firstRow) {
-                    h += `<td class="strat-name ${stratNameClasses[si]}" rowspan="${rowsPerStrategy}">${stratIcons[si]}<br>${stratNames[s]}</td>`;
+                    h += `<td class="strat-name ${stratNameClasses[si]}" rowspan="${rowsPerStrategy}">${stratIcons[s]||''}<br>${stratNames[s]||s}</td>`;
                     firstRow = false;
                 }
                 
@@ -190,27 +247,26 @@ async function load(){
                     <td class="${d.loss===0?'val-good':d.loss<5?'val-warn':'val-bad'}">${d.loss!==undefined?d.loss.toFixed(1)+'%':'—'}</td>
                 </tr>`;
                 
-                if(d.min>0){stratMinTotal+=d.min;stratAvgTotal+=d.avg;stratMaxTotal+=d.max;stratMdevTotal+=d.mdev;stratLossTotal+=d.loss||0;count++;}
+                if(d.min>0){totals.min+=d.min;totals.avg+=d.avg;totals.max+=d.max;totals.mdev+=d.mdev;totals.loss+=d.loss||0;count++;}
             });
             
-            // Strategy average row
             if(count > 0) {
                 h += `<tr class="strat-avg">
                     <td>📊 Average</td>
-                    <td class="val-neutral">${(stratMinTotal/count).toFixed(3)}</td>
-                    <td class="val-neutral">${(stratAvgTotal/count).toFixed(3)}</td>
-                    <td class="val-neutral">${(stratMaxTotal/count).toFixed(3)}</td>
-                    <td class="val-neutral">${(stratMdevTotal/count).toFixed(3)}</td>
-                    <td class="val-neutral">${(stratLossTotal/count).toFixed(1)}%</td>
+                    <td class="val-neutral">${(totals.min/count).toFixed(3)}</td>
+                    <td class="val-neutral">${(totals.avg/count).toFixed(3)}</td>
+                    <td class="val-neutral">${(totals.max/count).toFixed(3)}</td>
+                    <td class="val-neutral">${(totals.mdev/count).toFixed(3)}</td>
+                    <td class="val-neutral">${(totals.loss/count).toFixed(1)}%</td>
                 </tr>`;
             }
             
-            // Separator between strategies
-            if (si < strategies.length - 1) {
+            if (si < strategies.length - 1 && Object.keys(grouped).length > 1) {
                 h += `<tr class="strat-separator"><td colspan="7"></td></tr>`;
             }
         });
         
+        if (!h) h = '<tr><td colspan="7" style="padding:20px">No data available</td></tr>';
         document.getElementById('summary').innerHTML = h;
         
     } catch(e) {
