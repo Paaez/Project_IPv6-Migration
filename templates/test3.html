@@ -24,12 +24,14 @@
         td{padding:5px 7px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.6rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
         
-        tr.strat-header td{background:#0f172a;border-top:3px solid #2d3a4a;font-weight:700;font-size:0.7rem;padding:8px}
-        tr.strat-header-ds td{color:#3b82f6;border-top:3px solid #3b82f6}
-        tr.strat-header-dl td{color:#10b981;border-top:3px solid #10b981}
-        tr.strat-header-n64 td{color:#f59e0b;border-top:3px solid #f59e0b}
+        td.strat-name{font-weight:700;font-size:0.68rem;vertical-align:middle;text-align:center;border-right:2px solid #2d3a4a}
+        td.strat-name-ds{color:#3b82f6;background:rgba(59,130,246,0.06)}
+        td.strat-name-dl{color:#10b981;background:rgba(16,185,129,0.06)}
+        td.strat-name-n64{color:#f59e0b;background:rgba(245,158,11,0.06)}
         
-        tr.strat-avg td{border-top:2px solid #2d3a4a;font-weight:700;color:#f1f5f9;font-size:0.64rem;background:rgba(56,189,248,0.05)}
+        tr.strat-separator td{border-top:3px solid #2d3a4a;background:#0f172a;padding:0;height:3px}
+        
+        tr.strat-avg td{border-top:2px solid #38bdf8;font-weight:700;color:#f1f5f9;font-size:0.64rem;background:rgba(56,189,248,0.05)}
         
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
         .run-badge{font-size:0.5rem;padding:2px 6px;border-radius:3px;font-weight:600}
@@ -39,9 +41,6 @@
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
-        .strat-ds{color:#3b82f6;font-weight:700}
-        .strat-dl{color:#10b981;font-weight:700}
-        .strat-n64{color:#f59e0b;font-weight:700}
     </style>
 </head>
 <body>
@@ -92,13 +91,11 @@ async function load(){
             else if (metric.includes('Loss')) grouped[s][run].loss = value;
         });
         
-        console.log('Grouped:', grouped);
-        
         const strategies = ['dualstack', 'dslite', 'nat64'];
         const stratNames = ['Dual Stack', 'DS-Lite', 'NAT64'];
         const stratIcons = ['🔵', '🟢', '🟠'];
         const cols = ['#3b82f6', '#10b981', '#f59e0b'];
-        const stratHeaderClasses = ['strat-header-ds', 'strat-header-dl', 'strat-header-n64'];
+        const stratNameClasses = ['strat-name-ds', 'strat-name-dl', 'strat-name-n64'];
         const runIcons = ['🔵', '🟢', '🟠'];
         const runBadges = ['run-1', 'run-2', 'run-3'];
         
@@ -108,8 +105,9 @@ async function load(){
             if (grouped[s]) Object.keys(grouped[s]).forEach(r => allRuns.add(parseInt(r)));
         });
         const runNumbers = Array.from(allRuns).sort();
+        const rowsPerStrategy = runNumbers.length + 1; // +1 for average row
         
-        // Chart 1: Avg RTT per run per strategy
+        // Chart 1
         if(charts['rttChart'])charts['rttChart'].destroy();
         charts['rttChart'] = new Chart(document.getElementById('rttChart'), {
             type: 'line',
@@ -119,8 +117,7 @@ async function load(){
                     label: stratNames[i],
                     data: runNumbers.map(r => grouped[s] && grouped[s][r] ? (grouped[s][r].avg || 0) : null),
                     borderColor: cols[i], backgroundColor: cols[i]+'20',
-                    borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 5, pointHoverRadius: 7,
-                    spanGaps: true
+                    borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 5, pointHoverRadius: 7, spanGaps: true
                 }))
             },
             options: {
@@ -133,8 +130,7 @@ async function load(){
             }
         });
         
-        // Chart 2: Mdev & Loss (averaged across runs)
-        if(charts['mdevChart'])charts['mdevChart'].destroy();
+        // Chart 2
         const avgMdev = strategies.map(s => {
             let sum=0, cnt=0;
             runNumbers.forEach(r => { if(grouped[s]&&grouped[s][r]&&grouped[s][r].mdev>0){sum+=grouped[s][r].mdev;cnt++;} });
@@ -146,6 +142,7 @@ async function load(){
             return cnt>0?sum/cnt:0;
         });
         
+        if(charts['mdevChart'])charts['mdevChart'].destroy();
         charts['mdevChart'] = new Chart(document.getElementById('mdevChart'), {
             type: 'line',
             data: {
@@ -166,25 +163,26 @@ async function load(){
             }
         });
         
-        // TABLE: Strategy first, then runs
+        // TABLE with rowspan for strategy name
         let h = '';
         strategies.forEach((s, si) => {
-            // Strategy header
-            h += `<tr class="strat-header ${stratHeaderClasses[si]}">
-                <td colspan="7">${stratIcons[si]} ${stratNames[s]}</td>
-            </tr>`;
-            
-            // Runs for this strategy
             let stratMinTotal=0, stratAvgTotal=0, stratMaxTotal=0, stratMdevTotal=0, stratLossTotal=0;
             let count=0;
+            let firstRow = true;
             
             runNumbers.forEach(run => {
                 const d = grouped[s] && grouped[s][run] ? grouped[s][run] : {};
                 if (Object.keys(d).length === 0) return;
                 
-                h += `<tr>
-                    <td></td>
-                    <td><span class="run-badge ${runBadges[run-1]||''}">${runIcons[run-1]||'📊'} Run ${run}</span></td>
+                h += `<tr>`;
+                
+                // Strategy name in first row only (rowspan)
+                if (firstRow) {
+                    h += `<td class="strat-name ${stratNameClasses[si]}" rowspan="${rowsPerStrategy}">${stratIcons[si]}<br>${stratNames[s]}</td>`;
+                    firstRow = false;
+                }
+                
+                h += `<td><span class="run-badge ${runBadges[run-1]||''}">${runIcons[run-1]||'📊'} Run ${run}</span></td>
                     <td class="${d.min>0?(d.min<2?'val-good':d.min<10?'val-warn':'val-bad'):''}">${d.min>0?d.min.toFixed(3):'—'}</td>
                     <td class="${d.avg>0?(d.avg<5?'val-good':d.avg<20?'val-warn':'val-bad'):''}">${d.avg>0?d.avg.toFixed(3):'—'}</td>
                     <td class="${d.max>0?(d.max<10?'val-good':d.max<50?'val-warn':'val-bad'):''}">${d.max>0?d.max.toFixed(3):'—'}</td>
@@ -198,7 +196,6 @@ async function load(){
             // Strategy average row
             if(count > 0) {
                 h += `<tr class="strat-avg">
-                    <td></td>
                     <td>📊 Average</td>
                     <td class="val-neutral">${(stratMinTotal/count).toFixed(3)}</td>
                     <td class="val-neutral">${(stratAvgTotal/count).toFixed(3)}</td>
@@ -206,6 +203,11 @@ async function load(){
                     <td class="val-neutral">${(stratMdevTotal/count).toFixed(3)}</td>
                     <td class="val-neutral">${(stratLossTotal/count).toFixed(1)}%</td>
                 </tr>`;
+            }
+            
+            // Separator between strategies
+            if (si < strategies.length - 1) {
+                h += `<tr class="strat-separator"><td colspan="7"></td></tr>`;
             }
         });
         
