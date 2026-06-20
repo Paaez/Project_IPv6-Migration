@@ -291,6 +291,7 @@ if __name__ == '__main__':
     
     print(f"\n🌐 Dashboard: http://0.0.0.0:{port}")
     print(f"📋 Summary:   http://0.0.0.0:{port}/summary")
+    print(f"📊 Analysis:  http://0.0.0.0:{port}/analysis")
     print(f"💚 Health:    http://0.0.0.0:{port}/health")
     print("=" * 60)
     
