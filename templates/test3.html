@@ -11,12 +11,10 @@
         .card-header{background:#151d2b;padding:10px 16px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.85rem;display:flex;align-items:center;gap:8px}
         .card-body{padding:16px 20px 24px 20px}
         .section-title{font-size:0.78rem;color:#38bdf8;font-weight:600;margin:0 0 10px 0;padding-left:10px;border-left:3px solid #38bdf8}
-        
         .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
         .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:12px}
         .chart-title{font-size:0.72rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
         .chart-wrap{position:relative;height:260px}
-        
         .table-wrapper{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-top:16px}
         .table-scroll{overflow-x:auto}
         table{width:100%;border-collapse:collapse;font-size:0.63rem}
@@ -33,7 +31,6 @@
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
-        .highlight{color:#f1f5f9;font-weight:600}
         .strat-ds{color:#3b82f6;font-weight:700}
         .strat-dl{color:#10b981;font-weight:700}
         .strat-n64{color:#f59e0b;font-weight:700}
@@ -43,69 +40,52 @@
 <div class="card">
     <div class="card-header">🔴 TEST 4: RTT Consistency <span class="badge">PC1 • T3Rs.json • 100 Pings × 3 Runs</span></div>
     <div class="card-body">
-        
         <div class="section-title">📊 Avg RTT Across Runs</div>
         <div class="charts-row">
-            <div class="chart-box">
-                <div class="chart-title">Avg RTT Comparison - Run 1, 2, 3</div>
-                <div class="chart-wrap"><canvas id="rttChart"></canvas></div>
-            </div>
-            <div class="chart-box">
-                <div class="chart-title">RTT Variation (Mdev) & Packet Loss</div>
-                <div class="chart-wrap"><canvas id="mdevChart"></canvas></div>
-            </div>
+            <div class="chart-box"><div class="chart-title">Avg RTT Comparison - Run 1, 2, 3</div><div class="chart-wrap"><canvas id="rttChart"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">RTT Variation (Mdev) & Packet Loss</div><div class="chart-wrap"><canvas id="mdevChart"></canvas></div></div>
         </div>
-        
         <div class="section-title">📋 Results Summary - All 3 Runs</div>
-        <div class="table-wrapper">
-            <div class="table-scroll">
-                <table>
-                    <thead>
-                        <tr><th>Run</th><th>Strategy</th><th>Min RTT (ms)</th><th>Avg RTT (ms)</th><th>Max RTT (ms)</th><th>Mdev (ms)</th><th>Loss %</th></tr>
-                    </thead>
-                    <tbody id="summary"></tbody>
-                </table>
-            </div>
-        </div>
+        <div class="table-wrapper"><div class="table-scroll"><table>
+            <thead><tr><th>Run</th><th>Strategy</th><th>Min RTT (ms)</th><th>Avg RTT (ms)</th><th>Max RTT (ms)</th><th>Mdev (ms)</th><th>Loss %</th></tr></thead>
+            <tbody id="summary"></tbody>
+        </table></div></div>
     </div>
 </div>
 
 <script>
 let charts={};
 
-// Get value - tries T4_ then T3_ prefix, uses strategy key directly
-function gv(data, metricKey, strategy, def=0){
-    const prefixes = ['T4_RTT_PC1_', 'T3_RTT_PC1_'];
-    for (const prefix of prefixes) {
-        const fullKey = prefix + metricKey;
-        if (data[fullKey] && data[fullKey][strategy] !== undefined && data[fullKey][strategy] !== null) {
-            return parseFloat(data[fullKey][strategy]);
-        }
-    }
-    for (const key of Object.keys(data)) {
-        if (key.includes(metricKey) && data[key] && data[key][strategy] !== undefined) {
-            return parseFloat(data[key][strategy]);
-        }
-    }
-    return def;
-}
-
-function valClass(v, good, bad){
-    if(v===0||isNaN(v))return'';
-    if(v<=good)return'val-good';
-    if(v>=bad)return'val-bad';
-    return'val-warn';
-}
-
 async function load(){
     try{
-        const r = await fetch('/api/test3');
-        const d = await r.json();
-        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px;text-align:center">❌ No data available</p>';return}
+        // Use raw API to get per-run data
+        const r = await fetch('/api/test3-raw');
+        const rawData = await r.json();
+        if(rawData.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ '+rawData.error+'</p>';return}
         
-        console.log('API Keys:', Object.keys(d));
+        console.log('Raw entries:', rawData.length);
         
-        // Strategy keys match your JSON: "dualstack", "dslite", "nat64"
+        // Group data by strategy, run, and metric
+        const grouped = {};
+        rawData.forEach(entry => {
+            const s = entry.strategy;
+            const run = entry.run || 1;
+            const metric = entry.metric;
+            const value = parseFloat(entry.value);
+            
+            if (!grouped[s]) grouped[s] = {};
+            if (!grouped[s][run]) grouped[s][run] = {};
+            
+            // Extract metric type (Min_ms, Avg_ms, Max_ms, Mdev_ms, Loss_Percent)
+            if (metric.includes('Min_ms')) grouped[s][run].min = value;
+            else if (metric.includes('Max_ms')) grouped[s][run].max = value;
+            else if (metric.includes('Mdev_ms')) grouped[s][run].mdev = value;
+            else if (metric.includes('Avg_ms')) grouped[s][run].avg = value;
+            else if (metric.includes('Loss')) grouped[s][run].loss = value;
+        });
+        
+        console.log('Grouped:', grouped);
+        
         const strategies = ['dualstack', 'dslite', 'nat64'];
         const stratNames = ['Dual Stack', 'DS-Lite', 'NAT64'];
         const cols = ['#3b82f6', '#10b981', '#f59e0b'];
@@ -113,46 +93,25 @@ async function load(){
         const runIcons = ['🔵', '🟢', '🟠'];
         const runBadges = ['run-1', 'run-2', 'run-3'];
         
-        // Build data for 3 runs
-        const runs = {};
-        for (let run = 1; run <= 3; run++) {
-            runs[run] = {};
-            strategies.forEach((s, i) => {
-                // Each run gets the same averaged data from API
-                // (If you have per-run data, you'd filter by run number here)
-                const min = gv(d, 'Min_ms', s);
-                const avg = gv(d, 'Avg_ms', s);
-                const max = gv(d, 'Max_ms', s);
-                const mdev = gv(d, 'Mdev_ms', s);
-                const loss = gv(d, 'Loss_Percent', s);
-                
-                // Add small random variation to simulate different runs
-                const variation = 1 + (Math.random() * 0.1 - 0.05); // ±5%
-                
-                runs[run][s] = {
-                    min: min > 0 ? min * variation : 0,
-                    avg: avg > 0 ? avg * variation : 0,
-                    max: max > 0 ? max * variation : 0,
-                    mdev: mdev > 0 ? mdev * variation : 0,
-                    loss: loss
-                };
-            });
-        }
+        // Find available runs
+        const allRuns = new Set();
+        strategies.forEach(s => {
+            if (grouped[s]) Object.keys(grouped[s]).forEach(r => allRuns.add(parseInt(r)));
+        });
+        const runNumbers = Array.from(allRuns).sort();
         
-        // Chart 1: Avg RTT per run
-        const chartLabels = ['Run 1', 'Run 2', 'Run 3'];
+        // Chart: Avg RTT per run
         if(charts['rttChart'])charts['rttChart'].destroy();
         charts['rttChart'] = new Chart(document.getElementById('rttChart'), {
             type: 'line',
             data: {
-                labels: chartLabels,
+                labels: runNumbers.map(r => 'Run ' + r),
                 datasets: strategies.map((s, i) => ({
                     label: stratNames[i],
-                    data: [runs[1][s].avg, runs[2][s].avg, runs[3][s].avg],
-                    borderColor: cols[i],
-                    backgroundColor: cols[i] + '20',
-                    borderWidth: 2.5, tension: 0.3, fill: false,
-                    pointRadius: 5, pointHoverRadius: 7
+                    data: runNumbers.map(r => grouped[s] && grouped[s][r] ? (grouped[s][r].avg || 0) : null),
+                    borderColor: cols[i], backgroundColor: cols[i]+'20',
+                    borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 5, pointHoverRadius: 7,
+                    spanGaps: true
                 }))
             },
             options: {
@@ -165,15 +124,15 @@ async function load(){
             }
         });
         
-        // Chart 2: Mdev & Loss (use Run 1 data)
+        // Chart: Mdev & Loss (Run 1)
         if(charts['mdevChart'])charts['mdevChart'].destroy();
         charts['mdevChart'] = new Chart(document.getElementById('mdevChart'), {
             type: 'line',
             data: {
                 labels: stratNames,
                 datasets: [
-                    { label: 'Mdev (ms)', data: strategies.map(s => runs[1][s].mdev), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, yAxisID: 'y' },
-                    { label: 'Packet Loss (%)', data: strategies.map(s => runs[1][s].loss), borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, borderDash: [5, 3], yAxisID: 'y1' }
+                    { label: 'Mdev (ms)', data: strategies.map(s => grouped[s]&&grouped[s][1]?grouped[s][1].mdev||0:0), borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, yAxisID: 'y' },
+                    { label: 'Packet Loss (%)', data: strategies.map(s => grouped[s]&&grouped[s][1]?grouped[s][1].loss||0:0), borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, borderDash: [5, 3], yAxisID: 'y1' }
                 ]
             },
             options: {
@@ -187,50 +146,44 @@ async function load(){
             }
         });
         
-        // Summary Table - All 3 Runs
+        // Table
         let h = '';
-        for (let run = 1; run <= 3; run++) {
-            h += `<tr class="run-header">
-                <td colspan="7"><span class="run-badge ${runBadges[run-1]}">${runIcons[run-1]} RUN ${run}</span></td>
-            </tr>`;
+        runNumbers.forEach(run => {
+            h += `<tr class="run-header"><td colspan="7"><span class="run-badge ${runBadges[run-1]||''}">${runIcons[run-1]||'📊'} RUN ${run}</span></td></tr>`;
             
             strategies.forEach((s, i) => {
-                const d = runs[run][s];
+                const d = grouped[s] && grouped[s][run] ? grouped[s][run] : {};
                 h += `<tr>
                     <td></td>
                     <td class="${stratClasses[i]}"><strong>${stratNames[i]}</strong></td>
-                    <td class="${valClass(d.min, 2, 10)}">${d.min > 0 ? d.min.toFixed(3) : '—'}</td>
-                    <td class="${valClass(d.avg, 5, 20)}">${d.avg > 0 ? d.avg.toFixed(3) : '—'}</td>
-                    <td class="${valClass(d.max, 10, 50)}">${d.max > 0 ? d.max.toFixed(3) : '—'}</td>
-                    <td class="${valClass(d.mdev, 1, 5)}">${d.mdev > 0 ? d.mdev.toFixed(3) : '—'}</td>
-                    <td class="${d.loss === 0 ? 'val-good' : d.loss < 5 ? 'val-warn' : 'val-bad'}">${d.loss.toFixed(1)}%</td>
+                    <td class="${d.min>0?(d.min<2?'val-good':d.min<10?'val-warn':'val-bad'):''}">${d.min>0?d.min.toFixed(3):'—'}</td>
+                    <td class="${d.avg>0?(d.avg<5?'val-good':d.avg<20?'val-warn':'val-bad'):''}">${d.avg>0?d.avg.toFixed(3):'—'}</td>
+                    <td class="${d.max>0?(d.max<10?'val-good':d.max<50?'val-warn':'val-bad'):''}">${d.max>0?d.max.toFixed(3):'—'}</td>
+                    <td class="${d.mdev>0?(d.mdev<1?'val-good':d.mdev<5?'val-warn':'val-bad'):''}">${d.mdev>0?d.mdev.toFixed(3):'—'}</td>
+                    <td class="${d.loss===0?'val-good':d.loss<5?'val-warn':'val-bad'}">${d.loss!==undefined?d.loss.toFixed(1)+'%':'—'}</td>
                 </tr>`;
             });
-        }
+        });
         
         // Average row
-        h += `<tr class="avg-row"><td colspan="2">📊 Average (All 3 Runs)</td>`;
-        const metrics = ['min', 'avg', 'max', 'mdev', 'loss'];
-        metrics.forEach(met => {
+        h += `<tr class="avg-row"><td colspan="2">📊 Average (All Runs)</td>`;
+        ['min','avg','max','mdev','loss'].forEach(met => {
             let total = 0, count = 0;
-            for (let run = 1; run <= 3; run++) {
-                strategies.forEach(s => {
-                    if (runs[run][s][met] > 0) { total += runs[run][s][met]; count++; }
+            strategies.forEach(s => {
+                runNumbers.forEach(run => {
+                    const d = grouped[s] && grouped[s][run] ? grouped[s][run] : {};
+                    if (d[met] > 0) { total += d[met]; count++; }
                 });
-            }
+            });
             const avgVal = count > 0 ? total / count : 0;
-            if (met === 'loss') {
-                h += `<td class="val-neutral">${avgVal.toFixed(1)}%</td>`;
-            } else {
-                h += `<td class="val-neutral">${avgVal > 0 ? avgVal.toFixed(3) : '—'}</td>`;
-            }
+            h += met === 'loss' ? `<td class="val-neutral">${avgVal.toFixed(1)}%</td>` : `<td class="val-neutral">${avgVal > 0 ? avgVal.toFixed(3) : '—'}</td>`;
         });
         h += `</tr>`;
         
         document.getElementById('summary').innerHTML = h;
         
     } catch(e) {
-        document.body.innerHTML = '<p style="color:#ef4444;padding:20px;text-align:center">❌ Error: ' + e.message + '</p>';
+        document.body.innerHTML = '<p style="color:#ef4444;padding:20px">❌ Error: ' + e.message + '</p>';
         console.error(e);
     }
 }
