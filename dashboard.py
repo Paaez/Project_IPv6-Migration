@@ -128,6 +128,9 @@ def test5_page(): return render_template('test5.html')
 @app.route('/summary')
 def summary_page(): return render_template('summary.html')
 
+@app.route('/analysis')
+def analysis_page(): return render_template('analysis.html')
+
 # ─────────────────────────────────────────────
 # API ROUTES - Averaged Data
 # ─────────────────────────────────────────────
