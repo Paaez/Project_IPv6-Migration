@@ -6,17 +6,17 @@
             "strategy": "dualstack",
             "drop_detected": true,
             "previous_file": "100KB",
-            "previous_speed_mbps": 28.78,
+            "previous_speed_mbps": 19.54,
             "current_file": "200KB",
-            "current_speed_mbps": 2.06,
-            "drop_percentage": 92.83,
+            "current_speed_mbps": 2.04,
+            "drop_percentage": 89.58,
             "drop_size_range": "100KB \u2192 200KB",
             "threshold": 30,
             "mss_clamping": 1460,
             "possible_causes": [
+                "TCP buffer threshold reached at 100KB",
                 "Severe packet loss or retransmission",
-                "Possible network congestion requiring MSS adjustment",
-                "Current MSS Clamping: 1460 bytes - Check if MSS needs adjustment"
+                "MSS Clamping: 1460 bytes - May need adjustment"
             ]
         }
     ],
@@ -24,37 +24,43 @@
     "speed_history": [
         {
             "file": "1KB",
-            "speed_mbps": 1.216688
+            "speed_mbps": 0.736888
         },
         {
             "file": "10KB",
-            "speed_mbps": 7.2766
+            "speed_mbps": 4.99664
         },
         {
             "file": "100KB",
-            "speed_mbps": 28.781224
+            "speed_mbps": 19.535456
         },
         {
             "file": "200KB",
-            "speed_mbps": 2.062824
+            "speed_mbps": 2.035488
         },
         {
             "file": "300KB",
-            "speed_mbps": 1.47536
+            "speed_mbps": 1.472272
         },
         {
             "file": "400KB",
-            "speed_mbps": 1.289504
+            "speed_mbps": 1.276472
         },
         {
             "file": "500KB",
-            "speed_mbps": 1.187904
+            "speed_mbps": 1.19164
         },
         {
             "file": "1MB",
-            "speed_mbps": 1.038576
+            "speed_mbps": 1.040656
         }
     ],
-    "iperf_baseline_mbps": 4.19
-
+    "iperf_baseline_mbps": 3.14,
+    "performance_summary": {
+        "max_speed_mbps": 19.54,
+        "min_speed_mbps": 0.74,
+        "avg_speed_mbps": 4.04,
+        "speed_range_mbps": 18.8,
+        "http_efficiency_percent": 33.1
+    }
 }

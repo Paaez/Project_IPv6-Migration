@@ -1,162 +1,6 @@
 [
     {
         "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
-        "run": 1,
-        "value": 0.323704
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
-        "run": 1,
-        "value": 7.465592
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
-        "run": 1,
-        "value": 21.640464
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
-        "run": 1,
-        "value": 1.033072
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
-        "run": 1,
-        "value": 0.007968
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
-        "run": 1,
-        "value": 8.924712
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
-        "run": 1,
-        "value": 25.626424
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
-        "run": 1,
-        "value": 1.00536
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_iperf3_Throughput_Mbps",
-        "run": 1,
-        "value": 5.24
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
-        "run": 1,
-        "value": 0.166328
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
-        "run": 1,
-        "value": 6.115256
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
-        "run": 1,
-        "value": 25.232544
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
-        "run": 1,
-        "value": 1.025088
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
-        "run": 1,
-        "value": 200.0
-    },
-    {
-        "strategy": "dualstack",
-        "metric": "T2_MSS_Clamping_Value",
-        "run": 1,
-        "value": 1460.0
-    },
-    {
-        "strategy": "dualstack",
         "metric": "T2_MSS_Clamping_Value",
         "run": 1,
         "value": 1460.0
@@ -164,110 +8,104 @@
     {
         "strategy": "dualstack",
         "metric": "T2_iperf3_Throughput_Mbps",
-        "run": 2,
-        "value": 4.19
+        "run": 1,
+        "value": 3.14
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.216688
+        "run": 1,
+        "value": 0.736888
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
-        "run": 2,
-        "value": 7.2766
+        "run": 1,
+        "value": 4.99664
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
-        "run": 2,
-        "value": 28.781224
+        "run": 1,
+        "value": 19.535456
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_200KB_Speed_Mbps",
-        "run": 2,
-        "value": 2.062824
+        "run": 1,
+        "value": 2.035488
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_200KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_300KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.47536
+        "run": 1,
+        "value": 1.472272
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_300KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_400KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.289504
+        "run": 1,
+        "value": 1.276472
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_400KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_500KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.187904
+        "run": 1,
+        "value": 1.19164
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_500KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
-        "run": 2,
-        "value": 1.038576
+        "run": 1,
+        "value": 1.040656
     },
     {
         "strategy": "dualstack",
         "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
-        "run": 2,
-        "value": 200.0
-    },
-    {
-        "strategy": "dslite",
-        "metric": "T2_MSS_Clamping_Value",
         "run": 1,
-        "value": 1400.0
+        "value": 200.0
     },
     {
         "strategy": "dslite",
@@ -278,110 +116,104 @@
     {
         "strategy": "dslite",
         "metric": "T2_iperf3_Throughput_Mbps",
-        "run": 2,
+        "run": 1,
         "value": 2.1
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
-        "run": 2,
-        "value": 0.885808
+        "run": 1,
+        "value": 0.769704
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
-        "run": 2,
-        "value": 8.0432
+        "run": 1,
+        "value": 5.095792
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
-        "run": 2,
-        "value": 29.566528
+        "run": 1,
+        "value": 24.113264
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_200KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.97384
+        "run": 1,
+        "value": 1.9624
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_200KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_300KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.401512
+        "run": 1,
+        "value": 1.39476
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_300KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_400KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.221616
+        "run": 1,
+        "value": 1.223272
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_400KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_500KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.14396
+        "run": 1,
+        "value": 1.145168
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_500KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
-        "run": 2,
-        "value": 1.007416
+        "run": 1,
+        "value": 1.007232
     },
     {
         "strategy": "dslite",
         "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
-        "run": 2,
-        "value": 200.0
-    },
-    {
-        "strategy": "nat64",
-        "metric": "T2_MSS_Clamping_Value",
         "run": 1,
-        "value": 1440.0
+        "value": 200.0
     },
     {
         "strategy": "nat64",
@@ -392,103 +224,103 @@
     {
         "strategy": "nat64",
         "metric": "T2_iperf3_Throughput_Mbps",
-        "run": 2,
-        "value": 6.29
+        "run": 1,
+        "value": 7.34
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
-        "run": 2,
-        "value": 0.626056
+        "run": 1,
+        "value": 0.662456
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
-        "run": 2,
-        "value": 6.998712
+        "run": 1,
+        "value": 5.562568
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
-        "run": 2,
-        "value": 22.88012
+        "run": 1,
+        "value": 20.25316
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_200KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.975192
+        "run": 1,
+        "value": 2.003736
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_200KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_300KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.445136
+        "run": 1,
+        "value": 1.433552
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_300KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_400KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.25848
+        "run": 1,
+        "value": 1.2468
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_400KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_500KB_Speed_Mbps",
-        "run": 2,
-        "value": 1.165912
+        "run": 1,
+        "value": 1.162464
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_500KB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
-        "run": 2,
-        "value": 1.026696
+        "run": 1,
+        "value": 1.026224
     },
     {
         "strategy": "nat64",
         "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
-        "run": 2,
+        "run": 1,
         "value": 200.0
     }
 ]

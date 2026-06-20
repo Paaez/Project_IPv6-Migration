@@ -18,26 +18,38 @@
         .chart-wrap{position:relative;height:260px}
         
         .table-wrapper{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-top:16px}
-        table{width:100%;border-collapse:collapse;font-size:0.7rem}
-        th{background:#0f172a;color:#38bdf8;padding:8px 10px;text-align:left;font-weight:600;font-size:0.65rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a}
-        td{padding:7px 10px;border-bottom:1px solid #1e293b;color:#cbd5e1}
+        .table-scroll{overflow-x:auto}
+        table{width:100%;border-collapse:collapse;font-size:0.63rem}
+        th{background:#0f172a;color:#38bdf8;padding:6px 7px;text-align:center;font-weight:600;font-size:0.58rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a;white-space:nowrap}
+        td{padding:5px 7px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.6rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
+        tr.run-header td{background:#0f172a;border-top:2px solid #2d3a4a;font-weight:700;color:#38bdf8;font-size:0.65rem;padding:8px}
+        tr.avg-row td{border-top:3px solid #38bdf8;font-weight:700;color:#f1f5f9;font-size:0.66rem;background:rgba(56,189,248,0.05)}
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
+        .run-badge{font-size:0.55rem;padding:3px 8px;border-radius:4px;font-weight:700}
+        .run-1{background:rgba(59,130,246,0.2);color:#3b82f6}
+        .run-2{background:rgba(16,185,129,0.2);color:#10b981}
+        .run-3{background:rgba(245,158,11,0.2);color:#f59e0b}
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
+        .val-best{color:#f59e0b;font-weight:700}
         .highlight{color:#f1f5f9;font-weight:600}
+        .strat-ds{color:#3b82f6;font-weight:600}
+        .strat-dl{color:#10b981;font-weight:600}
+        .strat-n64{color:#f59e0b;font-weight:600}
+        .info-row{font-size:0.5rem;color:#64748b;font-style:italic}
     </style>
 </head>
 <body>
 <div class="card">
-    <div class="card-header">🔴 TEST 3: RTT Consistency <span class="badge">PC1 • T3Rs.json • 100 Pings</span></div>
+    <div class="card-header">🔴 TEST 4: RTT Consistency <span class="badge">PC1 • T3Rs.json • 100 Pings × 3 Runs</span></div>
     <div class="card-body">
         
-        <div class="section-title">📊 RTT Metrics by Strategy</div>
+        <div class="section-title">📊 RTT Metrics by Strategy (All 3 Runs)</div>
         <div class="charts-row">
             <div class="chart-box">
-                <div class="chart-title">RTT Min / Avg / Max Comparison</div>
+                <div class="chart-title">Avg RTT Comparison - Run 1, 2, 3</div>
                 <div class="chart-wrap"><canvas id="rttChart"></canvas></div>
             </div>
             <div class="chart-box">
@@ -46,140 +58,256 @@
             </div>
         </div>
         
-        <div class="section-title">📋 Results Summary</div>
+        <div class="section-title">📋 Results Summary - All 3 Runs</div>
         <div class="table-wrapper">
-            <table>
-                <thead><tr><th>Metric</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
-                <tbody id="summary"></tbody>
-            </table>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr><th>Run</th><th>Strategy</th><th>Min RTT (ms)</th><th>Avg RTT (ms)</th><th>Max RTT (ms)</th><th>Mdev (ms)</th><th>Loss %</th><th>Best?</th></tr>
+                    </thead>
+                    <tbody id="summary"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
 let charts={};
-function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
 
-function valClass(v,good,bad){
+// Get value with support for both T3_ and T4_ prefixes
+function gv(d, metricBase, s, def=0){
+    // Try T4_ prefix first (Dual Stack, DS-Lite)
+    let val = (d && d[`T4_RTT_PC1_${metricBase}`] && d[`T4_RTT_PC1_${metricBase}`][s] !== undefined) 
+        ? parseFloat(d[`T4_RTT_PC1_${metricBase}`][s]) 
+        : null;
+    
+    // Try T3_ prefix (NAT64)
+    if (val === null) {
+        val = (d && d[`T3_RTT_PC1_${metricBase}`] && d[`T3_RTT_PC1_${metricBase}`][s] !== undefined) 
+            ? parseFloat(d[`T3_RTT_PC1_${metricBase}`][s]) 
+            : def;
+    }
+    return val;
+}
+
+function valClass(v, good, bad){
     if(v===0||isNaN(v))return'';
     if(v<=good)return'val-good';
     if(v>=bad)return'val-bad';
     return'val-warn';
 }
 
+// Group data by run number
+function groupByRun(rawData){
+    const runs = {};
+    const strategies = ['dualstack', 'dslite', 'nat64'];
+    const metricBases = ['Min_ms', 'Avg_ms', 'Max_ms', 'Mdev_ms', 'Loss_Percent'];
+    
+    // Check actual runs in data (1, 2, or 3)
+    const maxRuns = 3;
+    
+    for (let r = 1; r <= maxRuns; r++) {
+        runs[r] = {};
+        strategies.forEach(s => {
+            const data = {};
+            let hasData = false;
+            
+            metricBases.forEach(base => {
+                // Try both prefixes
+                const t4key = `T4_RTT_PC1_${base}`;
+                const t3key = `T3_RTT_PC1_${base}`;
+                
+                let val = null;
+                if (rawData[t4key] && rawData[t4key][s] !== undefined) {
+                    val = rawData[t4key][s];
+                } else if (rawData[t3key] && rawData[t3key][s] !== undefined) {
+                    val = rawData[t3key][s];
+                }
+                
+                if (val !== null && val !== undefined) {
+                    data[base] = parseFloat(val);
+                    hasData = true;
+                }
+            });
+            
+            if (hasData) runs[r][s] = data;
+        });
+    }
+    
+    return runs;
+}
+
 async function load(){
     try{
-        const r=await fetch('/api/test3');const d=await r.json();
+        const r = await fetch('/api/test3');
+        const d = await r.json();
         if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px;text-align:center">❌ No data available</p>';return}
         
-        const names=['Dual Stack','DS-Lite','NAT64'];
-        const cols=['#3b82f6','#10b981','#f59e0b'];
-        const strats=['dualstack','dslite','nat64'];
-        const metrics=['Min','Avg','Max','Mdev'];
-        const metricLabels={Min:'Min RTT',Avg:'Avg RTT',Max:'Max RTT',Mdev:'Mdev (Jitter)'};
-        const thresholds={Min:[2,10],Avg:[5,20],Max:[10,50],Mdev:[1,5]};
+        const runs = groupByRun(d);
+        const runNumbers = Object.keys(runs).map(Number).filter(rn => {
+            // Check if this run has any data
+            return Object.keys(runs[rn]).length > 0;
+        }).sort();
         
-        // RTT Line Chart - Min/Avg/Max
+        const strategies = ['dualstack', 'dslite', 'nat64'];
+        const names = ['Dual Stack', 'DS-Lite', 'NAT64'];
+        const cols = ['#3b82f6', '#10b981', '#f59e0b'];
+        const runColors = ['#3b82f6', '#10b981', '#f59e0b'];
+        const runBadges = ['run-1', 'run-2', 'run-3'];
+        const runIcons = ['🔵', '🟢', '🟠'];
+        
+        // Build chart data - show Avg RTT per strategy per run
+        const chartLabels = [];
+        const chartDatasets = strategies.map((s, si) => ({
+            label: names[si],
+            data: [],
+            borderColor: cols[si],
+            backgroundColor: cols[si] + '20',
+            borderWidth: 2.5, tension: 0.3, fill: false,
+            pointRadius: 5, pointHoverRadius: 7
+        }));
+        
+        runNumbers.forEach(rn => {
+            chartLabels.push(`Run ${rn}`);
+            strategies.forEach((s, si) => {
+                if (runs[rn] && runs[rn][s] && runs[rn][s]['Avg_ms']) {
+                    chartDatasets[si].data.push(runs[rn][s]['Avg_ms']);
+                } else {
+                    chartDatasets[si].data.push(null);
+                }
+            });
+        });
+        
+        // RTT Chart
         if(charts['rttChart'])charts['rttChart'].destroy();
-        charts['rttChart']=new Chart(document.getElementById('rttChart'),{
-            type:'line',
-            data:{
-                labels:['Min RTT','Avg RTT','Max RTT'],
-                datasets:strats.map((s,i)=>({
-                    label:names[i],
-                    data:[
-                        gv(d,'T3_RTT_PC1_Min_ms',s),
-                        gv(d,'T3_RTT_PC1_Avg_ms',s),
-                        gv(d,'T3_RTT_PC1_Max_ms',s)
-                    ],
-                    borderColor:cols[i],
-                    backgroundColor:cols[i]+'20',
-                    borderWidth:2.5,
-                    tension:0.3,
-                    fill:false,
-                    pointRadius:5,
-                    pointHoverRadius:7,
-                    pointBackgroundColor:cols[i]
-                }))
-            },
-            options:{
-                responsive:true,maintainAspectRatio:false,
-                plugins:{legend:{labels:{color:'#cbd5e1',font:{size:10},padding:12,usePointStyle:true,pointStyleWidth:8}}},
-                scales:{
-                    y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},
-                    x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:9}}}
+        charts['rttChart'] = new Chart(document.getElementById('rttChart'), {
+            type: 'line',
+            data: { labels: chartLabels, datasets: chartDatasets },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 10 }, padding: 12, usePointStyle: true } } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.06)' }, title: { display: true, text: 'Avg RTT (ms)', color: '#94a3b8', font: { size: 9 } }, ticks: { color: '#94a3b8', font: { size: 8 } } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 } } }
                 }
             }
         });
         
-        // Mdev & Loss Chart
+        // Mdev & Loss Chart (average across runs)
+        const avgMdev = strategies.map(s => {
+            let sum = 0, count = 0;
+            runNumbers.forEach(rn => {
+                if (runs[rn] && runs[rn][s] && runs[rn][s]['Mdev_ms']) {
+                    sum += runs[rn][s]['Mdev_ms']; count++;
+                }
+            });
+            return count > 0 ? sum / count : 0;
+        });
+        
+        const avgLoss = strategies.map(s => {
+            let sum = 0, count = 0;
+            runNumbers.forEach(rn => {
+                if (runs[rn] && runs[rn][s] && runs[rn][s]['Loss_Percent'] !== undefined) {
+                    sum += runs[rn][s]['Loss_Percent']; count++;
+                }
+            });
+            return count > 0 ? sum / count : 0;
+        });
+        
         if(charts['mdevChart'])charts['mdevChart'].destroy();
-        charts['mdevChart']=new Chart(document.getElementById('mdevChart'),{
-            type:'line',
-            data:{
-                labels:names,
-                datasets:[{
-                    label:'Mdev (ms)',
-                    data:strats.map(s=>gv(d,'T3_RTT_PC1_Mdev_ms',s)),
-                    borderColor:'#f59e0b',
-                    backgroundColor:'rgba(245,158,11,0.1)',
-                    borderWidth:2.5,
-                    tension:0.3,
-                    fill:true,
-                    pointRadius:5,
-                    pointHoverRadius:7,
-                    pointBackgroundColor:'#f59e0b',
-                    yAxisID:'y'
-                },{
-                    label:'Packet Loss (%)',
-                    data:strats.map(s=>gv(d,'T3_RTT_PC1_Loss_Percent',s)),
-                    borderColor:'#ef4444',
-                    backgroundColor:'rgba(239,68,68,0.1)',
-                    borderWidth:2.5,
-                    tension:0.3,
-                    fill:true,
-                    pointRadius:5,
-                    pointHoverRadius:7,
-                    pointBackgroundColor:'#ef4444',
-                    borderDash:[5,3],
-                    yAxisID:'y1'
-                }]
+        charts['mdevChart'] = new Chart(document.getElementById('mdevChart'), {
+            type: 'line',
+            data: {
+                labels: names,
+                datasets: [
+                    { label: 'Mdev (ms)', data: avgMdev, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, yAxisID: 'y' },
+                    { label: 'Packet Loss (%)', data: avgLoss, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 5, borderDash: [5, 3], yAxisID: 'y1' }
+                ]
             },
-            options:{
-                responsive:true,maintainAspectRatio:false,
-                plugins:{legend:{labels:{color:'#cbd5e1',font:{size:10},padding:12,usePointStyle:true,pointStyleWidth:8}}},
-                scales:{
-                    y:{type:'linear',position:'left',beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Mdev (ms)',color:'#f59e0b',font:{size:9}},ticks:{color:'#f59e0b',font:{size:8}}},
-                    y1:{type:'linear',position:'right',beginAtZero:true,max:100,grid:{display:false},title:{display:true,text:'Loss (%)',color:'#ef4444',font:{size:9}},ticks:{color:'#ef4444',font:{size:8}}},
-                    x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:9}}}
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 10 }, padding: 12, usePointStyle: true } } },
+                scales: {
+                    y: { type: 'linear', position: 'left', beginAtZero: true, grid: { color: 'rgba(255,255,255,0.06)' }, title: { display: true, text: 'Mdev (ms)', color: '#f59e0b', font: { size: 9 } }, ticks: { color: '#f59e0b', font: { size: 8 } } },
+                    y1: { type: 'linear', position: 'right', beginAtZero: true, max: 100, grid: { display: false }, title: { display: true, text: 'Loss (%)', color: '#ef4444', font: { size: 9 } }, ticks: { color: '#ef4444', font: { size: 8 } } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 } } }
                 }
             }
         });
         
-        // Summary Table
-        document.getElementById('summary').innerHTML=`
-            <tr><td><strong>Min RTT</strong></td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Min_ms','dualstack'),2,10)}">${gv(d,'T3_RTT_PC1_Min_ms','dualstack').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Min_ms','dslite'),2,10)}">${gv(d,'T3_RTT_PC1_Min_ms','dslite').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Min_ms','nat64'),2,10)}">${gv(d,'T3_RTT_PC1_Min_ms','nat64').toFixed(3)} ms</td></tr>
-            <tr><td><strong>Avg RTT</strong></td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Avg_ms','dualstack'),5,20)}">${gv(d,'T3_RTT_PC1_Avg_ms','dualstack').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Avg_ms','dslite'),5,20)}">${gv(d,'T3_RTT_PC1_Avg_ms','dslite').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Avg_ms','nat64'),5,20)}">${gv(d,'T3_RTT_PC1_Avg_ms','nat64').toFixed(3)} ms</td></tr>
-            <tr><td><strong>Max RTT</strong></td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Max_ms','dualstack'),10,50)}">${gv(d,'T3_RTT_PC1_Max_ms','dualstack').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Max_ms','dslite'),10,50)}">${gv(d,'T3_RTT_PC1_Max_ms','dslite').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Max_ms','nat64'),10,50)}">${gv(d,'T3_RTT_PC1_Max_ms','nat64').toFixed(3)} ms</td></tr>
-            <tr><td><strong>Mdev (Jitter)</strong></td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Mdev_ms','dualstack'),1,5)}">${gv(d,'T3_RTT_PC1_Mdev_ms','dualstack').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Mdev_ms','dslite'),1,5)}">${gv(d,'T3_RTT_PC1_Mdev_ms','dslite').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,'T3_RTT_PC1_Mdev_ms','nat64'),1,5)}">${gv(d,'T3_RTT_PC1_Mdev_ms','nat64').toFixed(3)} ms</td></tr>
-            <tr style="border-top:2px solid #2d3a4a"><td><strong>Packet Loss</strong></td>
-                <td class="${gv(d,'T3_RTT_PC1_Loss_Percent','dualstack')===0?'val-good':'val-bad'}">${gv(d,'T3_RTT_PC1_Loss_Percent','dualstack').toFixed(1)}%</td>
-                <td class="${gv(d,'T3_RTT_PC1_Loss_Percent','dslite')===0?'val-good':'val-bad'}">${gv(d,'T3_RTT_PC1_Loss_Percent','dslite').toFixed(1)}%</td>
-                <td class="${gv(d,'T3_RTT_PC1_Loss_Percent','nat64')===0?'val-good':'val-bad'}">${gv(d,'T3_RTT_PC1_Loss_Percent','nat64').toFixed(1)}%</td></tr>`;
+        // Build Summary Table
+        // Find best Avg RTT for each strategy
+        const bestRun = {};
+        strategies.forEach(s => {
+            let best = null;
+            runNumbers.forEach(rn => {
+                if (runs[rn] && runs[rn][s] && runs[rn][s]['Avg_ms']) {
+                    const v = runs[rn][s]['Avg_ms'];
+                    if (best === null || v < best.val) best = { run: rn, val: v };
+                }
+            });
+            bestRun[s] = best ? best.run : null;
+        });
         
-    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px;text-align:center">❌ Error loading data</p>';console.error(e);}
+        let h = '';
+        runNumbers.forEach(rn => {
+            const runData = runs[rn];
+            if (!runData || Object.keys(runData).length === 0) return;
+            
+            h += `<tr class="run-header">
+                <td colspan="8"><span class="run-badge ${runBadges[rn-1] || ''}">${runIcons[rn-1] || '📊'} RUN ${rn}</span></td>
+            </tr>`;
+            
+            strategies.forEach(s => {
+                const data = runData[s];
+                if (!data) return;
+                const isBest = bestRun[s] === rn;
+                const stratClass = s === 'dualstack' ? 'strat-ds' : s === 'dslite' ? 'strat-dl' : 'strat-n64';
+                
+                h += `<tr>
+                    <td></td>
+                    <td class="${stratClass}">${names[s]}</td>
+                    <td class="${valClass(data.Min_ms, 2, 10)}">${data.Min_ms > 0 ? data.Min_ms.toFixed(3) : '—'}</td>
+                    <td class="${valClass(data.Avg_ms, 5, 20)}${isBest ? ' val-best' : ''}">${data.Avg_ms > 0 ? data.Avg_ms.toFixed(3) : '—'}${isBest ? ' ⭐' : ''}</td>
+                    <td class="${valClass(data.Max_ms, 10, 50)}">${data.Max_ms > 0 ? data.Max_ms.toFixed(3) : '—'}</td>
+                    <td class="${valClass(data.Mdev_ms, 1, 5)}">${data.Mdev_ms > 0 ? data.Mdev_ms.toFixed(3) : '—'}</td>
+                    <td class="${data.Loss_Percent === 0 ? 'val-good' : data.Loss_Percent < 5 ? 'val-warn' : 'val-bad'}">${data.Loss_Percent !== undefined ? data.Loss_Percent.toFixed(1) + '%' : '—'}</td>
+                    <td>${isBest ? '🏆' : ''}</td>
+                </tr>`;
+            });
+        });
+        
+        // Average row
+        h += `<tr class="avg-row"><td colspan="2">📊 Average (All Runs)</td>`;
+        const metricKeys = ['Min_ms', 'Avg_ms', 'Max_ms', 'Mdev_ms', 'Loss_Percent'];
+        const overallAvg = {};
+        
+        metricKeys.forEach(key => {
+            let total = 0, count = 0;
+            strategies.forEach(s => {
+                runNumbers.forEach(rn => {
+                    if (runs[rn] && runs[rn][s] && runs[rn][s][key] !== undefined) {
+                        total += runs[rn][s][key]; count++;
+                    }
+                });
+            });
+            overallAvg[key] = count > 0 ? total / count : 0;
+        });
+        
+        h += `<td class="val-neutral">${overallAvg.Min_ms > 0 ? overallAvg.Min_ms.toFixed(3) : '—'}</td>`;
+        h += `<td class="val-neutral">${overallAvg.Avg_ms > 0 ? overallAvg.Avg_ms.toFixed(3) : '—'}</td>`;
+        h += `<td class="val-neutral">${overallAvg.Max_ms > 0 ? overallAvg.Max_ms.toFixed(3) : '—'}</td>`;
+        h += `<td class="val-neutral">${overallAvg.Mdev_ms > 0 ? overallAvg.Mdev_ms.toFixed(3) : '—'}</td>`;
+        h += `<td class="val-neutral">${overallAvg.Loss_Percent.toFixed(1)}%</td>`;
+        h += `<td class="val-neutral">—</td></tr>`;
+        
+        document.getElementById('summary').innerHTML = h;
+        
+    } catch(e) {
+        document.body.innerHTML = '<p style="color:#ef4444;padding:20px;text-align:center">❌ Error loading data</p>';
+        console.error(e);
+    }
 }
 load();
 </script>
