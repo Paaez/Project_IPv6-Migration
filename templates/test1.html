@@ -39,7 +39,6 @@
             <span>🔴 <span style="color:#ef4444">Poor</span></span>
             <span>|</span>
             <span title="Less than 1% loss is normal for UDP">UDP Loss &lt;1% = Normal ✅</span>
-            <span title="Less than 5ms RTT is excellent">ICMP RTT &lt;5ms = Good ✅</span>
         </div>
         
         <div class="section-title">📊 Performance Charts</div>
@@ -90,17 +89,17 @@ async function load(){
         sizes.forEach(s=>{
             h+=`<tr><td class="size-cell" rowspan="4">${s}</td>
                 <td><span class="metric-label">TCP Throughput</span></td>
-                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack').toFixed(2)} Mbps</td>
-                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite').toFixed(2)} Mbps</td>
-                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64').toFixed(2)} Mbps</td></tr>
+                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack')>0?gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack').toFixed(2)+' Mbps':'—'}</td>
+                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite')>0?gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite').toFixed(2)+' Mbps':'—'}</td>
+                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64')>0?gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64').toFixed(2)+' Mbps':'—'}</td></tr>
             <tr><td><span class="metric-label">UDP Jitter</span></td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64').toFixed(3)} ms</td></tr>
+                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack')>0?gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack').toFixed(3)+' ms':'—'}</td>
+                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite')>0?gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite').toFixed(3)+' ms':'—'}</td>
+                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64')>0?gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64').toFixed(3)+' ms':'—'}</td></tr>
             <tr><td><span class="metric-label">ICMP RTT Avg</span></td>
-                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite').toFixed(3)} ms</td>
-                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64').toFixed(3)} ms</td></tr>
+                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack')>0?gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack').toFixed(3)+' ms':'—'}</td>
+                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite')>0?gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite').toFixed(3)+' ms':'—'}</td>
+                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64')>0?gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64').toFixed(3)+' ms':'—'}</td></tr>
             <tr><td><span class="metric-label">UDP Loss</span></td>
                 <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dualstack'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dualstack').toFixed(1)}%</td>
                 <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dslite'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dslite').toFixed(1)}%</td>
