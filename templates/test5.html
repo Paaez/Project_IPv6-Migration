@@ -19,10 +19,12 @@
         
         .section-title{font-size:0.8rem;color:#38bdf8;font-weight:600;margin:14px 0 8px 0;padding-left:10px;border-left:3px solid #38bdf8}
         
-        .table-scroll{max-height:220px;overflow-y:auto;border:1px solid #2d3a4a;border-radius:6px}
-        table{width:100%;border-collapse:collapse;font-size:0.7rem}
-        th{background:#151d2b;color:#38bdf8;padding:6px 4px;text-align:center;font-weight:600;position:sticky;top:0;z-index:1;font-size:0.65rem;text-transform:uppercase}
-        td{padding:5px 4px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center}
+        .table-scroll{max-height:400px;overflow:auto;border:1px solid #2d3a4a;border-radius:6px}
+        table{width:100%;border-collapse:collapse;font-size:0.58rem}
+        th{background:#151d2b;color:#38bdf8;padding:4px 3px;text-align:center;font-weight:600;position:sticky;top:0;z-index:2;font-size:0.55rem;text-transform:uppercase;white-space:nowrap}
+        th.sticky-col{position:sticky;left:0;z-index:3;background:#151d2b}
+        td{padding:3px 3px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center;font-size:0.55rem}
+        td.sticky-col{position:sticky;left:0;z-index:1;background:#1a2332;font-weight:600}
         tr:hover td{background:rgba(56,189,248,0.03)}
         .s-ok{color:#10b981;font-weight:700}.s-fail{color:#ef4444;font-weight:700}.s-frag{color:#f59e0b;font-weight:700}
         
@@ -70,24 +72,24 @@
         </div>
         
         <!-- LOSS CHARTS -->
-        <div class="section-title" title="Phase 1: Packets larger than MTU fail. Phase 2: Packets are split.">📊 Packet Size vs Loss</div>
+        <div class="section-title">📊 Packet Loss: Without vs With Fragmentation</div>
         <div class="charts-grid">
-            <div class="chart-box"><div class="chart-title">Phase 1: DF Set (No Fragmentation)</div><div class="chart-wrap"><canvas id="lossChart1"></canvas></div></div>
-            <div class="chart-box"><div class="chart-title">Phase 2: Fragmentation Allowed</div><div class="chart-wrap"><canvas id="lossChart2"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">Without Fragmentation (DF Set)</div><div class="chart-wrap"><canvas id="lossChart1"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">With Fragmentation Allowed</div><div class="chart-wrap"><canvas id="lossChart2"></canvas></div></div>
         </div>
         
         <!-- RTT + SUCCESS CHARTS -->
-        <div class="section-title">📊 Phase 1 RTT & Phase 2 Success Rate</div>
+        <div class="section-title">📊 RTT (Without Frag) & Success Rate (With Frag)</div>
         <div class="charts-grid">
-            <div class="chart-box"><div class="chart-title">Phase 1: RTT (DF Set)</div><div class="chart-wrap"><canvas id="rttChart1"></canvas></div></div>
-            <div class="chart-box"><div class="chart-title">Phase 2: Success Rate (1=Success, 0=Failed)</div><div class="chart-wrap"><canvas id="successChart2"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">RTT - Without Fragmentation</div><div class="chart-wrap"><canvas id="rttChart1"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">Success Rate - With Fragmentation</div><div class="chart-wrap"><canvas id="successChart2"></canvas></div></div>
         </div>
         
         <!-- HEATMAP & RTT COMPARISON -->
         <div class="section-title">🔥 RTT Heatmap & RTT Comparison at MTU Boundary</div>
         <div class="charts-grid">
             <div class="chart-box">
-                <div class="chart-title">RTT Heatmap: Strategy × Packet Size (Phase 1)</div>
+                <div class="chart-title">RTT Heatmap: Strategy × Packet Size (Without Frag)</div>
                 <div class="heatmap-container">
                     <div class="heatmap-header" id="heatmapHeader"></div>
                     <div class="heatmap-grid" id="heatmapGrid"></div>
@@ -107,20 +109,20 @@
             </div>
         </div>
         
-        <!-- PHASE 1 TABLE -->
-        <div class="section-title" title="Phase 1: Testing with Don't Fragment flag.">🔬 Phase 1: Don't Fragment (DF Set)</div>
+        <!-- PHASE 1 FULL TABLE -->
+        <div class="section-title" title="Without Fragmentation: All packet sizes tested with DF flag set">🔬 Without Fragmentation (DF Set) - Full Scale</div>
         <div class="table-scroll"><table>
-            <thead><tr><th rowspan="2">Size</th><th rowspan="2">Total</th><th colspan="3" style="color:#3b82f6">Dual Stack</th><th colspan="3" style="color:#10b981">DS-Lite</th><th colspan="3" style="color:#f59e0b">NAT64</th></tr>
-            <tr><th style="color:#3b82f6">St</th><th style="color:#3b82f6">Loss</th><th style="color:#3b82f6">RTT</th><th style="color:#10b981">St</th><th style="color:#10b981">Loss</th><th style="color:#10b981">RTT</th><th style="color:#f59e0b">St</th><th style="color:#f59e0b">Loss</th><th style="color:#f59e0b">RTT</th></tr></thead>
+            <thead><tr><th class="sticky-col">Size</th><th>Total</th><th colspan="3" style="color:#3b82f6">Dual Stack</th><th colspan="3" style="color:#10b981">DS-Lite</th><th colspan="3" style="color:#f59e0b">NAT64</th></tr>
+            <tr><th class="sticky-col"></th><th></th><th style="color:#3b82f6">St</th><th style="color:#3b82f6">Loss</th><th style="color:#3b82f6">RTT</th><th style="color:#10b981">St</th><th style="color:#10b981">Loss</th><th style="color:#10b981">RTT</th><th style="color:#f59e0b">St</th><th style="color:#f59e0b">Loss</th><th style="color:#f59e0b">RTT</th></tr></thead>
             <tbody id="p1table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p1summary"></div></div>
         
-        <!-- PHASE 2 TABLE -->
-        <div class="section-title" title="Phase 2: Testing with fragmentation allowed.">🔬 Phase 2: Fragmentation Allowed</div>
+        <!-- PHASE 2 FULL TABLE -->
+        <div class="section-title" title="With Fragmentation: All packet sizes tested with fragmentation allowed">🔬 With Fragmentation Allowed - Full Scale</div>
         <div class="table-scroll"><table>
-            <thead><tr><th rowspan="2">Size</th><th rowspan="2">Total</th><th colspan="3" style="color:#3b82f6">Dual Stack</th><th colspan="3" style="color:#10b981">DS-Lite</th><th colspan="3" style="color:#f59e0b">NAT64</th></tr>
-            <tr><th style="color:#3b82f6">St</th><th style="color:#3b82f6">Loss</th><th style="color:#3b82f6">RTT</th><th style="color:#10b981">St</th><th style="color:#10b981">Loss</th><th style="color:#10b981">RTT</th><th style="color:#f59e0b">St</th><th style="color:#f59e0b">Loss</th><th style="color:#f59e0b">RTT</th></tr></thead>
+            <thead><tr><th class="sticky-col">Size</th><th>Total</th><th colspan="3" style="color:#3b82f6">Dual Stack</th><th colspan="3" style="color:#10b981">DS-Lite</th><th colspan="3" style="color:#f59e0b">NAT64</th></tr>
+            <tr><th class="sticky-col"></th><th></th><th style="color:#3b82f6">St</th><th style="color:#3b82f6">Loss</th><th style="color:#3b82f6">RTT</th><th style="color:#10b981">St</th><th style="color:#10b981">Loss</th><th style="color:#10b981">RTT</th><th style="color:#f59e0b">St</th><th style="color:#f59e0b">Loss</th><th style="color:#f59e0b">RTT</th></tr></thead>
             <tbody id="p2table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p2summary"></div></div>
@@ -198,6 +200,23 @@ function buildHeatmap(p1ds,p1dl,p1n64){
     document.getElementById('heatmapGrid').innerHTML=html;
 }
 
+function buildFullTable(data, tableId, isPhase1){
+    let h='';
+    for(let i=0;i<data.length;i++){
+        const ds=data[i].ds||{}, dl=data[i].dl||{}, n64=data[i].n64||{};
+        const sz=data[i].size;
+        const total=ds.total||dl.total||n64.total||(sz+(isPhase1?28:48));
+        const szLabel=sz>=1000?(sz/1000).toFixed(1)+'K':sz;
+        h+=`<tr>
+            <td class="sticky-col"><strong>${szLabel}</strong></td><td>${total}</td>
+            <td class="col-ds ${ds.cls||''}">${ds.status||'—'}</td><td class="col-ds">${ds.loss||0}%</td><td class="col-ds">${ds.rttDisplay||'—'}</td>
+            <td class="col-dl ${dl.cls||''}">${dl.status||'—'}</td><td class="col-dl">${dl.loss||0}%</td><td class="col-dl">${dl.rttDisplay||'—'}</td>
+            <td class="col-n64 ${n64.cls||''}">${n64.status||'—'}</td><td class="col-n64">${n64.loss||0}%</td><td class="col-n64">${n64.rttDisplay||'—'}</td>
+        </tr>`;
+    }
+    document.getElementById(tableId).innerHTML=h;
+}
+
 async function load(){
     try{
         const r=await fetch('/api/test5');const d=await r.json();
@@ -270,9 +289,9 @@ async function load(){
         const overheadN64=maxNoFragN64.rtt>0?((fragN64.rtt-maxNoFragN64.rtt)/maxNoFragN64.rtt*100).toFixed(0):0;
         
         document.getElementById('overheadLabels').innerHTML=`
-            <span class="overhead-ds">🔵 DS: +${overheadDS}%</span>
-            <span class="overhead-dl">🟢 DL: +${overheadDL}%</span>
-            <span class="overhead-n64">🟠 N64: +${overheadN64}%</span>`;
+            <span class="overhead-ds" title="Extra RTT caused by fragmentation. Lower % = more efficient">🔵 DS: +${overheadDS}%</span>
+            <span class="overhead-dl" title="Extra RTT caused by fragmentation. Lower % = more efficient">🟢 DL: +${overheadDL}%</span>
+            <span class="overhead-n64" title="Extra RTT caused by fragmentation. Lower % = more efficient">🟠 N64: +${overheadN64}%</span>`;
         
         if(charts['rttCompareChart'])charts['rttCompareChart'].destroy();
         charts['rttCompareChart']=new Chart(document.getElementById('rttCompareChart'),{type:'bar',data:{labels:names,datasets:[
@@ -280,43 +299,17 @@ async function load(){
             {label:'Fragmented (1500B)',data:fragRTT,backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}
         ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
         
-        // Phase 1 Table
-        const p1DisplaySizes=[64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500];
-        let p1h='';
-        for(let i=0;i<p1DisplaySizes.length;i++){
-            const sz=p1DisplaySizes[i];
-            const ds=p1ds.find(r=>r.size===sz)||{};
-            const dl=p1dl.find(r=>r.size===sz)||{};
-            const n64=p1n64.find(r=>r.size===sz)||{};
-            p1h+=`<tr>
-                <td><strong>${sz}</strong></td><td>${ds.total||sz+28}</td>
-                <td class="col-ds ${ds.cls||''}">${ds.status||'—'}</td><td class="col-ds">${ds.loss||0}%</td><td class="col-ds">${ds.rttDisplay||'—'}</td>
-                <td class="col-dl ${dl.cls||''}">${dl.status||'—'}</td><td class="col-dl">${dl.loss||0}%</td><td class="col-dl">${dl.rttDisplay||'—'}</td>
-                <td class="col-n64 ${n64.cls||''}">${n64.status||'—'}</td><td class="col-n64">${n64.loss||0}%</td><td class="col-n64">${n64.rttDisplay||'—'}</td>
-            </tr>`;
-        }
-        document.getElementById('p1table').innerHTML=p1h;
+        // Phase 1 FULL Table - ALL 31 sizes
+        const p1FullData=p1n64.map((n64,i)=>({size:n64.size,ds:p1ds[i],dl:p1dl[i],n64:n64}));
+        buildFullTable(p1FullData,'p1table',true);
         const dm1=p1ds.filter(r=>r.status==='✅').pop(),dlm1=p1dl.filter(r=>r.status==='✅').pop(),nm1=p1n64.filter(r=>r.status==='✅').pop();
-        document.getElementById('p1summary').innerHTML=`<strong>📊 Phase 1</strong><br><span style="color:#3b82f6">DS: ${dm1?dm1.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm1?dlm1.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm1?nm1.size:0}B</span>`;
+        document.getElementById('p1summary').innerHTML=`<strong>📊 Without Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm1?dm1.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm1?dlm1.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm1?nm1.size:0}B</span> &nbsp; <small style="color:#64748b">(Max payload without fragmentation)</small>`;
         
-        // Phase 2 Table
-        const p2DisplaySizes=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
-        let p2h='';
-        for(let i=0;i<p2DisplaySizes.length;i++){
-            const sz=p2DisplaySizes[i];
-            const ds=p2ds.find(r=>r.size===sz)||{};
-            const dl=p2dl.find(r=>r.size===sz)||{};
-            const n64=p2n64.find(r=>r.size===sz)||{};
-            p2h+=`<tr>
-                <td><strong>${sz>=1000?(sz/1000).toFixed(1)+'K':sz}</strong></td><td>${ds.total||sz+48}</td>
-                <td class="col-ds ${ds.cls||''}">${ds.status||'—'}</td><td class="col-ds">${ds.loss||0}%</td><td class="col-ds">${ds.rttDisplay||'—'}</td>
-                <td class="col-dl ${dl.cls||''}">${dl.status||'—'}</td><td class="col-dl">${dl.loss||0}%</td><td class="col-dl">${dl.rttDisplay||'—'}</td>
-                <td class="col-n64 ${n64.cls||''}">${n64.status||'—'}</td><td class="col-n64">${n64.loss||0}%</td><td class="col-n64">${n64.rttDisplay||'—'}</td>
-            </tr>`;
-        }
-        document.getElementById('p2table').innerHTML=p2h;
+        // Phase 2 FULL Table - ALL 17 sizes
+        const p2FullData=p2n64.map((n64,i)=>({size:n64.size,ds:p2ds[i],dl:p2dl[i],n64:n64}));
+        buildFullTable(p2FullData,'p2table',false);
         const dm2=p2ds.filter(r=>r.status!=='❌').pop(),dlm2=p2dl.filter(r=>r.status!=='❌').pop(),nm2=p2n64.filter(r=>r.status!=='❌').pop();
-        document.getElementById('p2summary').innerHTML=`<strong>📊 Phase 2</strong><br><span style="color:#3b82f6">DS: ${dm2?dm2.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm2?dlm2.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm2?nm2.size:0}B</span>`;
+        document.getElementById('p2summary').innerHTML=`<strong>📊 With Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm2?dm2.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm2?dlm2.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm2?nm2.size:0}B</span> &nbsp; <small style="color:#64748b">(Max payload with fragmentation)</small>`;
         
         // Final Summary
         document.getElementById('ds-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dualstack',dm1?dm1.size:0);
