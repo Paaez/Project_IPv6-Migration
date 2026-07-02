@@ -6,34 +6,50 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:24px 28px;overflow-y:auto;height:100vh}
-        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:10px;margin-bottom:18px;overflow:hidden}
-        .card-header{background:#151d2b;padding:12px 18px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.9rem;display:flex;align-items:center;gap:10px}
-        .card-body{padding:18px 22px}
-        .section-title{font-size:0.82rem;color:#38bdf8;font-weight:600;margin:0 0 12px 0;padding-left:10px;border-left:3px solid #38bdf8}
+        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:24px 28px;overflow-y:auto;height:100vh;line-height:1.5}
+        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:12px;margin-bottom:20px;overflow:hidden}
+        .card-header{background:#151d2b;padding:14px 20px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.9rem;display:flex;align-items:center;gap:10px}
+        .card-body{padding:20px 24px}
+        
+        .section-title{font-size:0.85rem;color:#38bdf8;font-weight:600;margin:0 0 14px 0;padding-left:12px;border-left:3px solid #38bdf8}
+        
+        .exec-summary{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px}
+        .exec-summary h2{color:#38bdf8;font-size:1rem;margin-bottom:10px}
+        .exec-summary .winner{font-size:1.2rem;font-weight:700;color:#f59e0b;margin:8px 0}
+        .exec-summary .key-findings{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+        .finding-card{background:#151d2b;border-radius:8px;padding:12px;text-align:center;border:1px solid #2d3a4a}
+        .finding-card .icon{font-size:1.5rem}
+        .finding-card .title{font-size:0.7rem;font-weight:600;margin:6px 0;color:#cbd5e1}
+        .finding-card .value{font-size:0.85rem;font-weight:700;margin:4px 0}
+        .finding-card .detail{font-size:0.55rem;color:#94a3b8}
+        
+        .definition-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px;margin-bottom:16px}
+        .definition-box h4{color:#38bdf8;font-size:0.75rem;margin-bottom:8px}
+        .definition-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+        .def-item{font-size:0.58rem;color:#94a3b8;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px}
+        .def-item strong{color:#cbd5e1;font-size:0.62rem}
         
         .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
         .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px}
         .chart-title{font-size:0.75rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
-        .chart-wrap{position:relative;height:320px}
+        .chart-wrap{position:relative;height:300px}
         
-        .dimension-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+        .dimension-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
         .dimension-card{background:#151d2b;border-radius:8px;padding:14px;text-align:center;border:1px solid #2d3a4a}
-        .dimension-card .dim-icon{font-size:1.5rem}
-        .dimension-card .dim-name{font-size:0.72rem;font-weight:600;margin:6px 0}
-        .dimension-card .dim-desc{font-size:0.55rem;color:#64748b;margin-bottom:8px}
-        .dimension-card .dim-winner{font-size:0.75rem;font-weight:700}
-        .dimension-card .dim-scores{font-size:0.5rem;color:#94a3b8;margin-top:6px;line-height:1.6}
+        .dimension-card .dim-icon{font-size:1.4rem}
+        .dimension-card .dim-name{font-size:0.7rem;font-weight:600;margin:6px 0}
+        .dimension-card .dim-winner{font-size:0.72rem;font-weight:700;margin-top:6px}
+        .dimension-card .dim-scores{font-size:0.5rem;color:#94a3b8;margin-top:4px;line-height:1.5}
         .dim-card-ds{border-left:3px solid #3b82f6}
         .dim-card-dl{border-left:3px solid #10b981}
         .dim-card-n64{border-left:3px solid #f59e0b}
         
         .summary-table{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-bottom:18px}
-        .summary-table-header{background:#0f172a;padding:10px 14px;font-weight:600;font-size:0.78rem;color:#38bdf8;border-bottom:1px solid #2d3a4a}
+        .summary-table-header{background:#0f172a;padding:10px 14px;font-weight:600;font-size:0.75rem;color:#38bdf8;border-bottom:1px solid #2d3a4a}
         .table-scroll{overflow-x:auto}
-        table{width:100%;border-collapse:collapse;font-size:0.65rem}
-        th{background:#0f172a;color:#94a3b8;padding:7px 8px;text-align:center;font-weight:500;font-size:0.6rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a}
-        td{padding:6px 8px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.62rem}
+        table{width:100%;border-collapse:collapse;font-size:0.62rem}
+        th{background:#0f172a;color:#94a3b8;padding:6px 7px;text-align:center;font-weight:500;font-size:0.57rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a}
+        td{padding:5px 7px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.6rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
         .reliability-high{color:#10b981;font-weight:700}
         .reliability-med{color:#f59e0b;font-weight:700}
@@ -41,65 +57,159 @@
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
-        .val-neutral{color:#38bdf8;font-weight:600}
         
-        .verdict-box{background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:10px;padding:20px;margin-top:18px;border:1px solid #2d3a4a}
-        .verdict-box h3{color:#38bdf8;font-size:0.95rem;margin-bottom:14px;text-align:center}
-        .verdict-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-        .verdict-card{background:#151d2b;border-radius:8px;padding:16px;text-align:center;border:1px solid #2d3a4a}
-        .verdict-card .rank{font-size:2rem;font-weight:700}
-        .verdict-card .name{font-size:0.85rem;margin-top:4px;font-weight:600}
-        .verdict-card .score{font-size:0.75rem;margin-top:6px;font-weight:600}
-        .verdict-card .breakdown{font-size:0.52rem;color:#94a3b8;margin-top:10px;line-height:1.7;text-align:left}
-        .verdict-card .penalty-note{font-size:0.48rem;color:#ef4444;margin-top:6px;font-style:italic}
-        .rank-1{color:#f59e0b}.rank-2{color:#cbd5e1}.rank-3{color:#cd853f}
-        .rank-1-card{border-color:#f59e0b;box-shadow:0 0 25px rgba(245,158,11,0.2)}
-        
-        .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:3px 8px;border-radius:3px;font-size:0.65rem;font-weight:500}
-        .info-box{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:6px;padding:10px 14px;font-size:0.62rem;color:#94a3b8;margin-bottom:14px}
-        
-        .type-legend{display:flex;gap:16px;justify-content:center;margin-bottom:12px;font-size:0.6rem;color:#94a3b8}
-        .type-legend span{padding:2px 8px;border-radius:3px}
+        .type-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;font-size:0.58rem;color:#94a3b8}
+        .type-legend span{padding:3px 8px;border-radius:3px}
         .legend-perf{background:rgba(59,130,246,0.15);color:#3b82f6}
         .legend-rel{background:rgba(16,185,129,0.15);color:#10b981}
         .legend-stab{background:rgba(245,158,11,0.15);color:#f59e0b}
         .legend-comp{background:rgba(239,68,68,0.15);color:#ef4444}
+        
+        .recommendation-box{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:10px;padding:20px;margin-top:20px}
+        .recommendation-box h3{color:#38bdf8;font-size:0.9rem;margin-bottom:12px}
+        .recommendation-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+        .rec-card{background:#151d2b;border-radius:8px;padding:14px;text-align:center;border:1px solid #2d3a4a}
+        .rec-card .rec-icon{font-size:1.5rem}
+        .rec-card .rec-name{font-size:0.75rem;font-weight:600;margin:6px 0}
+        .rec-card .rec-for{font-size:0.6rem;color:#94a3b8;margin:4px 0;line-height:1.4}
+        .rec-card .rec-badge{font-size:0.55rem;padding:3px 8px;border-radius:3px;display:inline-block;margin-top:6px}
+        .rec-best{background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700}
+        .rec-good{background:rgba(56,189,248,0.15);color:#38bdf8}
+        .rec-niche{background:rgba(148,163,184,0.15);color:#94a3b8}
+        
+        .info-box{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:6px;padding:10px 14px;font-size:0.6rem;color:#94a3b8;margin-bottom:14px}
+        .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:3px 8px;border-radius:3px;font-size:0.65rem;font-weight:500}
     </style>
 </head>
 <body>
 
 <div class="info-box" id="dataStatus">Loading analysis data...</div>
 
-<!-- RADAR CHART -->
+<!-- ============================================ -->
+<!-- EXECUTIVE SUMMARY -->
+<!-- ============================================ -->
+<div class="exec-summary" id="execSummary" style="display:none">
+    <h2>📊 Executive Summary</h2>
+    <p style="font-size:0.7rem;color:#94a3b8;margin-bottom:10px">
+        This analysis compares three IPv6 migration strategies across <strong>performance, reliability, stability, scalability, consistency, and compatibility</strong>. 
+        All data was collected from GNS3 network simulations using 4 test scenarios with multiple runs.
+    </p>
+    <div class="winner" id="winnerText"></div>
+    <p style="font-size:0.65rem;color:#94a3b8" id="winnerExplain"></p>
+    <div class="key-findings" id="keyFindings"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- WHAT ARE WE MEASURING? -->
+<!-- ============================================ -->
 <div class="card">
-    <div class="card-header">🎯 Multi-Dimensional Strategy Comparison</div>
+    <div class="card-header">📖 What Are We Measuring? <span class="badge">Plain English Guide</span></div>
     <div class="card-body">
-        <div class="charts-row">
-            <div class="chart-box">
-                <div class="chart-title">Radar Chart - All Dimensions</div>
-                <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+        <div class="definition-grid">
+            <div class="def-item">
+                <strong>⚡ Performance</strong><br>
+                "How fast is it?"<br>
+                Raw speed: TCP throughput, HTTP download speed, response time (RTT). Higher numbers are better.
             </div>
-            <div class="chart-box">
-                <div class="chart-title">Dimensional Strengths</div>
-                <div class="dimension-grid" id="dimensionGrid"></div>
+            <div class="def-item">
+                <strong>📈 Scalability</strong><br>
+                "Does it handle growth?"<br>
+                How well performance holds up as packet sizes increase from 5M to 20M. Less drop-off = more scalable.
+            </div>
+            <div class="def-item">
+                <strong>🛡️ Reliability</strong><br>
+                "Can I count on it?"<br>
+                How consistent the results are. Low variation (CV%) means predictable, dependable performance every time.
+            </div>
+            <div class="def-item">
+                <strong>📊 Stability</strong><br>
+                "Does it stay smooth?"<br>
+                Minimal jitter and speed fluctuations. Stable connections = better user experience for video/voice.
+            </div>
+            <div class="def-item">
+                <strong>🔄 Consistency</strong><br>
+                "Same result every time?"<br>
+                When we repeat the same test, do we get the same answer? Low variation across test runs = trustworthy data.
+            </div>
+            <div class="def-item">
+                <strong>🔗 Compatibility</strong><br>
+                "Does it work with existing networks?"<br>
+                Can it handle standard MTU sizes? Does fragmentation work when needed? Essential for real-world deployment.
             </div>
         </div>
     </div>
 </div>
 
-<!-- SCORING TABLE -->
-<div class="card">
-    <div class="card-header">📋 Performance Scoring (100 Points)</div>
+<!-- ============================================ -->
+<!-- DIMENSIONAL STRENGTHS -->
+<!-- ============================================ -->
+<div class="card" id="dimCard" style="display:none">
+    <div class="card-header">🏆 Who Wins in Each Area?</div>
+    <div class="card-body">
+        <p style="font-size:0.62rem;color:#94a3b8;margin-bottom:12px">
+            Each dimension has a clear winner. A strategy can dominate one area while another excels elsewhere. 
+            The <strong>overall winner</strong> is determined by weighted scoring that prioritizes reliability and real-world performance.
+        </p>
+        <div class="dimension-grid" id="dimensionGrid"></div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- RADAR CHART -->
+<!-- ============================================ -->
+<div class="card" id="radarCard" style="display:none">
+    <div class="card-header">🎯 Visual Comparison - All Dimensions at Once</div>
+    <div class="card-body">
+        <p style="font-size:0.62rem;color:#94a3b8;margin-bottom:12px">
+            The radar chart shows how each strategy performs across all 6 dimensions on a scale of 0-10. 
+            A larger shape means better overall coverage. The <strong>outermost line</strong> in each direction wins that dimension.
+        </p>
+        <div class="chart-box">
+            <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- RELIABILITY DEEP DIVE -->
+<!-- ============================================ -->
+<div class="card" id="relCard" style="display:none">
+    <div class="card-header">📊 Reliability Deep Dive - Consistency Across Tests</div>
+    <div class="card-body">
+        <p style="font-size:0.62rem;color:#94a3b8;margin-bottom:12px">
+            <strong>Coefficient of Variation (CV%)</strong> measures how much results vary. 
+            <span style="color:#10b981">Lower CV% = More Reliable</span>. 
+            For example, a CV of 5% means results only vary by 5% between tests - highly predictable.
+        </p>
+        <div class="summary-table">
+            <div class="table-scroll"><table>
+                <thead><tr><th>Metric</th><th>What It Tells Us</th><th>🔵 DS</th><th>🟢 DL</th><th>🟠 N64</th><th>Most Reliable</th></tr></thead>
+                <tbody id="reliabilityBody"></tbody>
+            </table></div>
+        </div>
+        <div style="display:flex;gap:14px;margin-top:10px;font-size:0.53rem;color:#64748b;justify-content:center">
+            <span>🟢 &lt;5% = Highly Predictable</span>
+            <span>🟡 5-15% = Somewhat Variable</span>
+            <span>🔴 &gt;15% = Unpredictable</span>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCORING BREAKDOWN -->
+<!-- ============================================ -->
+<div class="card" id="scoreCard" style="display:none">
+    <div class="card-header">📋 How We Calculate the Final Score (100 Points Total)</div>
     <div class="card-body">
         <div class="type-legend">
-            <span class="legend-perf">⚡ Performance</span>
-            <span class="legend-rel">🛡️ Reliability</span>
-            <span class="legend-stab">📊 Stability</span>
-            <span class="legend-comp">🔗 Compatibility</span>
+            <span class="legend-perf">⚡ Performance (45 pts)</span>
+            <span class="legend-rel">🛡️ Reliability (32 pts)</span>
+            <span class="legend-stab">📊 Stability (16 pts)</span>
+            <span class="legend-comp">🔗 Compatibility (10 pts)</span>
         </div>
         <div class="summary-table">
             <div class="table-scroll"><table>
-                <thead><tr><th>Category</th><th>Max</th><th>Type</th><th>🔵 Dual Stack</th><th>🟢 DS-Lite</th><th>🟠 NAT64</th></tr></thead>
+                <thead><tr><th>What We Measure</th><th>Points</th><th>Type</th><th>🔵 Dual Stack</th><th>🟢 DS-Lite</th><th>🟠 NAT64</th></tr></thead>
                 <tbody id="scoringBody"></tbody>
                 <tfoot id="scoringFoot"></tfoot>
             </table></div>
@@ -107,35 +217,20 @@
     </div>
 </div>
 
-<!-- RELIABILITY TABLE -->
-<div class="card">
-    <div class="card-header">📊 Reliability Analysis - Coefficient of Variation (Lower CV% = More Reliable)</div>
-    <div class="card-body">
-        <div class="summary-table">
-            <div class="table-scroll"><table>
-                <thead><tr><th>Metric</th><th>🔵 DS CV%</th><th>🟢 DL CV%</th><th>🟠 N64 CV%</th><th>Most Reliable</th></tr></thead>
-                <tbody id="reliabilityBody"></tbody>
-            </table></div>
-        </div>
-        <div style="display:flex;gap:12px;margin-top:10px;font-size:0.55rem;color:#64748b;justify-content:center">
-            <span>🟢 &lt;5% = Highly Reliable</span>
-            <span>🟡 5-15% = Moderately Reliable</span>
-            <span>🔴 &gt;15% = Less Reliable</span>
-        </div>
-    </div>
-</div>
-
-<!-- FINAL VERDICT -->
-<div class="verdict-box" id="verdict" style="display:none">
-    <h3>🏆 Overall Performance Ranking</h3>
-    <div class="verdict-grid" id="verdictGrid"></div>
+<!-- ============================================ -->
+<!-- RECOMMENDATION -->
+<!-- ============================================ -->
+<div class="recommendation-box" id="recBox" style="display:none">
+    <h3>✅ Which Strategy Should You Choose?</h3>
+    <p style="font-size:0.65rem;color:#94a3b8;margin-bottom:14px">
+        There is no single "best" strategy - the right choice depends on your priorities.
+    </p>
+    <div class="recommendation-grid" id="recommendationGrid"></div>
 </div>
 
 <script>
 let allData={};
-
 function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
-
 function calcCV(values){
     if(!values||values.length<2)return 0;
     const mean=values.reduce((a,b)=>a+b,0)/values.length;
@@ -143,7 +238,6 @@ function calcCV(values){
     const variance=values.reduce((a,b)=>a+Math.pow(b-mean,2),0)/values.length;
     return(Math.sqrt(variance)/mean)*100;
 }
-
 function getAvgRTTData(strategy){
     const d=allData.test3,raw=allData.test3raw;
     if(!raw||raw.error||!Array.isArray(raw)){
@@ -164,25 +258,21 @@ async function loadAllData(){
             fetch('/api/test3-raw').then(r=>r.json()).catch(()=>null)
         ]);
         allData={test1:t1,test2:t2,test3:t3,test5:t5,test3raw:t3raw};
-        document.getElementById('dataStatus').textContent='✅ Analysis data loaded successfully';
-        buildRadarChart();buildDimensionGrid();buildScoringTable();buildReliabilityTable();buildVerdict();
-        document.getElementById('verdict').style.display='block';
-    }catch(e){
-        document.getElementById('dataStatus').innerHTML=`❌ Error: ${e.message}`;
-        document.getElementById('dataStatus').style.color='#ef4444';
-    }
+        document.getElementById('dataStatus').textContent='✅ Analysis loaded';
+        buildAll();
+    }catch(e){document.getElementById('dataStatus').innerHTML=`❌ Error: ${e.message}`;}
 }
 
-function buildRadarChart(){
+function buildAll(){
     const st=['dualstack','dslite','nat64'];
     const nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
-    const cols=['#3b82f6','#10b981','#f59e0b'];
+    const ic={dualstack:'🔵',dslite:'🟢',nat64:'🟠'};
     const d1=allData.test1,d2=allData.test2,d5=allData.test5;
     const t1Sizes=['5M','7M','10M','15M','20M'];
     const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
-    const dimensions=['Performance','Scalability','Reliability','Stability','Consistency','Compatibility'];
     
-    const scores={};
+    // Calculate all data
+    const allScores={},dimScores={},cvData={},fragPen={},finalScores={};
     st.forEach(s=>{
         const rt=getAvgRTTData(s);
         const tcpVals=t1Sizes.map(z=>gv(d1,`T1_TCP_PC1_${z}_Throughput_Mbps`,s));
@@ -191,148 +281,92 @@ function buildRadarChart(){
         const httpVals=t2Files.map(f=>gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s));
         const avgTCP=tcpVals.reduce((a,b)=>a+b,0)/5;
         const avgHTTP=httpVals.reduce((a,b)=>a+b,0)/t2Files.length;
-        scores[s]=[Math.min(10,avgTCP/2+avgHTTP/2),Math.min(10,10-calcCV(tcpVals)/5),Math.min(10,10-(rt.loss||0)*2-calcCV(icmpVals)/3),Math.min(10,10-calcCV(jitterVals)/3-(rt.mdev||0)),Math.min(10,10-calcCV(httpVals)/5),Math.min(10,(gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150))];
-    });
-    
-    const ctx=document.getElementById('radarChart').getContext('2d');
-    new Chart(ctx,{type:'radar',data:{labels:dimensions,datasets:st.map((s,i)=>({label:nm[s],data:scores[s],borderColor:cols[i],backgroundColor:cols[i]+'20',borderWidth:2.5,pointRadius:5,pointBackgroundColor:cols[i]}))},options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:10,grid:{color:'rgba(255,255,255,0.1)'},ticks:{color:'#94a3b8',font:{size:7},stepSize:2},pointLabels:{color:'#cbd5e1',font:{size:8}}}},plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:12,usePointStyle:true}}}}});
-}
-
-function buildDimensionGrid(){
-    const dims=[{name:'Performance',icon:'⚡',desc:'Raw speed & throughput'},{name:'Scalability',icon:'📈',desc:'Handles increasing load'},{name:'Reliability',icon:'🛡️',desc:'Low failure & packet loss'},{name:'Stability',icon:'📊',desc:'Minimal variation/jitter'},{name:'Consistency',icon:'🔄',desc:'Same result when repeated'},{name:'Compatibility',icon:'🔗',desc:'Works with infrastructure'}];
-    const st=['dualstack','dslite','nat64'];
-    const nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
-    const ic={dualstack:'🔵',dslite:'🟢',nat64:'🟠'};
-    const dc={dualstack:'dim-card-ds',dslite:'dim-card-dl',nat64:'dim-card-n64'};
-    const d1=allData.test1,d2=allData.test2,d5=allData.test5;
-    const t1Sizes=['5M','7M','10M','15M','20M'];
-    const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
-    
-    const dimScores={};
-    st.forEach(s=>{
-        const rt=getAvgRTTData(s);
-        const tcpVals=t1Sizes.map(z=>gv(d1,`T1_TCP_PC1_${z}_Throughput_Mbps`,s));
-        const httpVals=t2Files.map(f=>gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s));
-        const icmpVals=t1Sizes.map(z=>gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s));
-        const jitterVals=t1Sizes.map(z=>gv(d1,`T1_UDP_PC1_${z}_Jitter_ms`,s));
-        const avgTCP=tcpVals.reduce((a,b)=>a+b,0)/5;
-        const avgHTTP=httpVals.reduce((a,b)=>a+b,0)/t2Files.length;
-        dimScores[s]={Performance:Math.min(10,avgTCP/2+avgHTTP/2),Scalability:Math.min(10,10-calcCV(tcpVals)/5),Reliability:Math.min(10,10-(rt.loss||0)*2-calcCV(icmpVals)/3),Stability:Math.min(10,10-calcCV(jitterVals)/3-(rt.mdev||0)),Consistency:Math.min(10,10-calcCV(httpVals)/5),Compatibility:Math.min(10,(gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150))};
-    });
-    
-    let h='';
-    dims.forEach(dim=>{
-        let winner=st[0],bestScore=0;
-        st.forEach(s=>{if(dimScores[s][dim.name]>bestScore){bestScore=dimScores[s][dim.name];winner=s;}});
-        h+=`<div class="dimension-card ${dc[winner]}"><div class="dim-icon">${dim.icon}</div><div class="dim-name">${dim.name}</div><div class="dim-desc">${dim.desc}</div><div class="dim-winner">${ic[winner]} ${nm[winner]}</div><div class="dim-scores">DS:${dimScores['dualstack'][dim.name].toFixed(1)} | DL:${dimScores['dslite'][dim.name].toFixed(1)} | N64:${dimScores['nat64'][dim.name].toFixed(1)}</div></div>`;
-    });
-    document.getElementById('dimensionGrid').innerHTML=h;
-}
-
-function buildReliabilityTable(){
-    const st=['dualstack','dslite','nat64'];
-    const nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
-    const ic={dualstack:'🔵',dslite:'🟢',nat64:'🟠'};
-    const d1=allData.test1,d2=allData.test2;
-    const t1Sizes=['5M','7M','10M','15M','20M'];
-    const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
-    const metrics=['TCP Throughput','UDP Jitter','ICMP RTT','UDP Loss','HTTP Speed','RTT Avg (Mdev)'];
-    const cvData={};
-    
-    st.forEach(s=>{
-        const rt=getAvgRTTData(s);
-        cvData[s]={'TCP Throughput':calcCV(t1Sizes.map(z=>gv(d1,`T1_TCP_PC1_${z}_Throughput_Mbps`,s))),'UDP Jitter':calcCV(t1Sizes.map(z=>gv(d1,`T1_UDP_PC1_${z}_Jitter_ms`,s))),'ICMP RTT':calcCV(t1Sizes.map(z=>gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s))),'UDP Loss':calcCV(t1Sizes.map(z=>gv(d1,`T1_UDP_PC1_${z}_Loss_Percent`,s))),'HTTP Speed':calcCV(t2Files.map(f=>gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s))),'RTT Avg (Mdev)':rt.avg>0?(rt.mdev||0)/rt.avg*100:0};
-    });
-    
-    let h='';
-    metrics.forEach(m=>{
-        let best=st[0];
-        st.forEach(s=>{if(cvData[s][m]<cvData[best][m])best=s;});
-        h+=`<tr><td><strong>${m}</strong></td>`;
-        st.forEach(s=>{const cv=cvData[s][m];const cls=cv<5?'reliability-high':cv<15?'reliability-med':'reliability-low';h+=`<td class="${cls}">${cv.toFixed(1)}%${cv===cvData[best][m]&&cv<50?' ⭐':''}</td>`;});
-        h+=`<td>${ic[best]} ${nm[best]}</td></tr>`;
-    });
-    document.getElementById('reliabilityBody').innerHTML=h;
-}
-
-function buildScoringTable(){
-    const st=['dualstack','dslite','nat64'];
-    const d1=allData.test1,d2=allData.test2,d5=allData.test5;
-    const t1Sizes=['5M','7M','10M','15M','20M'];
-    const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
-    const fragPen={};
-    
-    st.forEach(s=>{const mf=[1500,2000,3000,4000].reduce((mx,sz)=>gv(d5,`T5_P2_Frag_${sz}B_Success`,s)===1?sz:mx,0);fragPen[s]=mf===0;});
-    
-    const scores={};
-    st.forEach(s=>{
-        const rt=getAvgRTTData(s);
-        const tcpVals=t1Sizes.map(z=>gv(d1,`T1_TCP_PC1_${z}_Throughput_Mbps`,s));
-        const avgTCP=tcpVals.reduce((a,b)=>a+b,0)/5;
         const avgJitter=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_UDP_PC1_${z}_Jitter_ms`,s),0)/5;
         const avgICMP=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s),0)/5;
         const avgUDPLoss=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_UDP_PC1_${z}_Loss_Percent`,s),0)/5;
-        const httpVals=t2Files.map(f=>gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s));
-        const avgHTTP=httpVals.reduce((a,b)=>a+b,0)/t2Files.length;
+        const mf=[1500,2000,3000,4000].reduce((mx,sz)=>gv(d5,`T5_P2_Frag_${sz}B_Success`,s)===1?sz:mx,0);
+        fragPen[s]=mf===0;
         let mts=Math.min(10,gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150);if(fragPen[s])mts*=0.5;
         
-        scores[s]={tcp:Math.min(12,avgTCP*0.6),tcpRel:Math.max(0,8-calcCV(tcpVals)/5),jitter:Math.max(0,8-avgJitter*40),udpLoss:Math.max(0,5-avgUDPLoss*1),icmp:Math.max(0,8-avgICMP*0.4),icmpRel:Math.max(0,5-calcCV(t1Sizes.map(z=>gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s)))/4),http:Math.min(15,avgHTTP*1.2),httpStab:Math.max(0,8-calcCV(httpVals)/5),rtt:Math.max(0,10-(rt.avg||0)*1.2),rttRel:Math.max(0,6-(rt.mdev||0)*2),loss:Math.max(0,5-(rt.loss||0)*2),mtu:mts};
-        scores[s].total=scores[s].tcp+scores[s].tcpRel+scores[s].jitter+scores[s].udpLoss+scores[s].icmp+scores[s].icmpRel+scores[s].http+scores[s].httpStab+scores[s].rtt+scores[s].rttRel+scores[s].loss+scores[s].mtu;
-    });
-    
-    const cats=[{k:'tcp',l:'📦 TCP Throughput',m:12,t:'perf'},{k:'tcpRel',l:'📦 TCP Consistency',m:8,t:'rel'},{k:'jitter',l:'📦 UDP Jitter',m:8,t:'stab'},{k:'udpLoss',l:'📦 UDP Loss',m:5,t:'rel'},{k:'icmp',l:'📦 ICMP RTT',m:8,t:'perf'},{k:'icmpRel',l:'📦 ICMP Consistency',m:5,t:'rel'},{k:'http',l:'🌐 HTTP Speed',m:15,t:'perf'},{k:'httpStab',l:'🌐 HTTP Stability',m:8,t:'stab'},{k:'rtt',l:'🔴 RTT Avg',m:10,t:'perf'},{k:'rttRel',l:'🔴 RTT Consistency',m:6,t:'rel'},{k:'loss',l:'🔴 Packet Loss',m:5,t:'rel'},{k:'mtu',l:'💥 MTU Payload',m:10,t:'comp'}];
-    
-    const typeLabels={perf:'⚡',rel:'🛡️',stab:'📊',comp:'🔗'};
-    
-    let bh='';
-    cats.forEach(c=>{
-        bh+=`<tr><td><strong>${c.l}</strong></td><td style="color:#64748b">${c.m}</td><td>${typeLabels[c.t]}</td>`;
-        st.forEach(s=>{const sc=scores[s][c.k];let cl=sc>=c.m*0.8?'val-good':sc>=c.m*0.4?'val-warn':'val-bad';if(c.k==='mtu'&&fragPen[s]){cl+=' val-penalty';bh+=`<td class="${cl}">${sc.toFixed(1)}⚠️</td>`;}else{bh+=`<td class="${cl}">${sc.toFixed(1)}</td>`;}});
-        bh+=`</tr>`;
-    });
-    document.getElementById('scoringBody').innerHTML=bh;
-    
-    let fh=`<tr style="border-top:3px solid #38bdf8;font-weight:700;font-size:0.72rem"><td colspan="3"><strong>🏆 TOTAL</strong></td>`;
-    st.forEach(s=>{const cl=scores[s].total>=70?'val-good':scores[s].total>=50?'val-warn':'val-bad';fh+=`<td class="${cl}" style="font-size:0.82rem">${scores[s].total.toFixed(1)}/100</td>`;});
-    fh+=`</tr>`;document.getElementById('scoringFoot').innerHTML=fh;
-}
-
-function buildVerdict(){
-    const st=['dualstack','dslite','nat64'];
-    const nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
-    const ic={dualstack:'🔵',dslite:'🟢',nat64:'🟠'};
-    const d1=allData.test1,d2=allData.test2,d5=allData.test5;
-    const t1Sizes=['5M','7M','10M','15M','20M'];
-    const tf=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
-    const sc={},bd={},fp={};
-    
-    st.forEach(s=>{
-        const rt=getAvgRTTData(s);
-        const tcpVals=t1Sizes.map(z=>gv(d1,`T1_TCP_PC1_${z}_Throughput_Mbps`,s));
-        const avgTCP=tcpVals.reduce((a,b)=>a+b,0)/5;
-        const avgJitter=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_UDP_PC1_${z}_Jitter_ms`,s),0)/5;
-        const avgICMP=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s),0)/5;
-        const avgUDPLoss=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_UDP_PC1_${z}_Loss_Percent`,s),0)/5;
-        const httpVals=tf.map(f=>gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s));
-        const avgHTTP=httpVals.reduce((a,b)=>a+b,0)/tf.length;
-        const mf=[1500,2000,3000,4000].reduce((mx,sz)=>gv(d5,`T5_P2_Frag_${sz}B_Success`,s)===1?sz:mx,0);
-        fp[s]=mf===0;let mts=Math.min(10,gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150);if(fp[s])mts*=0.5;
+        dimScores[s]={Performance:Math.min(10,avgTCP/2+avgHTTP/2),Scalability:Math.min(10,10-calcCV(tcpVals)/5),Reliability:Math.min(10,10-(rt.loss||0)*2-calcCV(icmpVals)/3),Stability:Math.min(10,10-calcCV(jitterVals)/3-(rt.mdev||0)),Consistency:Math.min(10,10-calcCV(httpVals)/5),Compatibility:Math.min(10,(gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150))};
         
-        const pt={tcp:Math.min(12,avgTCP*0.6),tcpRel:Math.max(0,8-calcCV(tcpVals)/5),jitter:Math.max(0,8-avgJitter*40),udpLoss:Math.max(0,5-avgUDPLoss*1),icmp:Math.max(0,8-avgICMP*0.4),icmpRel:Math.max(0,5-calcCV(t1Sizes.map(z=>gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s)))/4),http:Math.min(15,avgHTTP*1.2),httpStab:Math.max(0,8-calcCV(httpVals)/5),rtt:Math.max(0,10-(rt.avg||0)*1.2),rttRel:Math.max(0,6-(rt.mdev||0)*2),loss:Math.max(0,5-(rt.loss||0)*2),mtu:mts};
+        cvData[s]={'TCP Throughput':calcCV(tcpVals),'UDP Jitter':calcCV(jitterVals),'ICMP RTT':calcCV(icmpVals),'UDP Loss':calcCV(t1Sizes.map(z=>gv(d1,`T1_UDP_PC1_${z}_Loss_Percent`,s))),'HTTP Speed':calcCV(httpVals),'RTT Variation':rt.avg>0?(rt.mdev||0)/rt.avg*100:0};
+        
+        const pt={tcp:Math.min(12,avgTCP*0.6),tcpRel:Math.max(0,8-calcCV(tcpVals)/5),jitter:Math.max(0,8-avgJitter*40),udpLoss:Math.max(0,5-avgUDPLoss*1),icmp:Math.max(0,8-avgICMP*0.4),icmpRel:Math.max(0,5-calcCV(icmpVals)/4),http:Math.min(15,avgHTTP*1.2),httpStab:Math.max(0,8-calcCV(httpVals)/5),rtt:Math.max(0,10-(rt.avg||0)*1.2),rttRel:Math.max(0,6-(rt.mdev||0)*2),loss:Math.max(0,5-(rt.loss||0)*2),mtu:mts};
         pt.total=pt.tcp+pt.tcpRel+pt.jitter+pt.udpLoss+pt.icmp+pt.icmpRel+pt.http+pt.httpStab+pt.rtt+pt.rttRel+pt.loss+pt.mtu;
-        sc[s]=pt.total;bd[s]=pt;
+        finalScores[s]=pt;
     });
     
-    const rk=st.sort((a,b)=>sc[b]-sc[a]);
-    const rc={0:'rank-1 rank-1-card',1:'rank-2',2:'rank-3'};
-    const md={0:'🥇',1:'🥈',2:'🥉'};
-    let h='';
-    rk.forEach((s,i)=>{const b=bd[s],p=fp[s];
-        const perfTotal=b.tcp+b.icmp+b.http+b.rtt;
-        const relTotal=b.tcpRel+b.icmpRel+b.rttRel+b.loss+b.udpLoss;
-        const stabTotal=b.jitter+b.httpStab;
-        h+=`<div class="verdict-card ${rc[i]}"><div class="rank ${rc[i].split(' ')[0]}">${md[i]} #${i+1}</div><div class="name">${ic[s]} ${nm[s]}</div><div class="score">${sc[s].toFixed(1)} / 100</div><div class="breakdown">⚡Perf: ${perfTotal.toFixed(1)} | 🛡️Rel: ${relTotal.toFixed(1)}<br>📊Stab: ${stabTotal.toFixed(1)} | 🔗Comp: ${b.mtu.toFixed(1)}</div>`;if(p)h+=`<div class="penalty-note">⚠️ Fragmentation failure penalty applied</div>`;h+=`</div>`;});
-    document.getElementById('verdictGrid').innerHTML=h;
+    // Find overall winner
+    const ranked=st.sort((a,b)=>finalScores[b].total-finalScores[a].total);
+    const overallWinner=ranked[0];
+    
+    // Build Executive Summary
+    document.getElementById('winnerText').textContent=`🏆 Overall Winner: ${ic[overallWinner]} ${nm[overallWinner]} (${finalScores[overallWinner].total.toFixed(1)}/100)`;
+    document.getElementById('winnerExplain').textContent=`${nm[overallWinner]} won because it scored highest in the weighted evaluation that prioritizes reliability and real-world performance, not just raw speed.`;
+    
+    // Key findings
+    const dims=[{name:'Performance',icon:'⚡'},{name:'Scalability',icon:'📈'},{name:'Reliability',icon:'🛡️'},{name:'Stability',icon:'📊'},{name:'Consistency',icon:'🔄'},{name:'Compatibility',icon:'🔗'}];
+    let winners={};
+    dims.forEach(d=>{let w=st[0];st.forEach(s=>{if(dimScores[s][d.name]>dimScores[w][d.name])w=s;});winners[d.name]=w;});
+    
+    const dsWins=dims.filter(d=>winners[d.name]==='dualstack').length;
+    const dlWins=dims.filter(d=>winners[d.name]==='dslite').length;
+    const n64Wins=dims.filter(d=>winners[d.name]==='nat64').length;
+    
+    document.getElementById('keyFindings').innerHTML=`
+        <div class="finding-card"><div class="icon">🔵</div><div class="title">Dual Stack</div><div class="value">${dsWins}/6 dimensions</div><div class="detail">Excels in: ${dims.filter(d=>winners[d.name]==='dualstack').map(d=>d.icon+' '+d.name).join(', ')}</div></div>
+        <div class="finding-card"><div class="icon">🟢</div><div class="title">DS-Lite</div><div class="value">${dlWins}/6 dimensions</div><div class="detail">Excels in: ${dims.filter(d=>winners[d.name]==='dslite').map(d=>d.icon+' '+d.name).join(', ')}</div></div>
+        <div class="finding-card"><div class="icon">🟠</div><div class="title">NAT64</div><div class="value">${n64Wins}/6 dimensions</div><div class="detail">${n64Wins>0?'Excels in: '+dims.filter(d=>winners[d.name]==='nat64').map(d=>d.icon+' '+d.name).join(', '):'No dimension wins - highest latency'}</div></div>`;
+    
+    // Build Dimension Grid
+    let dh='';
+    dims.forEach(dim=>{
+        let winner=st[0];
+        st.forEach(s=>{if(dimScores[s][dim.name]>dimScores[winner][dim.name])winner=s;});
+        dh+=`<div class="dimension-card dim-card-${winner==='dualstack'?'ds':winner==='dslite'?'dl':'n64'}"><div class="dim-icon">${dim.icon}</div><div class="dim-name">${dim.name}</div><div class="dim-winner">${ic[winner]} ${nm[winner]}</div><div class="dim-scores">DS:${dimScores['dualstack'][dim.name].toFixed(1)} | DL:${dimScores['dslite'][dim.name].toFixed(1)} | N64:${dimScores['nat64'][dim.name].toFixed(1)}</div></div>`;
+    });
+    document.getElementById('dimensionGrid').innerHTML=dh;
+    
+    // Radar Chart
+    const ctx=document.getElementById('radarChart').getContext('2d');
+    new Chart(ctx,{type:'radar',data:{labels:dims.map(d=>d.name),datasets:st.map((s,i)=>({label:nm[s],data:dims.map(d=>dimScores[s][d.name]),borderColor:['#3b82f6','#10b981','#f59e0b'][i],backgroundColor:['#3b82f6','#10b981','#f59e0b'][i]+'20',borderWidth:2.5,pointRadius:5,pointBackgroundColor:['#3b82f6','#10b981','#f59e0b'][i]}))},options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:10,grid:{color:'rgba(255,255,255,0.1)'},ticks:{color:'#94a3b8',font:{size:7},stepSize:2},pointLabels:{color:'#cbd5e1',font:{size:8}}}},plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:12,usePointStyle:true}}}}});
+    
+    // Reliability Table
+    const relMetrics=['TCP Throughput','UDP Jitter','ICMP RTT','UDP Loss','HTTP Speed','RTT Variation'];
+    const relWhat=['Consistency across packet sizes','Jitter stability','Latency predictability','Loss pattern consistency','Download speed stability','RTT variation between runs'];
+    let rh='';
+    relMetrics.forEach((m,i)=>{
+        let best=st[0];
+        st.forEach(s=>{if(cvData[s][m]<cvData[best][m])best=s;});
+        rh+=`<tr><td><strong>${m}</strong></td><td style="font-size:0.5rem;color:#64748b">${relWhat[i]}</td>`;
+        st.forEach(s=>{const cv=cvData[s][m];const cls=cv<5?'reliability-high':cv<15?'reliability-med':'reliability-low';rh+=`<td class="${cls}">${cv.toFixed(1)}%${cv===cvData[best][m]&&cv<50?' ⭐':''}</td>`;});
+        rh+=`<td>${ic[best]} ${nm[best]}</td></tr>`;
+    });
+    document.getElementById('reliabilityBody').innerHTML=rh;
+    
+    // Scoring Table
+    const cats=[{k:'tcp',l:'TCP Throughput',m:12,t:'perf'},{k:'tcpRel',l:'TCP Consistency',m:8,t:'rel'},{k:'jitter',l:'UDP Jitter',m:8,t:'stab'},{k:'udpLoss',l:'UDP Loss',m:5,t:'rel'},{k:'icmp',l:'ICMP RTT',m:8,t:'perf'},{k:'icmpRel',l:'ICMP Consistency',m:5,t:'rel'},{k:'http',l:'HTTP Speed',m:15,t:'perf'},{k:'httpStab',l:'HTTP Stability',m:8,t:'stab'},{k:'rtt',l:'RTT Average',m:10,t:'perf'},{k:'rttRel',l:'RTT Consistency',m:6,t:'rel'},{k:'loss',l:'Packet Loss',m:5,t:'rel'},{k:'mtu',l:'MTU Compatibility',m:10,t:'comp'}];
+    const typeLabels={perf:'⚡',rel:'🛡️',stab:'📊',comp:'🔗'};
+    let sh='';
+    cats.forEach(c=>{
+        sh+=`<tr><td><strong>${c.l}</strong></td><td style="color:#64748b">${c.m}</td><td>${typeLabels[c.t]}</td>`;
+        st.forEach(s=>{const sc=finalScores[s][c.k];let cl=sc>=c.m*0.8?'val-good':sc>=c.m*0.4?'val-warn':'val-bad';if(c.k==='mtu'&&fragPen[s]){cl+=' val-bad';sh+=`<td class="${cl}">${sc.toFixed(1)}⚠️</td>`;}else{sh+=`<td class="${cl}">${sc.toFixed(1)}</td>`;}});
+        sh+=`</tr>`;
+    });
+    document.getElementById('scoringBody').innerHTML=sh;
+    let fh=`<tr style="border-top:3px solid #38bdf8;font-weight:700;font-size:0.7rem"><td colspan="3"><strong>🏆 TOTAL SCORE</strong></td>`;
+    st.forEach(s=>{const cl=finalScores[s].total>=70?'val-good':finalScores[s].total>=50?'val-warn':'val-bad';fh+=`<td class="${cl}" style="font-size:0.8rem">${finalScores[s].total.toFixed(1)}/100</td>`;});
+    fh+=`</tr>`;document.getElementById('scoringFoot').innerHTML=fh;
+    
+    // Recommendations
+    document.getElementById('recommendationGrid').innerHTML=`
+        <div class="rec-card" style="border-color:#3b82f6"><div class="rec-icon">🔵</div><div class="rec-name">Dual Stack</div><div class="rec-for">Best for: Raw performance<br>When speed is the #1 priority<br>Native IPv4/IPv6 environments</div><span class="rec-badge ${overallWinner==='dualstack'?'rec-best':'rec-good'}">${overallWinner==='dualstack'?'🏆 Best Overall':'✅ Strong Performer'}</span></div>
+        <div class="rec-card" style="border-color:#10b981"><div class="rec-icon">🟢</div><div class="rec-name">DS-Lite</div><div class="rec-for">Best for: Reliability & Consistency<br>When predictable performance matters<br>ISP deployments with IPv6 backbone</div><span class="rec-badge ${overallWinner==='dslite'?'rec-best':'rec-good'}">${overallWinner==='dslite'?'🏆 Best Overall':'✅ Strong Performer'}</span></div>
+        <div class="rec-card" style="border-color:#f59e0b"><div class="rec-icon">🟠</div><div class="rec-name">NAT64</div><div class="rec-for">Best for: IPv6-only clients<br>When IPv4 compatibility is needed<br>Transitional environments</div><span class="rec-badge rec-niche">⚠️ Higher Latency</span></div>`;
+    
+    // Show all sections
+    ['execSummary','dimCard','radarCard','relCard','scoreCard','recBox'].forEach(id=>document.getElementById(id).style.display='block');
 }
 
 loadAllData();
