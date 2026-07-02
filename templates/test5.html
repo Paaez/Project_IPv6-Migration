@@ -19,13 +19,19 @@
         
         .section-title{font-size:0.8rem;color:#38bdf8;font-weight:600;margin:14px 0 8px 0;padding-left:10px;border-left:3px solid #38bdf8}
         
-        .table-scroll{max-height:400px;overflow:auto;border:1px solid #2d3a4a;border-radius:6px}
-        table{width:100%;border-collapse:collapse;font-size:0.58rem}
-        th{background:#151d2b;color:#38bdf8;padding:4px 3px;text-align:center;font-weight:600;position:sticky;top:0;z-index:2;font-size:0.55rem;text-transform:uppercase;white-space:nowrap}
-        th.sticky-col{position:sticky;left:0;z-index:3;background:#151d2b}
-        td{padding:3px 3px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center;font-size:0.55rem}
-        td.sticky-col{position:sticky;left:0;z-index:1;background:#1a2332;font-weight:600}
+        .table-scroll{max-height:350px;overflow:auto;border:1px solid #2d3a4a;border-radius:6px}
+        table{width:100%;border-collapse:collapse;font-size:0.55rem}
+        th{background:#151d2b;color:#38bdf8;padding:4px 3px;text-align:center;font-weight:600;position:sticky;top:0;z-index:2;font-size:0.52rem;text-transform:uppercase;white-space:nowrap}
+        th.row-label{position:sticky;left:0;z-index:3;background:#151d2b;min-width:60px;text-align:left;padding-left:6px}
+        td{padding:3px 3px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center;font-size:0.52rem}
+        td.row-label{position:sticky;left:0;z-index:1;font-weight:600;text-align:left;padding-left:6px;font-size:0.55rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
+        tr.strat-separator td{border-top:2px solid #2d3a4a;background:#0f172a;height:2px}
+        
+        .row-ds td.row-label{color:#3b82f6;background:rgba(59,130,246,0.06)}
+        .row-dl td.row-label{color:#10b981;background:rgba(16,185,129,0.06)}
+        .row-n64 td.row-label{color:#f59e0b;background:rgba(245,158,11,0.06)}
+        
         .s-ok{color:#10b981;font-weight:700}.s-fail{color:#ef4444;font-weight:700}.s-frag{color:#f59e0b;font-weight:700}
         
         .summary-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
@@ -36,7 +42,6 @@
         .final-card{background:#151d2b;border-radius:8px;padding:12px;border-left:3px solid}
         .final-card strong{font-size:0.75rem}.final-card p{font-size:0.7rem;color:#cbd5e1;margin:4px 0}
         
-        .col-ds{background:rgba(59,130,246,0.08)}.col-dl{background:rgba(16,185,129,0.08)}.col-n64{background:rgba(245,158,11,0.08)}
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:3px 8px;border-radius:3px;font-size:0.65rem;font-weight:500}
         
         .legend-row{display:flex;gap:12px;align-items:center;font-size:0.6rem;color:#94a3b8;margin-top:6px;flex-wrap:wrap}
@@ -109,20 +114,18 @@
             </div>
         </div>
         
-        <!-- PHASE 1 FULL TABLE -->
-        <div class="section-title" title="Without Fragmentation: All packet sizes tested with DF flag set">🔬 Without Fragmentation (DF Set) - Full Scale</div>
+        <!-- PHASE 1 TRANSPOSED TABLE -->
+        <div class="section-title" title="Without Fragmentation: Strategies as rows, packet sizes as columns">🔬 Without Fragmentation (DF Set) - Full Scale</div>
         <div class="table-scroll"><table>
-            <thead><tr><th class="sticky-col">Size</th><th>Total</th><th colspan="3" style="color:#3b82f6">Dual Stack</th><th colspan="3" style="color:#10b981">DS-Lite</th><th colspan="3" style="color:#f59e0b">NAT64</th></tr>
-            <tr><th class="sticky-col"></th><th></th><th style="color:#3b82f6">St</th><th style="color:#3b82f6">Loss</th><th style="color:#3b82f6">RTT</th><th style="color:#10b981">St</th><th style="color:#10b981">Loss</th><th style="color:#10b981">RTT</th><th style="color:#f59e0b">St</th><th style="color:#f59e0b">Loss</th><th style="color:#f59e0b">RTT</th></tr></thead>
+            <thead><tr><th class="row-label">Strategy</th><th>Metric</th><th>64B</th><th>128B</th><th>256B</th><th>512B</th><th>768B</th><th>1024B</th><th>1280B</th><th>1290B</th><th>1300B</th><th>1310B</th><th>1320B</th><th>1330B</th><th>1340B</th><th>1350B</th><th>1360B</th><th>1370B</th><th>1380B</th><th>1390B</th><th>1400B</th><th>1410B</th><th>1420B</th><th>1430B</th><th>1440B</th><th>1450B</th><th>1460B</th><th>1470B</th><th>1480B</th><th>1490B</th><th>1500B</th><th>1510B</th><th>1520B</th></tr></thead>
             <tbody id="p1table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p1summary"></div></div>
         
-        <!-- PHASE 2 FULL TABLE -->
-        <div class="section-title" title="With Fragmentation: All packet sizes tested with fragmentation allowed">🔬 With Fragmentation Allowed - Full Scale</div>
+        <!-- PHASE 2 TRANSPOSED TABLE -->
+        <div class="section-title" title="With Fragmentation: Strategies as rows, packet sizes as columns">🔬 With Fragmentation Allowed - Full Scale</div>
         <div class="table-scroll"><table>
-            <thead><tr><th class="sticky-col">Size</th><th>Total</th><th colspan="3" style="color:#3b82f6">Dual Stack</th><th colspan="3" style="color:#10b981">DS-Lite</th><th colspan="3" style="color:#f59e0b">NAT64</th></tr>
-            <tr><th class="sticky-col"></th><th></th><th style="color:#3b82f6">St</th><th style="color:#3b82f6">Loss</th><th style="color:#3b82f6">RTT</th><th style="color:#10b981">St</th><th style="color:#10b981">Loss</th><th style="color:#10b981">RTT</th><th style="color:#f59e0b">St</th><th style="color:#f59e0b">Loss</th><th style="color:#f59e0b">RTT</th></tr></thead>
+            <thead><tr><th class="row-label">Strategy</th><th>Metric</th><th>1.5K</th><th>2K</th><th>3K</th><th>4K</th><th>5K</th><th>6K</th><th>7K</th><th>8K</th><th>9K</th><th>10K</th><th>12K</th><th>15K</th><th>20K</th><th>30K</th><th>40K</th><th>50K</th><th>60K</th></tr></thead>
             <tbody id="p2table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p2summary"></div></div>
@@ -200,20 +203,39 @@ function buildHeatmap(p1ds,p1dl,p1n64){
     document.getElementById('heatmapGrid').innerHTML=html;
 }
 
-function buildFullTable(data, tableId, isPhase1){
+function buildTransposedTable(data, tableId, sizes){
+    const strategies=['dualstack','dslite','nat64'];
+    const names=['🔵 Dual Stack','🟢 DS-Lite','🟠 NAT64'];
+    const rowClasses=['row-ds','row-dl','row-n64'];
+    
     let h='';
-    for(let i=0;i<data.length;i++){
-        const ds=data[i].ds||{}, dl=data[i].dl||{}, n64=data[i].n64||{};
-        const sz=data[i].size;
-        const total=ds.total||dl.total||n64.total||(sz+(isPhase1?28:48));
-        const szLabel=sz>=1000?(sz/1000).toFixed(1)+'K':sz;
-        h+=`<tr>
-            <td class="sticky-col"><strong>${szLabel}</strong></td><td>${total}</td>
-            <td class="col-ds ${ds.cls||''}">${ds.status||'—'}</td><td class="col-ds">${ds.loss||0}%</td><td class="col-ds">${ds.rttDisplay||'—'}</td>
-            <td class="col-dl ${dl.cls||''}">${dl.status||'—'}</td><td class="col-dl">${dl.loss||0}%</td><td class="col-dl">${dl.rttDisplay||'—'}</td>
-            <td class="col-n64 ${n64.cls||''}">${n64.status||'—'}</td><td class="col-n64">${n64.loss||0}%</td><td class="col-n64">${n64.rttDisplay||'—'}</td>
-        </tr>`;
-    }
+    strategies.forEach((s,si)=>{
+        // Status row
+        h+=`<tr class="${rowClasses[si]}"><td class="row-label">${names[si]}</td><td style="color:#94a3b8;font-size:0.48rem">Status</td>`;
+        sizes.forEach(sz=>{
+            const found=data[s].find(r=>r.size===sz);
+            h+=found?`<td class="${found.cls}">${found.status}</td>`:'<td>—</td>';
+        });
+        h+=`</tr>`;
+        // Loss row
+        h+=`<tr class="${rowClasses[si]}"><td class="row-label">${names[si]}</td><td style="color:#94a3b8;font-size:0.48rem">Loss%</td>`;
+        sizes.forEach(sz=>{
+            const found=data[s].find(r=>r.size===sz);
+            h+=found?`<td class="${found.loss===0?'s-ok':found.loss===100?'s-fail':'s-frag'}">${found.loss}%</td>`:'<td>—</td>';
+        });
+        h+=`</tr>`;
+        // RTT row
+        h+=`<tr class="${rowClasses[si]}"><td class="row-label">${names[si]}</td><td style="color:#94a3b8;font-size:0.48rem">RTT</td>`;
+        sizes.forEach(sz=>{
+            const found=data[s].find(r=>r.size===sz);
+            h+=found?`<td>${found.rttDisplay}</td>`:'<td>—</td>';
+        });
+        h+=`</tr>`;
+        // Separator
+        if(si<strategies.length-1){
+            h+=`<tr class="strat-separator"><td colspan="${sizes.length+2}"></td></tr>`;
+        }
+    });
     document.getElementById(tableId).innerHTML=h;
 }
 
@@ -253,63 +275,45 @@ async function load(){
         // Phase 2 Success Rate Chart
         if(charts['successChart2'])charts['successChart2'].destroy();
         charts['successChart2']=new Chart(document.getElementById('successChart2'),{
-            type:'bar',
-            data:{
-                labels:p2n64.map(r=>r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size),
-                datasets:[
-                    {label:names[0],data:p2ds.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#3b82f6',borderRadius:2},
-                    {label:names[1],data:p2dl.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#10b981',borderRadius:2},
-                    {label:names[2],data:p2n64.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#f59e0b',borderRadius:2}
-                ]
-            },
-            options:{
-                responsive:true,maintainAspectRatio:false,
-                plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},
-                scales:{
-                    y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success (1=Yes, 0=No)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},
-                    x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}
-                }
-            }
+            type:'bar',data:{labels:p2n64.map(r=>r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size),datasets:[
+                {label:names[0],data:p2ds.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#3b82f6',borderRadius:2},
+                {label:names[1],data:p2dl.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#10b981',borderRadius:2},
+                {label:names[2],data:p2n64.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#f59e0b',borderRadius:2}
+            ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},scales:{y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}}}
         });
         
         // Heatmap
         buildHeatmap(p1ds,p1dl,p1n64);
         
-        // RTT Comparison at MTU Boundary
+        // RTT Comparison
         const maxNoFragDS=p1ds.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
         const maxNoFragDL=p1dl.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
         const maxNoFragN64=p1n64.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
-        const fragDS=p2ds.find(r=>r.size===1500)||{rtt:0};
-        const fragDL=p2dl.find(r=>r.size===1500)||{rtt:0};
-        const fragN64=p2n64.find(r=>r.size===1500)||{rtt:0};
-        const noFragRTT=[maxNoFragDS.rtt,maxNoFragDL.rtt,maxNoFragN64.rtt];
-        const fragRTT=[fragDS.rtt,fragDL.rtt,fragN64.rtt];
+        const fragDS=p2ds.find(r=>r.size===1500)||{rtt:0},fragDL=p2dl.find(r=>r.size===1500)||{rtt:0},fragN64=p2n64.find(r=>r.size===1500)||{rtt:0};
         const overheadDS=maxNoFragDS.rtt>0?((fragDS.rtt-maxNoFragDS.rtt)/maxNoFragDS.rtt*100).toFixed(0):0;
         const overheadDL=maxNoFragDL.rtt>0?((fragDL.rtt-maxNoFragDL.rtt)/maxNoFragDL.rtt*100).toFixed(0):0;
         const overheadN64=maxNoFragN64.rtt>0?((fragN64.rtt-maxNoFragN64.rtt)/maxNoFragN64.rtt*100).toFixed(0):0;
-        
         document.getElementById('overheadLabels').innerHTML=`
-            <span class="overhead-ds" title="Extra RTT caused by fragmentation. Lower % = more efficient">🔵 DS: +${overheadDS}%</span>
-            <span class="overhead-dl" title="Extra RTT caused by fragmentation. Lower % = more efficient">🟢 DL: +${overheadDL}%</span>
-            <span class="overhead-n64" title="Extra RTT caused by fragmentation. Lower % = more efficient">🟠 N64: +${overheadN64}%</span>`;
-        
+            <span class="overhead-ds" title="Extra RTT from fragmentation">🔵 DS: +${overheadDS}%</span>
+            <span class="overhead-dl" title="Extra RTT from fragmentation">🟢 DL: +${overheadDL}%</span>
+            <span class="overhead-n64" title="Extra RTT from fragmentation">🟠 N64: +${overheadN64}%</span>`;
         if(charts['rttCompareChart'])charts['rttCompareChart'].destroy();
         charts['rttCompareChart']=new Chart(document.getElementById('rttCompareChart'),{type:'bar',data:{labels:names,datasets:[
-            {label:`No-Frag (${maxNoFragDS.size||1470}B)`,data:noFragRTT,backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},
-            {label:'Fragmented (1500B)',data:fragRTT,backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}
+            {label:`No-Frag (${maxNoFragDS.size||1470}B)`,data:[maxNoFragDS.rtt,maxNoFragDL.rtt,maxNoFragN64.rtt],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},
+            {label:'Fragmented (1500B)',data:[fragDS.rtt,fragDL.rtt,fragN64.rtt],backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}
         ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
         
-        // Phase 1 FULL Table - ALL 31 sizes
-        const p1FullData=p1n64.map((n64,i)=>({size:n64.size,ds:p1ds[i],dl:p1dl[i],n64:n64}));
-        buildFullTable(p1FullData,'p1table',true);
+        // Phase 1 Transposed Table - ALL 31 sizes
+        const p1Sizes=[64,128,256,512,768,1024,1280,1290,1300,1310,1320,1330,1340,1350,1360,1370,1380,1390,1400,1410,1420,1430,1440,1450,1460,1470,1480,1490,1500,1510,1520];
+        buildTransposedTable({dualstack:p1ds,dslite:p1dl,nat64:p1n64},'p1table',p1Sizes);
         const dm1=p1ds.filter(r=>r.status==='✅').pop(),dlm1=p1dl.filter(r=>r.status==='✅').pop(),nm1=p1n64.filter(r=>r.status==='✅').pop();
-        document.getElementById('p1summary').innerHTML=`<strong>📊 Without Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm1?dm1.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm1?dlm1.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm1?nm1.size:0}B</span> &nbsp; <small style="color:#64748b">(Max payload without fragmentation)</small>`;
+        document.getElementById('p1summary').innerHTML=`<strong>📊 Without Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm1?dm1.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm1?dlm1.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm1?nm1.size:0}B</span> <small style="color:#64748b">(Max payload without fragmentation)</small>`;
         
-        // Phase 2 FULL Table - ALL 17 sizes
-        const p2FullData=p2n64.map((n64,i)=>({size:n64.size,ds:p2ds[i],dl:p2dl[i],n64:n64}));
-        buildFullTable(p2FullData,'p2table',false);
+        // Phase 2 Transposed Table - ALL 17 sizes
+        const p2Sizes=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
+        buildTransposedTable({dualstack:p2ds,dslite:p2dl,nat64:p2n64},'p2table',p2Sizes);
         const dm2=p2ds.filter(r=>r.status!=='❌').pop(),dlm2=p2dl.filter(r=>r.status!=='❌').pop(),nm2=p2n64.filter(r=>r.status!=='❌').pop();
-        document.getElementById('p2summary').innerHTML=`<strong>📊 With Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm2?dm2.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm2?dlm2.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm2?nm2.size:0}B</span> &nbsp; <small style="color:#64748b">(Max payload with fragmentation)</small>`;
+        document.getElementById('p2summary').innerHTML=`<strong>📊 With Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm2?dm2.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm2?dlm2.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm2?nm2.size:0}B</span> <small style="color:#64748b">(Max payload with fragmentation)</small>`;
         
         // Final Summary
         document.getElementById('ds-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dualstack',dm1?dm1.size:0);
@@ -318,10 +322,7 @@ async function load(){
         document.getElementById('dl-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','dslite',dlm2?dlm2.size:0);
         document.getElementById('n64-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','nat64',nm1?nm1.size:0);
         document.getElementById('n64-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','nat64',nm2?nm2.size:0);
-    }catch(e){
-        document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error: '+e.message+'</p>';
-        console.error(e);
-    }
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error: '+e.message+'</p>';}
 }
 load();
 </script>
