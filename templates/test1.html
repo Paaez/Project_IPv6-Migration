@@ -11,30 +11,38 @@
         .card-header{background:#151d2b;padding:10px 16px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.85rem;display:flex;align-items:center;gap:8px}
         .card-body{padding:16px 20px 24px 20px}
         .section-title{font-size:0.78rem;color:#38bdf8;font-weight:600;margin:0 0 10px 0;padding-left:10px;border-left:3px solid #38bdf8}
+        
         .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
         .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:12px}
         .chart-title{font-size:0.72rem;color:#38bdf8;margin-bottom:6px;font-weight:600}
         .chart-wrap{position:relative;height:200px}
+        
         .table-wrapper{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-top:16px}
         .table-scroll{overflow-x:auto}
-        table{width:100%;border-collapse:collapse;font-size:0.62rem}
-        th{background:#0f172a;color:#38bdf8;padding:6px 6px;text-align:center;font-weight:600;font-size:0.56rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a;white-space:nowrap}
-        td{padding:4px 6px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.58rem}
+        table{width:100%;border-collapse:collapse;font-size:0.6rem}
+        th{background:#0f172a;color:#38bdf8;padding:5px 5px;text-align:center;font-weight:600;font-size:0.54rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a;white-space:nowrap}
+        td{padding:4px 5px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.56rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
-        td.strat-name{font-weight:700;font-size:0.64rem;vertical-align:middle;text-align:center;border-right:2px solid #2d3a4a}
+        
+        td.strat-name{font-weight:700;font-size:0.64rem;vertical-align:middle;text-align:center;border-right:2px solid #2d3a4a;width:75px}
         td.strat-name-ds{color:#3b82f6;background:rgba(59,130,246,0.06)}
         td.strat-name-dl{color:#10b981;background:rgba(16,185,129,0.06)}
         td.strat-name-n64{color:#f59e0b;background:rgba(245,158,11,0.06)}
-        tr.run-header td{background:#0f172a;border-top:2px solid #2d3a4a;font-weight:700;color:#38bdf8;font-size:0.6rem;padding:6px}
+        
+        tr.run-header td{background:#0f172a;border-top:2px solid #2d3a4a;font-weight:700;color:#38bdf8;font-size:0.58rem;padding:5px}
+        tr.strat-separator td{border-top:3px solid #2d3a4a;background:#0f172a;padding:0;height:3px}
         tr.strat-avg td{border-top:2px solid #38bdf8;font-weight:700;color:#f1f5f9;font-size:0.6rem;background:rgba(56,189,248,0.05)}
+        
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
-        .run-badge{font-size:0.5rem;padding:2px 6px;border-radius:3px;font-weight:700}
+        .run-badge{font-size:0.48rem;padding:2px 6px;border-radius:3px;font-weight:700}
         .run-1{background:rgba(59,130,246,0.2);color:#3b82f6}
         .run-2{background:rgba(16,185,129,0.2);color:#10b981}
         .run-3{background:rgba(245,158,11,0.2);color:#f59e0b}
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
+        .val-neutral{color:#38bdf8;font-weight:600}
+        
         .legend-bar{display:flex;gap:14px;margin-bottom:12px;font-size:0.55rem;color:#64748b;align-items:center;flex-wrap:wrap}
     </style>
 </head>
@@ -51,19 +59,19 @@
             <span title="Less than 5ms RTT is excellent">ICMP RTT &lt;5ms = Good ✅</span>
         </div>
         
-        <div class="section-title">📊 Avg TCP Throughput Across Runs</div>
+        <div class="section-title">📊 Performance Charts - All 3 Runs</div>
         <div class="charts-row">
-            <div class="chart-box"><div class="chart-title">TCP Throughput - All 3 Runs</div><div class="chart-wrap"><canvas id="tcpChart"></canvas></div></div>
-            <div class="chart-box"><div class="chart-title">UDP Jitter - All 3 Runs</div><div class="chart-wrap"><canvas id="udpChart"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">TCP Throughput</div><div class="chart-wrap"><canvas id="tcpChart"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">UDP Jitter</div><div class="chart-wrap"><canvas id="udpChart"></canvas></div></div>
         </div>
         <div class="charts-row">
-            <div class="chart-box"><div class="chart-title">ICMP RTT Avg - All 3 Runs</div><div class="chart-wrap"><canvas id="icmpChart"></canvas></div></div>
-            <div class="chart-box"><div class="chart-title">UDP Packet Loss - All 3 Runs</div><div class="chart-wrap"><canvas id="lossChart"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">ICMP RTT Avg</div><div class="chart-wrap"><canvas id="icmpChart"></canvas></div></div>
+            <div class="chart-box"><div class="chart-title">UDP Packet Loss</div><div class="chart-wrap"><canvas id="lossChart"></canvas></div></div>
         </div>
         
         <div class="section-title">📋 Results Summary - All 3 Runs</div>
         <div class="table-wrapper"><div class="table-scroll"><table>
-            <thead><tr><th>Strategy</th><th>Run</th><th>Size</th><th>TCP Thr.</th><th>UDP Jitter</th><th>ICMP RTT</th><th>UDP Loss</th></tr></thead>
+            <thead><tr><th>Strategy</th><th>Run</th><th>Size</th><th>TCP Throughput</th><th>UDP Jitter</th><th>ICMP RTT Avg</th><th>UDP Loss</th></tr></thead>
             <tbody id="summary"></tbody>
         </table></div></div>
     </div>
@@ -71,52 +79,159 @@
 
 <script>
 let charts={};
-function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
-function valClass(v,good,bad,lb=true){if(v===0||isNaN(v))return'';if(lb){if(v<=good)return'val-good';if(v>=bad)return'val-bad';return'val-warn';}else{if(v>=good)return'val-good';if(v<=bad)return'val-bad';return'val-warn';}}
 
-function getMetricType(metric){if(metric.includes('Throughput'))return'tcp';if(metric.includes('Jitter'))return'jitter';if(metric.includes('RTT_Avg'))return'icmp';if(metric.includes('Loss_Percent'))return'loss';return null;}
+function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
+
+function valClass(v,good,bad,lb=true){
+    if(v===0||isNaN(v))return'';
+    if(lb){if(v<=good)return'val-good';if(v>=bad)return'val-bad';return'val-warn';}
+    else{if(v>=good)return'val-good';if(v<=bad)return'val-bad';return'val-warn';}
+}
+
+function getMetricType(metric){
+    if(metric.includes('Throughput'))return'tcp';
+    if(metric.includes('Jitter'))return'jitter';
+    if(metric.includes('RTT_Avg'))return'icmp';
+    if(metric.includes('Loss_Percent'))return'loss';
+    return null;
+}
 
 async function load(){
     try{
+        // Try raw API first, fall back to standard
         let rawData=null;
         try{const r=await fetch('/api/test1-raw');rawData=await r.json();if(rawData.error)rawData=null;}catch(e){}
-        if(!rawData||!Array.isArray(rawData)){const r2=await fetch('/api/test1');const d2=await r2.json();if(d2.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data</p>';return}
-            rawData=[];const strategies=['dualstack','dslite','nat64'];const sizes=['5M','7M','10M','15M','20M'];const metrics=['Throughput_Mbps','Jitter_ms','RTT_Avg_ms','Loss_Percent'];const prefix='T1_TCP_PC1_';
-            for(let run=1;run<=3;run++){strategies.forEach(s=>{sizes.forEach(sz=>{metrics.forEach(mt=>{let metric=`T1_TCP_PC1_${sz}_Throughput_Mbps`;if(mt==='Jitter_ms')metric=`T1_UDP_PC1_${sz}_Jitter_ms`;else if(mt==='RTT_Avg_ms')metric=`T1_ICMP_PC1_${sz}_RTT_Avg_ms`;else if(mt==='Loss_Percent')metric=`T1_UDP_PC1_${sz}_Loss_Percent`;const val=d2[metric]?d2[metric][s]:0;if(val!==undefined)rawData.push({strategy:s,metric:metric,run:run,value:val});});});});}
+        
+        if(!rawData||!Array.isArray(rawData)){
+            const r2=await fetch('/api/test1');const d2=await r2.json();
+            if(d2.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data</p>';return}
+            // Convert standard API to raw format (simulate 3 runs)
+            rawData=[];
+            const strategies=['dualstack','dslite','nat64'];
+            const sizes=['5M','7M','10M','15M','20M'];
+            for(let run=1;run<=3;run++){
+                strategies.forEach(s=>{
+                    sizes.forEach(sz=>{
+                        const tcp=d2[`T1_TCP_PC1_${sz}_Throughput_Mbps`]?d2[`T1_TCP_PC1_${sz}_Throughput_Mbps`][s]:0;
+                        const jitter=d2[`T1_UDP_PC1_${sz}_Jitter_ms`]?d2[`T1_UDP_PC1_${sz}_Jitter_ms`][s]:0;
+                        const icmp=d2[`T1_ICMP_PC1_${sz}_RTT_Avg_ms`]?d2[`T1_ICMP_PC1_${sz}_RTT_Avg_ms`][s]:0;
+                        const loss=d2[`T1_UDP_PC1_${sz}_Loss_Percent`]?d2[`T1_UDP_PC1_${sz}_Loss_Percent`][s]:0;
+                        if(tcp!==undefined){rawData.push({strategy:s,metric:`T1_TCP_PC1_${sz}_Throughput_Mbps`,run:run,value:tcp});rawData.push({strategy:s,metric:`T1_UDP_PC1_${sz}_Jitter_ms`,run:run,value:jitter});rawData.push({strategy:s,metric:`T1_ICMP_PC1_${sz}_RTT_Avg_ms`,run:run,value:icmp});rawData.push({strategy:s,metric:`T1_UDP_PC1_${sz}_Loss_Percent`,run:run,value:loss});}
+                    });
+                });
+            }
         }
         
-        // Group by strategy, run, size, metric
+        // Group by strategy, run, size
         const grouped={};
-        rawData.forEach(e=>{const s=e.strategy,run=e.run||1,metric=e.metric,val=parseFloat(e.value);let size='';const sm=metric.match(/PC1_(\w+)_/);if(sm)size=sm[1];const type=getMetricType(metric);if(!s||!size||!type)return;if(!grouped[s])grouped[s]={};if(!grouped[s][run])grouped[s][run]={};if(!grouped[s][run][size])grouped[s][run][size]={};grouped[s][run][size][type]=val;});
+        rawData.forEach(e=>{
+            const s=e.strategy,run=e.run||1,metric=e.metric,val=parseFloat(e.value);
+            let size='';const sm=metric.match(/PC1_(\w+)_/);if(sm)size=sm[1];
+            const type=getMetricType(metric);
+            if(!s||!size||!type)return;
+            if(!grouped[s])grouped[s]={};
+            if(!grouped[s][run])grouped[s][run]={};
+            if(!grouped[s][run][size])grouped[s][run][size]={};
+            grouped[s][run][size][type]=val;
+        });
         
-        const strategies=['dualstack','dslite','nat64'];const stratNames={'dualstack':'Dual Stack','dslite':'DS-Lite','nat64':'NAT64'};const stratIcons={'dualstack':'🔵','dslite':'🟢','nat64':'🟠'};const cols=['#3b82f6','#10b981','#f59e0b'];const sizes=['5M','7M','10M','15M','20M'];const runIcons=['🔵','🟢','🟠'];const runBadges=['run-1','run-2','run-3'];const stratClasses=['strat-name-ds','strat-name-dl','strat-name-n64'];
+        console.log('Grouped strategies:', Object.keys(grouped));
         
-        // Charts - Average TCP across runs
-        const chartData=strategies.map((s,i)=>{const data=[];for(let r=1;r<=3;r++){let sum=0,cnt=0;sizes.forEach(sz=>{if(grouped[s]&&grouped[s][r]&&grouped[s][r][sz]&&grouped[s][r][sz].tcp>0){sum+=grouped[s][r][sz].tcp;cnt++;}});data.push(cnt>0?sum/cnt:null);}return{label:stratNames[s],data,borderColor:cols[i],backgroundColor:cols[i]+'20',borderWidth:2.5,tension:0.3,fill:false,pointRadius:5,spanGaps:true};});
+        const strategies=['dualstack','dslite','nat64'];
+        const stratNames={'dualstack':'Dual Stack','dslite':'DS-Lite','nat64':'NAT64'};
+        const stratIcons={'dualstack':'🔵','dslite':'🟢','nat64':'🟠'};
+        const cols=['#3b82f6','#10b981','#f59e0b'];
+        const sizes=['5M','7M','10M','15M','20M'];
+        const runIcons=['🔵','🟢','🟠'];
+        const runBadges=['run-1','run-2','run-3'];
+        const stratClasses=['strat-name-ds','strat-name-dl','strat-name-n64'];
         
-        if(charts['tcpChart'])charts['tcpChart'].destroy();
-        charts['tcpChart']=new Chart(document.getElementById('tcpChart'),{type:'line',data:{labels:['Run 1','Run 2','Run 3'],datasets:chartData},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Avg TCP (Mbps)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
+        // Charts - Average across runs
+        const chartOpts={
+            responsive:true,maintainAspectRatio:false,
+            plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:8,usePointStyle:true}}},
+            scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#94a3b8',font:{size:7}},title:{display:true,font:{size:8},color:'#94a3b8'}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:7}}}}};
+        
+        [['tcpChart','tcp','Avg TCP (Mbps)'],['udpChart','jitter','Avg UDP Jitter (ms)'],['icmpChart','icmp','Avg ICMP RTT (ms)'],['lossChart','loss','Avg UDP Loss (%)']].forEach(([id,metric,ylabel])=>{
+            if(charts[id])charts[id].destroy();
+            charts[id]=new Chart(document.getElementById(id),{
+                type:'line',
+                data:{
+                    labels:['Run 1','Run 2','Run 3'],
+                    datasets:strategies.map((s,i)=>{
+                        const data=[];
+                        for(let r=1;r<=3;r++){
+                            let sum=0,cnt=0;
+                            sizes.forEach(sz=>{
+                                if(grouped[s]&&grouped[s][r]&&grouped[s][r][sz]&&grouped[s][r][sz][metric]!==undefined){
+                                    sum+=grouped[s][r][sz][metric];cnt++;
+                                }
+                            });
+                            data.push(cnt>0?sum/cnt:null);
+                        }
+                        return{label:stratNames[s],data,borderColor:cols[i],backgroundColor:cols[i]+'20',borderWidth:2.5,tension:0.3,fill:false,pointRadius:5,spanGaps:true};
+                    })
+                },
+                options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,title:{...chartOpts.scales.y.title,text:ylabel}}}}
+            });
+        });
         
         // Table
-        let h='';const rowsPerStrat=sizes.length*3+1;
+        let h='';
+        const rowsPerStrat=sizes.length*3+1; // 5 sizes × 3 runs + 1 avg
+        
         strategies.forEach((s,si)=>{
             let firstRow=true;
+            
             for(let run=1;run<=3;run++){
                 h+=`<tr class="run-header"><td colspan="7"><span class="run-badge ${runBadges[run-1]}">${runIcons[run-1]} RUN ${run}</span></td></tr>`;
+                
                 sizes.forEach(sz=>{
                     const d=grouped[s]&&grouped[s][run]&&grouped[s][run][sz]?grouped[s][run][sz]:{};
                     h+=`<tr>`;
-                    if(firstRow&&sz===sizes[0]&&run===1){h+=`<td class="strat-name ${stratClasses[si]}" rowspan="${rowsPerStrat}">${stratIcons[s]}<br>${stratNames[s]}</td>`;firstRow=false;}
-                    h+=`<td></td><td><strong>${sz}</strong></td><td class="${valClass(d.tcp||0,15,5,false)}">${d.tcp>0?d.tcp.toFixed(2)+' Mbps':'—'}</td><td class="${valClass(d.jitter||0,0.1,0.5,true)}">${d.jitter>0?d.jitter.toFixed(3)+' ms':'—'}</td><td class="${valClass(d.icmp||0,1,5,true)}">${d.icmp>0?d.icmp.toFixed(3)+' ms':'—'}</td><td class="${valClass(d.loss||0,1,5,true)}" title="<1% Normal, 1-5% Acceptable">${d.loss!==undefined?d.loss.toFixed(1)+'%':'—'}</td></tr>`;
+                    if(firstRow&&sz===sizes[0]&&run===1){
+                        h+=`<td class="strat-name ${stratClasses[si]}" rowspan="${rowsPerStrat}">${stratIcons[s]}<br>${stratNames[s]}</td>`;
+                        firstRow=false;
+                    }
+                    h+=`<td></td>
+                        <td><strong>${sz}</strong></td>
+                        <td class="${valClass(d.tcp||0,15,5,false)}">${d.tcp>0?d.tcp.toFixed(2)+' Mbps':'—'}</td>
+                        <td class="${valClass(d.jitter||0,0.1,0.5,true)}">${d.jitter>0?d.jitter.toFixed(3)+' ms':'—'}</td>
+                        <td class="${valClass(d.icmp||0,1,5,true)}">${d.icmp>0?d.icmp.toFixed(3)+' ms':'—'}</td>
+                        <td class="${valClass(d.loss||0,1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${d.loss!==undefined?d.loss.toFixed(1)+'%':'—'}</td>
+                    </tr>`;
                 });
             }
-            // Average per strategy
+            
+            // Strategy average
             let tcpSum=0,tcpCnt=0,jitSum=0,jitCnt=0,icmpSum=0,icmpCnt=0,lossSum=0,lossCnt=0;
-            for(let r=1;r<=3;r++){sizes.forEach(sz=>{const d=grouped[s]&&grouped[s][run]&&grouped[s][run][sz]?grouped[s][run][sz]:{};if(d.tcp>0){tcpSum+=d.tcp;tcpCnt++;}if(d.jitter>0){jitSum+=d.jitter;jitCnt++;}if(d.icmp>0){icmpSum+=d.icmp;icmpCnt++;}if(d.loss!==undefined){lossSum+=d.loss;lossCnt++;}});}
-            h+=`<tr class="strat-avg"><td></td><td>📊 Avg</td><td class="val-good">${tcpCnt>0?(tcpSum/tcpCnt).toFixed(2)+' Mbps':'—'}</td><td class="val-good">${jitCnt>0?(jitSum/jitCnt).toFixed(3)+' ms':'—'}</td><td class="val-good">${icmpCnt>0?(icmpSum/icmpCnt).toFixed(3)+' ms':'—'}</td><td class="val-good">${lossCnt>0?(lossSum/lossCnt).toFixed(1)+'%':'—'}</td></tr>`;
+            for(let r=1;r<=3;r++){
+                sizes.forEach(sz=>{
+                    const d=grouped[s]&&grouped[s][r]&&grouped[s][r][sz]?grouped[s][r][sz]:{};
+                    if(d.tcp>0){tcpSum+=d.tcp;tcpCnt++;}
+                    if(d.jitter>0){jitSum+=d.jitter;jitCnt++;}
+                    if(d.icmp>0){icmpSum+=d.icmp;icmpCnt++;}
+                    if(d.loss!==undefined){lossSum+=d.loss;lossCnt++;}
+                });
+            }
+            h+=`<tr class="strat-avg">
+                <td></td><td>📊 Avg</td>
+                <td class="val-neutral">${tcpCnt>0?(tcpSum/tcpCnt).toFixed(2)+' Mbps':'—'}</td>
+                <td class="val-neutral">${jitCnt>0?(jitSum/jitCnt).toFixed(3)+' ms':'—'}</td>
+                <td class="val-neutral">${icmpCnt>0?(icmpSum/icmpCnt).toFixed(3)+' ms':'—'}</td>
+                <td class="val-neutral">${lossCnt>0?(lossSum/lossCnt).toFixed(1)+'%':'—'}</td>
+            </tr>`;
+            
+            // Separator between strategies
+            if(si<strategies.length-1){
+                h+=`<tr class="strat-separator"><td colspan="7"></td></tr>`;
+            }
         });
+        
+        if(!h)h='<tr><td colspan="7" style="padding:20px">No data available</td></tr>';
         document.getElementById('summary').innerHTML=h;
-    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error: '+e.message+'</p>';}
+        
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error: '+e.message+'</p>';console.error(e);}
 }
 load();
 </script>
