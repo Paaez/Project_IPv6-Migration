@@ -98,25 +98,26 @@ function getMetricType(metric){
 
 async function load(){
     try{
-        // Try raw API first, fall back to standard
         let rawData=null;
         try{const r=await fetch('/api/test1-raw');rawData=await r.json();if(rawData.error)rawData=null;}catch(e){}
         
         if(!rawData||!Array.isArray(rawData)){
             const r2=await fetch('/api/test1');const d2=await r2.json();
             if(d2.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data</p>';return}
-            // Convert standard API to raw format (simulate 3 runs)
             rawData=[];
             const strategies=['dualstack','dslite','nat64'];
             const sizes=['5M','7M','10M','15M','20M'];
-            for(let run=1;run<=3;run++){
+            for(let r=1;r<=3;r++){
                 strategies.forEach(s=>{
                     sizes.forEach(sz=>{
                         const tcp=d2[`T1_TCP_PC1_${sz}_Throughput_Mbps`]?d2[`T1_TCP_PC1_${sz}_Throughput_Mbps`][s]:0;
                         const jitter=d2[`T1_UDP_PC1_${sz}_Jitter_ms`]?d2[`T1_UDP_PC1_${sz}_Jitter_ms`][s]:0;
                         const icmp=d2[`T1_ICMP_PC1_${sz}_RTT_Avg_ms`]?d2[`T1_ICMP_PC1_${sz}_RTT_Avg_ms`][s]:0;
                         const loss=d2[`T1_UDP_PC1_${sz}_Loss_Percent`]?d2[`T1_UDP_PC1_${sz}_Loss_Percent`][s]:0;
-                        if(tcp!==undefined){rawData.push({strategy:s,metric:`T1_TCP_PC1_${sz}_Throughput_Mbps`,run:run,value:tcp});rawData.push({strategy:s,metric:`T1_UDP_PC1_${sz}_Jitter_ms`,run:run,value:jitter});rawData.push({strategy:s,metric:`T1_ICMP_PC1_${sz}_RTT_Avg_ms`,run:run,value:icmp});rawData.push({strategy:s,metric:`T1_UDP_PC1_${sz}_Loss_Percent`,run:run,value:loss});}
+                        rawData.push({strategy:s,metric:`T1_TCP_PC1_${sz}_Throughput_Mbps`,run:r,value:tcp});
+                        rawData.push({strategy:s,metric:`T1_UDP_PC1_${sz}_Jitter_ms`,run:r,value:jitter});
+                        rawData.push({strategy:s,metric:`T1_ICMP_PC1_${sz}_RTT_Avg_ms`,run:r,value:icmp});
+                        rawData.push({strategy:s,metric:`T1_UDP_PC1_${sz}_Loss_Percent`,run:r,value:loss});
                     });
                 });
             }
@@ -125,14 +126,14 @@ async function load(){
         // Group by strategy, run, size
         const grouped={};
         rawData.forEach(e=>{
-            const s=e.strategy,run=e.run||1,metric=e.metric,val=parseFloat(e.value);
+            const s=e.strategy,rn=e.run||1,metric=e.metric,val=parseFloat(e.value);
             let size='';const sm=metric.match(/PC1_(\w+)_/);if(sm)size=sm[1];
             const type=getMetricType(metric);
             if(!s||!size||!type)return;
             if(!grouped[s])grouped[s]={};
-            if(!grouped[s][run])grouped[s][run]={};
-            if(!grouped[s][run][size])grouped[s][run][size]={};
-            grouped[s][run][size][type]=val;
+            if(!grouped[s][rn])grouped[s][rn]={};
+            if(!grouped[s][rn][size])grouped[s][rn][size]={};
+            grouped[s][rn][size][type]=val;
         });
         
         console.log('Grouped strategies:', Object.keys(grouped));
@@ -146,7 +147,7 @@ async function load(){
         const runBadges=['run-1','run-2','run-3'];
         const stratClasses=['strat-name-ds','strat-name-dl','strat-name-n64'];
         
-        // Charts - Average across runs
+        // Charts
         const chartOpts={
             responsive:true,maintainAspectRatio:false,
             plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:8,usePointStyle:true}}},
@@ -178,18 +179,18 @@ async function load(){
         
         // Table
         let h='';
-        const rowsPerStrat=sizes.length*3+1; // 5 sizes × 3 runs + 1 avg
+        const rowsPerStrat=sizes.length*3+1;
         
         strategies.forEach((s,si)=>{
             let firstRow=true;
             
-            for(let run=1;run<=3;run++){
-                h+=`<tr class="run-header"><td colspan="7"><span class="run-badge ${runBadges[run-1]}">${runIcons[run-1]} RUN ${run}</span></td></tr>`;
+            for(let r=1;r<=3;r++){
+                h+=`<tr class="run-header"><td colspan="7"><span class="run-badge ${runBadges[r-1]}">${runIcons[r-1]} RUN ${r}</span></td></tr>`;
                 
                 sizes.forEach(sz=>{
-                    const d=grouped[s]&&grouped[s][run]&&grouped[s][run][sz]?grouped[s][run][sz]:{};
+                    const d=grouped[s]&&grouped[s][r]&&grouped[s][r][sz]?grouped[s][r][sz]:{};
                     h+=`<tr>`;
-                    if(firstRow&&sz===sizes[0]&&run===1){
+                    if(firstRow&&sz===sizes[0]&&r===1){
                         h+=`<td class="strat-name ${stratClasses[si]}" rowspan="${rowsPerStrat}">${stratIcons[s]}<br>${stratNames[s]}</td>`;
                         firstRow=false;
                     }
@@ -222,7 +223,6 @@ async function load(){
                 <td class="val-neutral">${lossCnt>0?(lossSum/lossCnt).toFixed(1)+'%':'—'}</td>
             </tr>`;
             
-            // Separator between strategies
             if(si<strategies.length-1){
                 h+=`<tr class="strat-separator"><td colspan="7"></td></tr>`;
             }
