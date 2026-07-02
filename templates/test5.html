@@ -48,17 +48,14 @@
         .final-card strong{font-size:0.75rem}.final-card p{font-size:0.7rem;color:#cbd5e1;margin:4px 0}
         
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:3px 8px;border-radius:3px;font-size:0.65rem;font-weight:500}
-        
+        .legend-bar{display:flex;gap:14px;margin-bottom:12px;font-size:0.55rem;color:#64748b;align-items:center;flex-wrap:wrap}
         .legend-row{display:flex;gap:12px;align-items:center;font-size:0.6rem;color:#94a3b8;margin-top:6px;flex-wrap:wrap}
         .legend-row span{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:4px}
-        .legend-bar{display:flex;gap:14px;margin-bottom:12px;font-size:0.55rem;color:#64748b;align-items:center;flex-wrap:wrap}
-        
         .overhead-row{display:flex;gap:10px;justify-content:center;margin-top:8px;font-size:0.58rem;color:#94a3b8}
         .overhead-row span{padding:2px 6px;border-radius:3px;font-weight:600}
         .overhead-ds{background:rgba(59,130,246,0.15);color:#3b82f6}
         .overhead-dl{background:rgba(16,185,129,0.15);color:#10b981}
         .overhead-n64{background:rgba(245,158,11,0.15);color:#f59e0b}
-        
         .heatmap-container{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:5px}
         .heatmap-header{display:grid;gap:3px;margin-bottom:3px;width:100%}
         .heatmap-header span{font-size:0.48rem;color:#64748b;text-align:center}
@@ -137,79 +134,202 @@
 
 <script>
 let charts={};
-function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
-function getPhaseData(d,strategy,phase){
-    const p1s=[64,128,256,512,768,1024,1280,1290,1300,1310,1320,1330,1340,1350,1360,1370,1380,1390,1400,1410,1420,1430,1440,1450,1460,1470,1480,1490,1500,1510,1520];
-    const p2s=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
-    const sizes=phase===1?p1s:p2s;const prefix=phase===1?'T5_P1_Frag_':'T5_P2_Frag_';
-    return sizes.map(sz=>{const success=gv(d,`${prefix}${sz}B_Success`,strategy,0),total=gv(d,`${prefix}${sz}B_Total_Size`,strategy,sz+28),loss=gv(d,`${prefix}${sz}B_Loss_Pct`,strategy,0),rtt=gv(d,`${prefix}${sz}B_RTT_Avg_ms`,strategy,0);let st='',cls='';if(success===1&&loss===0){st='✅';cls='s-ok'}else if(loss===100){st='❌';cls='s-fail'}else if(loss>0){st='⚠️';cls='s-frag'}else{st='❌';cls='s-fail'}return{size:sz,total,status:st,cls,loss,rtt:rtt>0?rtt:0,rttDisplay:rtt>0?rtt.toFixed(1):'—'};});
-}
-function mkLineChart(id,data,ylab){const c=document.getElementById(id);if(!c)return;if(charts[id])charts[id].destroy();charts[id]=new Chart(c,{type:'line',data,options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:10,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:ylab,color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:7},maxRotation:45}}}}});
-}
-function getHeatColor(rtt,maxRtt,loss){if(loss===100||rtt===0)return'#6b7280';const ratio=rtt/maxRtt;if(ratio<0.25)return'#10b981';if(ratio<0.5)return'#84cc16';if(ratio<0.75)return'#f59e0b';return'#ef4444';}
-function buildHeatmap(p1ds,p1dl,p1n64){const keySizes=[64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500];const allData=[p1ds,p1dl,p1n64],labels=['🔵 DS','🟢 DL','🟠 N64'];let maxRtt=0;allData.forEach(d=>{keySizes.forEach(sz=>{const f=d.find(r=>r.size===sz);if(f&&f.rtt>maxRtt)maxRtt=f.rtt;});});if(maxRtt===0)maxRtt=10;document.getElementById('heatmapHeader').innerHTML='<span></span>'+keySizes.map(s=>`<span>${s>=1000?(s/1000).toFixed(1)+'K':s+'B'}</span>`).join('');document.getElementById('heatmapHeader').style.gridTemplateColumns=`70px repeat(${keySizes.length},1fr)`;let html='';allData.forEach((stratData,si)=>{html+=`<div class="heatmap-row" style="grid-template-columns:70px repeat(${keySizes.length},1fr)"><span class="heatmap-label">${labels[si]}</span>`;keySizes.forEach(sz=>{const f=stratData.find(r=>r.size===sz);if(f){const color=getHeatColor(f.rtt,maxRtt,f.loss);const text=f.rtt>0?f.rtt.toFixed(1):'—';html+=`<div class="heatmap-cell" style="background:${color}" title="${sz}B: ${f.rtt>0?f.rtt.toFixed(2)+'ms':'FAILED'}">${text}</div>`;}else{html+=`<div class="heatmap-cell" style="background:#374151">—</div>`;}});html+=`</div>`;});document.getElementById('heatmapGrid').innerHTML=html;}
 
-function buildTransposedTable(data, tableId, sizes){
-    const strategies=['dualstack','dslite','nat64'];
-    const names=['🔵 Dual Stack','🟢 DS-Lite','🟠 NAT64'];
-    const labelClasses=['row-label-ds','row-label-dl','row-label-n64'];
-    const metClasses=['met-label-ds','met-label-dl','met-label-n64'];
-    let h='';
-    strategies.forEach((s,si)=>{
-        h+=`<tr><td class="row-label ${labelClasses[si]}" rowspan="3">${names[si]}</td><td class="met-label ${metClasses[si]}">St</td>`;
-        sizes.forEach(sz=>{const found=data[s].find(r=>r.size===sz);h+=found?`<td class="${found.cls}">${found.status}</td>`:'<td>—</td>';});
-        h+=`</tr><tr><td class="met-label ${metClasses[si]}">Loss</td>`;
-        sizes.forEach(sz=>{const found=data[s].find(r=>r.size===sz);h+=found?`<td class="${found.loss===0?'s-ok':found.loss===100?'s-fail':'s-frag'}">${found.loss}%</td>`:'<td>—</td>';});
-        h+=`</tr><tr><td class="met-label ${metClasses[si]}">RTT</td>`;
-        sizes.forEach(sz=>{const found=data[s].find(r=>r.size===sz);h+=found?`<td>${found.rttDisplay}</td>`:'<td>—</td>';});
-        h+=`</tr>`;
-        if(si<strategies.length-1)h+=`<tr class="strat-separator"><td colspan="${sizes.length+2}"></td></tr>`;
+function gv(d,m,s,def){
+    if(def===undefined)def=0;
+    return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def;
+}
+
+function getPhaseData(d,strategy,phase){
+    var p1s=[64,128,256,512,768,1024,1280,1290,1300,1310,1320,1330,1340,1350,1360,1370,1380,1390,1400,1410,1420,1430,1440,1450,1460,1470,1480,1490,1500,1510,1520];
+    var p2s=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
+    var sizes=phase===1?p1s:p2s;
+    var prefix=phase===1?'T5_P1_Frag_':'T5_P2_Frag_';
+    return sizes.map(function(sz){
+        var success=gv(d,prefix+sz+'B_Success',strategy,0);
+        var total=gv(d,prefix+sz+'B_Total_Size',strategy,sz+28);
+        var loss=gv(d,prefix+sz+'B_Loss_Pct',strategy,0);
+        var rtt=gv(d,prefix+sz+'B_RTT_Avg_ms',strategy,0);
+        var st='',cls='';
+        if(success===1&&loss===0){st='✅';cls='s-ok';}
+        else if(loss===100){st='❌';cls='s-fail';}
+        else if(loss>0){st='⚠️';cls='s-frag';}
+        else{st='❌';cls='s-fail';}
+        return{size:sz,total:total,status:st,cls:cls,loss:loss,rtt:rtt>0?rtt:0,rttDisplay:rtt>0?rtt.toFixed(1):'—'};
+    });
+}
+
+function mkLineChart(id,data,ylab){
+    var c=document.getElementById(id);if(!c)return;
+    if(charts[id])charts[id].destroy();
+    charts[id]=new Chart(c,{type:'line',data:data,options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:10,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:ylab,color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:7},maxRotation:45}}}}});
+}
+
+function getHeatColor(rtt,maxRtt,loss){
+    if(loss===100||rtt===0)return'#6b7280';
+    var ratio=rtt/maxRtt;
+    if(ratio<0.25)return'#10b981';
+    if(ratio<0.5)return'#84cc16';
+    if(ratio<0.75)return'#f59e0b';
+    return'#ef4444';
+}
+
+function buildHeatmap(p1ds,p1dl,p1n64){
+    var keySizes=[64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500];
+    var allData=[p1ds,p1dl,p1n64];
+    var labels=['🔵 DS','🟢 DL','🟠 N64'];
+    var maxRtt=0;
+    allData.forEach(function(d){keySizes.forEach(function(sz){var f=d.find(function(r){return r.size===sz;});if(f&&f.rtt>maxRtt)maxRtt=f.rtt;});});
+    if(maxRtt===0)maxRtt=10;
+    
+    document.getElementById('heatmapHeader').innerHTML='<span></span>'+keySizes.map(function(s){return'<span>'+(s>=1000?(s/1000).toFixed(1)+'K':s+'B')+'</span>';}).join('');
+    document.getElementById('heatmapHeader').style.gridTemplateColumns='70px repeat('+keySizes.length+',1fr)';
+    
+    var html='';
+    allData.forEach(function(stratData,si){
+        html+='<div class="heatmap-row" style="grid-template-columns:70px repeat('+keySizes.length+',1fr)"><span class="heatmap-label">'+labels[si]+'</span>';
+        keySizes.forEach(function(sz){
+            var f=stratData.find(function(r){return r.size===sz;});
+            if(f){var color=getHeatColor(f.rtt,maxRtt,f.loss);var text=f.rtt>0?f.rtt.toFixed(1):'—';html+='<div class="heatmap-cell" style="background:'+color+'" title="'+sz+'B: '+(f.rtt>0?f.rtt.toFixed(2)+'ms':'FAILED')+'">'+text+'</div>';}
+            else{html+='<div class="heatmap-cell" style="background:#374151">—</div>';}
+        });
+        html+='</div>';
+    });
+    document.getElementById('heatmapGrid').innerHTML=html;
+}
+
+function buildTransposedTable(data,tableId,sizes){
+    var strategies=['dualstack','dslite','nat64'];
+    var names=['🔵 Dual Stack','🟢 DS-Lite','🟠 NAT64'];
+    var labelClasses=['row-label-ds','row-label-dl','row-label-n64'];
+    var metClasses=['met-label-ds','met-label-dl','met-label-n64'];
+    var h='';
+    strategies.forEach(function(s,si){
+        // Status row with rowspan
+        h+='<tr><td class="row-label '+labelClasses[si]+'" rowspan="3">'+names[si]+'</td><td class="met-label '+metClasses[si]+'">St</td>';
+        sizes.forEach(function(sz){
+            var found=data[s].find(function(r){return r.size===sz;});
+            h+=found?'<td class="'+found.cls+'">'+found.status+'</td>':'<td>—</td>';
+        });
+        h+='</tr>';
+        // Loss row
+        h+='<tr><td class="met-label '+metClasses[si]+'">Loss</td>';
+        sizes.forEach(function(sz){
+            var found=data[s].find(function(r){return r.size===sz;});
+            if(found){var cls=found.loss===0?'s-ok':found.loss===100?'s-fail':'s-frag';h+='<td class="'+cls+'">'+found.loss+'%</td>';}
+            else{h+='<td>—</td>';}
+        });
+        h+='</tr>';
+        // RTT row
+        h+='<tr><td class="met-label '+metClasses[si]+'">RTT</td>';
+        sizes.forEach(function(sz){
+            var found=data[s].find(function(r){return r.size===sz;});
+            h+=found?'<td>'+found.rttDisplay+'</td>':'<td>—</td>';
+        });
+        h+='</tr>';
+        // Separator
+        if(si<strategies.length-1){h+='<tr class="strat-separator"><td colspan="'+(sizes.length+2)+'"></td></tr>';}
     });
     document.getElementById(tableId).innerHTML=h;
 }
 
 async function load(){
     try{
-        const r=await fetch('/api/test5');const d=await r.json();
-        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data</p>';return}
-        const p1ds=getPhaseData(d,'dualstack',1),p1dl=getPhaseData(d,'dslite',1),p1n64=getPhaseData(d,'nat64',1);
-        const p2ds=getPhaseData(d,'dualstack',2),p2dl=getPhaseData(d,'dslite',2),p2n64=getPhaseData(d,'nat64',2);
-        const cols=['#3b82f6','#10b981','#f59e0b'],names=['Dual Stack','DS-Lite','NAT64'];
+        var r=await fetch('/api/test5');
+        var d=await r.json();
+        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data available</p>';return;}
         
-        [['lossChart1',p1ds,p1dl,p1n64,'Loss (%)'],['lossChart2',p2ds,p2dl,p2n64,'Loss (%)']].forEach(([id,d1,d2,d3,ylab])=>{
-            mkLineChart(id,{labels:d3.map(r=>r.size),datasets:[{label:names[0],data:d1.map(r=>r.loss),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2},{label:names[1],data:d2.map(r=>r.loss),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2},{label:names[2],data:d3.map(r=>r.loss),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2}]},ylab);
+        var p1ds=getPhaseData(d,'dualstack',1);
+        var p1dl=getPhaseData(d,'dslite',1);
+        var p1n64=getPhaseData(d,'nat64',1);
+        var p2ds=getPhaseData(d,'dualstack',2);
+        var p2dl=getPhaseData(d,'dslite',2);
+        var p2n64=getPhaseData(d,'nat64',2);
+        var cols=['#3b82f6','#10b981','#f59e0b'];
+        var names=['Dual Stack','DS-Lite','NAT64'];
+        
+        // Loss Charts
+        [['lossChart1',p1ds,p1dl,p1n64,'Loss (%)'],['lossChart2',p2ds,p2dl,p2n64,'Loss (%)']].forEach(function(args){
+            var id=args[0],d1=args[1],d2=args[2],d3=args[3],ylab=args[4];
+            mkLineChart(id,{labels:d3.map(function(r){return r.size;}),datasets:[
+                {label:names[0],data:d1.map(function(r){return r.loss;}),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2},
+                {label:names[1],data:d2.map(function(r){return r.loss;}),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2},
+                {label:names[2],data:d3.map(function(r){return r.loss;}),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2}
+            ]},ylab);
         });
-        [['rttChart1',p1ds,p1dl,p1n64,'RTT (ms)']].forEach(([id,d1,d2,d3,ylab])=>{
-            const labels=d3.map(r=>r.size),grd=(data,lbls)=>lbls.map(s=>{const f=data.find(r=>r.size===s);return f&&f.rtt>0?f.rtt:null}),vl=labels.filter(s=>d3.find(r=>r.size===s)?.rtt>0);
-            if(vl.length>0)mkLineChart(id,{labels:vl,datasets:[{label:names[0],data:grd(d1,vl),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},{label:names[1],data:grd(d2,vl),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},{label:names[2],data:grd(d3,vl),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}]},ylab);
-        });
+        
+        // RTT Chart
+        var labels=p1n64.map(function(r){return r.size;});
+        var getRttData=function(data,lbls){return lbls.map(function(s){var f=data.find(function(r){return r.size===s;});return f&&f.rtt>0?f.rtt:null;});};
+        var validLabels=labels.filter(function(s){var f=p1n64.find(function(r){return r.size===s;});return f&&f.rtt>0;});
+        if(validLabels.length>0){
+            mkLineChart('rttChart1',{labels:validLabels,datasets:[
+                {label:names[0],data:getRttData(p1ds,validLabels),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+                {label:names[1],data:getRttData(p1dl,validLabels),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+                {label:names[2],data:getRttData(p1n64,validLabels),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}
+            ]},'RTT (ms)');
+        }
+        
+        // Success Rate Chart
         if(charts['successChart2'])charts['successChart2'].destroy();
-        charts['successChart2']=new Chart(document.getElementById('successChart2'),{type:'bar',data:{labels:p2n64.map(r=>r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size),datasets:[{label:names[0],data:p2ds.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#3b82f6',borderRadius:2},{label:names[1],data:p2dl.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#10b981',borderRadius:2},{label:names[2],data:p2n64.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#f59e0b',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},scales:{y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}}});
+        charts['successChart2']=new Chart(document.getElementById('successChart2'),{
+            type:'bar',
+            data:{labels:p2n64.map(function(r){return r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size;}),datasets:[
+                {label:names[0],data:p2ds.map(function(r){return r.status==='✅'||r.status==='⚠️'?1:0;}),backgroundColor:'#3b82f6',borderRadius:2},
+                {label:names[1],data:p2dl.map(function(r){return r.status==='✅'||r.status==='⚠️'?1:0;}),backgroundColor:'#10b981',borderRadius:2},
+                {label:names[2],data:p2n64.map(function(r){return r.status==='✅'||r.status==='⚠️'?1:0;}),backgroundColor:'#f59e0b',borderRadius:2}
+            ]},
+            options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},scales:{y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}}}
+        });
+        
+        // Heatmap
         buildHeatmap(p1ds,p1dl,p1n64);
         
-        const mnfDS=p1ds.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470},mnfDL=p1dl.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470},mnfN64=p1n64.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
-        const fDS=p2ds.find(r=>r.size===1500)||{rtt:0},fDL=p2dl.find(r=>r.size===1500)||{rtt:0},fN64=p2n64.find(r=>r.size===1500)||{rtt:0};
-        document.getElementById('overheadLabels').innerHTML=`<span class="overhead-ds" title="Extra RTT from fragmentation">🔵 DS: +${mnfDS.rtt>0?((fDS.rtt-mnfDS.rtt)/mnfDS.rtt*100).toFixed(0):0}%</span><span class="overhead-dl" title="Extra RTT from fragmentation">🟢 DL: +${mnfDL.rtt>0?((fDL.rtt-mnfDL.rtt)/mnfDL.rtt*100).toFixed(0):0}%</span><span class="overhead-n64" title="Extra RTT from fragmentation">🟠 N64: +${mnfN64.rtt>0?((fN64.rtt-mnfN64.rtt)/mnfN64.rtt*100).toFixed(0):0}%</span>`;
+        // RTT Comparison
+        var maxNoFragDS=p1ds.filter(function(r){return r.status==='✅';}).pop()||{rtt:0,size:1470};
+        var maxNoFragDL=p1dl.filter(function(r){return r.status==='✅';}).pop()||{rtt:0,size:1470};
+        var maxNoFragN64=p1n64.filter(function(r){return r.status==='✅';}).pop()||{rtt:0,size:1470};
+        var fragDS=p2ds.find(function(r){return r.size===1500;})||{rtt:0};
+        var fragDL=p2dl.find(function(r){return r.size===1500;})||{rtt:0};
+        var fragN64=p2n64.find(function(r){return r.size===1500;})||{rtt:0};
+        var ohDS=maxNoFragDS.rtt>0?((fragDS.rtt-maxNoFragDS.rtt)/maxNoFragDS.rtt*100).toFixed(0):0;
+        var ohDL=maxNoFragDL.rtt>0?((fragDL.rtt-maxNoFragDL.rtt)/maxNoFragDL.rtt*100).toFixed(0):0;
+        var ohN64=maxNoFragN64.rtt>0?((fragN64.rtt-maxNoFragN64.rtt)/maxNoFragN64.rtt*100).toFixed(0):0;
+        document.getElementById('overheadLabels').innerHTML='<span class="overhead-ds" title="Extra RTT from fragmentation">🔵 DS: +'+ohDS+'%</span><span class="overhead-dl" title="Extra RTT from fragmentation">🟢 DL: +'+ohDL+'%</span><span class="overhead-n64" title="Extra RTT from fragmentation">🟠 N64: +'+ohN64+'%</span>';
+        
         if(charts['rttCompareChart'])charts['rttCompareChart'].destroy();
-        charts['rttCompareChart']=new Chart(document.getElementById('rttCompareChart'),{type:'bar',data:{labels:names,datasets:[{label:`No-Frag (${mnfDS.size||1470}B)`,data:[mnfDS.rtt,mnfDL.rtt,mnfN64.rtt],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},{label:'Fragmented (1500B)',data:[fDS.rtt,fDL.rtt,fN64.rtt],backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
+        charts['rttCompareChart']=new Chart(document.getElementById('rttCompareChart'),{type:'bar',data:{labels:names,datasets:[
+            {label:'No-Frag ('+(maxNoFragDS.size||1470)+'B)',data:[maxNoFragDS.rtt,maxNoFragDL.rtt,maxNoFragN64.rtt],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},
+            {label:'Fragmented (1500B)',data:[fragDS.rtt,fragDL.rtt,fragN64.rtt],backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
         
-        const p1Sizes=[64,128,256,512,768,1024,1280,1290,1300,1310,1320,1330,1340,1350,1360,1370,1380,1390,1400,1410,1420,1430,1440,1450,1460,1470,1480,1490,1500,1510,1520];
+        // Phase 1 Table
+        var p1Sizes=[64,128,256,512,768,1024,1280,1290,1300,1310,1320,1330,1340,1350,1360,1370,1380,1390,1400,1410,1420,1430,1440,1450,1460,1470,1480,1490,1500,1510,1520];
         buildTransposedTable({dualstack:p1ds,dslite:p1dl,nat64:p1n64},'p1table',p1Sizes);
-        const dm1=p1ds.filter(r=>r.status==='✅').pop(),dlm1=p1dl.filter(r=>r.status==='✅').pop(),nm1=p1n64.filter(r=>r.status==='✅').pop();
-        document.getElementById('p1summary').innerHTML=`<strong>📊 Without Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm1?dm1.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm1?dlm1.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm1?nm1.size:0}B</span> <small style="color:#64748b">(Max payload without fragmentation)</small>`;
+        var dm1=p1ds.filter(function(r){return r.status==='✅';}).pop();
+        var dlm1=p1dl.filter(function(r){return r.status==='✅';}).pop();
+        var nm1=p1n64.filter(function(r){return r.status==='✅';}).pop();
+        document.getElementById('p1summary').innerHTML='<strong>📊 Without Fragmentation</strong><br><span style="color:#3b82f6">DS: '+(dm1?dm1.size:0)+'B</span> | <span style="color:#10b981">DS-Lite: '+(dlm1?dlm1.size:0)+'B</span> | <span style="color:#f59e0b">NAT64: '+(nm1?nm1.size:0)+'B</span> <small style="color:#64748b">(Max payload without fragmentation)</small>';
         
-        const p2Sizes=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
+        // Phase 2 Table
+        var p2Sizes=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
         buildTransposedTable({dualstack:p2ds,dslite:p2dl,nat64:p2n64},'p2table',p2Sizes);
-        const dm2=p2ds.filter(r=>r.status!=='❌').pop(),dlm2=p2dl.filter(r=>r.status!=='❌').pop(),nm2=p2n64.filter(r=>r.status!=='❌').pop();
-        document.getElementById('p2summary').innerHTML=`<strong>📊 With Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm2?dm2.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm2?dlm2.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm2?nm2.size:0}B</span> <small style="color:#64748b">(Max payload with fragmentation)</small>`;
+        var dm2=p2ds.filter(function(r){return r.status!=='❌';}).pop();
+        var dlm2=p2dl.filter(function(r){return r.status!=='❌';}).pop();
+        var nm2=p2n64.filter(function(r){return r.status!=='❌';}).pop();
+        document.getElementById('p2summary').innerHTML='<strong>📊 With Fragmentation</strong><br><span style="color:#3b82f6">DS: '+(dm2?dm2.size:0)+'B</span> | <span style="color:#10b981">DS-Lite: '+(dlm2?dlm2.size:0)+'B</span> | <span style="color:#f59e0b">NAT64: '+(nm2?nm2.size:0)+'B</span> <small style="color:#64748b">(Max payload with fragmentation)</small>';
         
+        // Final Summary
         document.getElementById('ds-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dualstack',dm1?dm1.size:0);
         document.getElementById('ds-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','dualstack',dm2?dm2.size:0);
         document.getElementById('dl-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dslite',dlm1?dlm1.size:0);
         document.getElementById('dl-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','dslite',dlm2?dlm2.size:0);
         document.getElementById('n64-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','nat64',nm1?nm1.size:0);
         document.getElementById('n64-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','nat64',nm2?nm2.size:0);
-    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error: '+e.message+'</p>';}
+    }catch(e){
+        document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error: '+e.message+'</p>';
+        console.error(e);
+    }
 }
 load();
 </script>
