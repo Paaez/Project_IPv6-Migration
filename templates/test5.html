@@ -19,20 +19,25 @@
         
         .section-title{font-size:0.8rem;color:#38bdf8;font-weight:600;margin:14px 0 8px 0;padding-left:10px;border-left:3px solid #38bdf8}
         
-        .table-scroll{max-height:350px;overflow:auto;border:1px solid #2d3a4a;border-radius:6px}
-        table{width:100%;border-collapse:collapse;font-size:0.55rem}
-        th{background:#151d2b;color:#38bdf8;padding:4px 3px;text-align:center;font-weight:600;position:sticky;top:0;z-index:2;font-size:0.52rem;text-transform:uppercase;white-space:nowrap}
-        th.row-label{position:sticky;left:0;z-index:3;background:#151d2b;min-width:60px;text-align:left;padding-left:6px}
-        td{padding:3px 3px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center;font-size:0.52rem}
-        td.row-label{position:sticky;left:0;z-index:1;font-weight:600;text-align:left;padding-left:6px;font-size:0.55rem}
+        .table-scroll{max-height:400px;overflow:auto;border:1px solid #2d3a4a;border-radius:6px}
+        table{width:100%;border-collapse:collapse;font-size:0.6rem}
+        th{background:#151d2b;color:#38bdf8;padding:5px 4px;text-align:center;font-weight:600;position:sticky;top:0;z-index:2;font-size:0.55rem;text-transform:uppercase;white-space:nowrap}
+        th.row-label{position:sticky;left:0;z-index:3;background:#151d2b;min-width:80px;text-align:center;font-size:0.65rem}
+        th.met-label{position:sticky;left:80px;z-index:3;background:#151d2b;min-width:50px;font-size:0.52rem}
+        td{padding:4px 4px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center;font-size:0.58rem}
+        td.row-label{position:sticky;left:0;z-index:1;font-weight:700;text-align:center;vertical-align:middle;font-size:0.68rem;border-right:2px solid #2d3a4a}
+        td.met-label{position:sticky;left:80px;z-index:1;color:#94a3b8;font-weight:500;font-size:0.52rem;text-transform:uppercase}
         tr:hover td{background:rgba(56,189,248,0.03)}
-        tr.strat-separator td{border-top:2px solid #2d3a4a;background:#0f172a;height:2px}
+        tr.strat-separator td{border-top:3px solid #2d3a4a;background:#0f172a;padding:0;height:3px}
         
-        .row-ds td.row-label{color:#3b82f6;background:rgba(59,130,246,0.06)}
-        .row-dl td.row-label{color:#10b981;background:rgba(16,185,129,0.06)}
-        .row-n64 td.row-label{color:#f59e0b;background:rgba(245,158,11,0.06)}
+        td.row-label-ds{color:#3b82f6;background:rgba(59,130,246,0.08)}
+        td.row-label-dl{color:#10b981;background:rgba(16,185,129,0.08)}
+        td.row-label-n64{color:#f59e0b;background:rgba(245,158,11,0.08)}
+        td.met-label-ds{background:rgba(59,130,246,0.04)}
+        td.met-label-dl{background:rgba(16,185,129,0.04)}
+        td.met-label-n64{background:rgba(245,158,11,0.04)}
         
-        .s-ok{color:#10b981;font-weight:700}.s-fail{color:#ef4444;font-weight:700}.s-frag{color:#f59e0b;font-weight:700}
+        .s-ok{color:#10b981;font-weight:700;font-size:0.62rem}.s-fail{color:#ef4444;font-weight:700;font-size:0.62rem}.s-frag{color:#f59e0b;font-weight:700;font-size:0.62rem}
         
         .summary-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
         .summary-item{background:#151d2b;border:1px solid #2d3a4a;border-radius:6px;padding:10px 14px;font-size:0.7rem}
@@ -117,7 +122,7 @@
         <!-- PHASE 1 TRANSPOSED TABLE -->
         <div class="section-title" title="Without Fragmentation: Strategies as rows, packet sizes as columns">🔬 Without Fragmentation (DF Set) - Full Scale</div>
         <div class="table-scroll"><table>
-            <thead><tr><th class="row-label">Strategy</th><th>Metric</th><th>64B</th><th>128B</th><th>256B</th><th>512B</th><th>768B</th><th>1024B</th><th>1280B</th><th>1290B</th><th>1300B</th><th>1310B</th><th>1320B</th><th>1330B</th><th>1340B</th><th>1350B</th><th>1360B</th><th>1370B</th><th>1380B</th><th>1390B</th><th>1400B</th><th>1410B</th><th>1420B</th><th>1430B</th><th>1440B</th><th>1450B</th><th>1460B</th><th>1470B</th><th>1480B</th><th>1490B</th><th>1500B</th><th>1510B</th><th>1520B</th></tr></thead>
+            <thead><tr><th class="row-label">Strategy</th><th class="met-label">Mtr</th><th>64B</th><th>128B</th><th>256B</th><th>512B</th><th>768B</th><th>1024B</th><th>1280B</th><th>1290B</th><th>1300B</th><th>1310B</th><th>1320B</th><th>1330B</th><th>1340B</th><th>1350B</th><th>1360B</th><th>1370B</th><th>1380B</th><th>1390B</th><th>1400B</th><th>1410B</th><th>1420B</th><th>1430B</th><th>1440B</th><th>1450B</th><th>1460B</th><th>1470B</th><th>1480B</th><th>1490B</th><th>1500B</th><th>1510B</th><th>1520B</th></tr></thead>
             <tbody id="p1table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p1summary"></div></div>
@@ -125,7 +130,7 @@
         <!-- PHASE 2 TRANSPOSED TABLE -->
         <div class="section-title" title="With Fragmentation: Strategies as rows, packet sizes as columns">🔬 With Fragmentation Allowed - Full Scale</div>
         <div class="table-scroll"><table>
-            <thead><tr><th class="row-label">Strategy</th><th>Metric</th><th>1.5K</th><th>2K</th><th>3K</th><th>4K</th><th>5K</th><th>6K</th><th>7K</th><th>8K</th><th>9K</th><th>10K</th><th>12K</th><th>15K</th><th>20K</th><th>30K</th><th>40K</th><th>50K</th><th>60K</th></tr></thead>
+            <thead><tr><th class="row-label">Strategy</th><th class="met-label">Mtr</th><th>1.5K</th><th>2K</th><th>3K</th><th>4K</th><th>5K</th><th>6K</th><th>7K</th><th>8K</th><th>9K</th><th>10K</th><th>12K</th><th>15K</th><th>20K</th><th>30K</th><th>40K</th><th>50K</th><th>60K</th></tr></thead>
             <tbody id="p2table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p2summary"></div></div>
@@ -170,71 +175,40 @@ function mkLineChart(id,data,ylab){
     charts[id]=new Chart(c,{type:'line',data,options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:10,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:ylab,color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:7},maxRotation:45}}}}});
 }
 
-function getHeatColor(rtt,maxRtt,loss){
-    if(loss===100||rtt===0)return'#6b7280';
-    const ratio=rtt/maxRtt;
-    if(ratio<0.25)return'#10b981';
-    if(ratio<0.5)return'#84cc16';
-    if(ratio<0.75)return'#f59e0b';
-    return'#ef4444';
-}
+function getHeatColor(rtt,maxRtt,loss){if(loss===100||rtt===0)return'#6b7280';const ratio=rtt/maxRtt;if(ratio<0.25)return'#10b981';if(ratio<0.5)return'#84cc16';if(ratio<0.75)return'#f59e0b';return'#ef4444';}
 
 function buildHeatmap(p1ds,p1dl,p1n64){
     const keySizes=[64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500];
-    const allData=[p1ds,p1dl,p1n64];
-    const labels=['🔵 DS','🟢 DL','🟠 N64'];
-    let maxRtt=0;
-    allData.forEach(d=>{keySizes.forEach(sz=>{const f=d.find(r=>r.size===sz);if(f&&f.rtt>maxRtt)maxRtt=f.rtt;});});
-    if(maxRtt===0)maxRtt=10;
-    
+    const allData=[p1ds,p1dl,p1n64],labels=['🔵 DS','🟢 DL','🟠 N64'];
+    let maxRtt=0;allData.forEach(d=>{keySizes.forEach(sz=>{const f=d.find(r=>r.size===sz);if(f&&f.rtt>maxRtt)maxRtt=f.rtt;});});if(maxRtt===0)maxRtt=10;
     document.getElementById('heatmapHeader').innerHTML='<span></span>'+keySizes.map(s=>`<span>${s>=1000?(s/1000).toFixed(1)+'K':s+'B'}</span>`).join('');
     document.getElementById('heatmapHeader').style.gridTemplateColumns=`70px repeat(${keySizes.length},1fr)`;
-    
-    let html='';
-    allData.forEach((stratData,si)=>{
-        html+=`<div class="heatmap-row" style="grid-template-columns:70px repeat(${keySizes.length},1fr)"><span class="heatmap-label">${labels[si]}</span>`;
-        keySizes.forEach(sz=>{
-            const f=stratData.find(r=>r.size===sz);
-            if(f){const color=getHeatColor(f.rtt,maxRtt,f.loss);const text=f.rtt>0?f.rtt.toFixed(1):'—';html+=`<div class="heatmap-cell" style="background:${color}" title="${sz}B: ${f.rtt>0?f.rtt.toFixed(2)+'ms':'FAILED'}">${text}</div>`;}
-            else{html+=`<div class="heatmap-cell" style="background:#374151">—</div>`;}
-        });
-        html+=`</div>`;
-    });
+    let html='';allData.forEach((stratData,si)=>{html+=`<div class="heatmap-row" style="grid-template-columns:70px repeat(${keySizes.length},1fr)"><span class="heatmap-label">${labels[si]}</span>`;keySizes.forEach(sz=>{const f=stratData.find(r=>r.size===sz);if(f){const color=getHeatColor(f.rtt,maxRtt,f.loss);const text=f.rtt>0?f.rtt.toFixed(1):'—';html+=`<div class="heatmap-cell" style="background:${color}" title="${sz}B: ${f.rtt>0?f.rtt.toFixed(2)+'ms':'FAILED'}">${text}</div>`;}else{html+=`<div class="heatmap-cell" style="background:#374151">—</div>`;}});html+=`</div>`;});
     document.getElementById('heatmapGrid').innerHTML=html;
 }
 
 function buildTransposedTable(data, tableId, sizes){
     const strategies=['dualstack','dslite','nat64'];
     const names=['🔵 Dual Stack','🟢 DS-Lite','🟠 NAT64'];
-    const rowClasses=['row-ds','row-dl','row-n64'];
+    const labelClasses=['row-label-ds','row-label-dl','row-label-n64'];
+    const metClasses=['met-label-ds','met-label-dl','met-label-n64'];
     
     let h='';
     strategies.forEach((s,si)=>{
-        // Status row
-        h+=`<tr class="${rowClasses[si]}"><td class="row-label">${names[si]}</td><td style="color:#94a3b8;font-size:0.48rem">Status</td>`;
-        sizes.forEach(sz=>{
-            const found=data[s].find(r=>r.size===sz);
-            h+=found?`<td class="${found.cls}">${found.status}</td>`:'<td>—</td>';
-        });
+        // Status row (strategy name merged with rowspan=3)
+        h+=`<tr><td class="row-label ${labelClasses[si]}" rowspan="3">${names[si]}</td><td class="met-label ${metClasses[si]}">St</td>`;
+        sizes.forEach(sz=>{const found=data[s].find(r=>r.size===sz);h+=found?`<td class="${found.cls}">${found.status}</td>`:'<td>—</td>';});
         h+=`</tr>`;
         // Loss row
-        h+=`<tr class="${rowClasses[si]}"><td class="row-label">${names[si]}</td><td style="color:#94a3b8;font-size:0.48rem">Loss%</td>`;
-        sizes.forEach(sz=>{
-            const found=data[s].find(r=>r.size===sz);
-            h+=found?`<td class="${found.loss===0?'s-ok':found.loss===100?'s-fail':'s-frag'}">${found.loss}%</td>`:'<td>—</td>';
-        });
+        h+=`<tr><td class="met-label ${metClasses[si]}">Loss</td>`;
+        sizes.forEach(sz=>{const found=data[s].find(r=>r.size===sz);h+=found?`<td class="${found.loss===0?'s-ok':found.loss===100?'s-fail':'s-frag'}">${found.loss}%</td>`:'<td>—</td>';});
         h+=`</tr>`;
         // RTT row
-        h+=`<tr class="${rowClasses[si]}"><td class="row-label">${names[si]}</td><td style="color:#94a3b8;font-size:0.48rem">RTT</td>`;
-        sizes.forEach(sz=>{
-            const found=data[s].find(r=>r.size===sz);
-            h+=found?`<td>${found.rttDisplay}</td>`:'<td>—</td>';
-        });
+        h+=`<tr><td class="met-label ${metClasses[si]}">RTT</td>`;
+        sizes.forEach(sz=>{const found=data[s].find(r=>r.size===sz);h+=found?`<td>${found.rttDisplay}</td>`:'<td>—</td>';});
         h+=`</tr>`;
         // Separator
-        if(si<strategies.length-1){
-            h+=`<tr class="strat-separator"><td colspan="${sizes.length+2}"></td></tr>`;
-        }
+        if(si<strategies.length-1){h+=`<tr class="strat-separator"><td colspan="${sizes.length+2}"></td></tr>`;}
     });
     document.getElementById(tableId).innerHTML=h;
 }
@@ -248,74 +222,37 @@ async function load(){
         const p2ds=getPhaseData(d,'dualstack',2),p2dl=getPhaseData(d,'dslite',2),p2n64=getPhaseData(d,'nat64',2);
         const cols=['#3b82f6','#10b981','#f59e0b'],names=['Dual Stack','DS-Lite','NAT64'];
         
-        // Loss Charts
         [['lossChart1',p1ds,p1dl,p1n64,'Loss (%)'],['lossChart2',p2ds,p2dl,p2n64,'Loss (%)']].forEach(([id,d1,d2,d3,ylab])=>{
             const labels=d3.map(r=>r.size);
-            mkLineChart(id,{labels,datasets:[
-                {label:names[0],data:d1.map(r=>r.loss),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2},
-                {label:names[1],data:d2.map(r=>r.loss),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2},
-                {label:names[2],data:d3.map(r=>r.loss),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2}
-            ]},ylab);
+            mkLineChart(id,{labels,datasets:[{label:names[0],data:d1.map(r=>r.loss),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2},{label:names[1],data:d2.map(r=>r.loss),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2},{label:names[2],data:d3.map(r=>r.loss),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2}]},ylab);
         });
         
-        // Phase 1 RTT Chart
         [['rttChart1',p1ds,p1dl,p1n64,'RTT (ms)']].forEach(([id,d1,d2,d3,ylab])=>{
-            const labels=d3.map(r=>r.size);
-            const getRttData=(data,lbls)=>lbls.map(s=>{const f=data.find(r=>r.size===s);return f&&f.rtt>0?f.rtt:null});
-            const validLabels=labels.filter(s=>d3.find(r=>r.size===s)?.rtt>0);
-            if(validLabels.length>0){
-                mkLineChart(id,{labels:validLabels,datasets:[
-                    {label:names[0],data:getRttData(d1,validLabels),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
-                    {label:names[1],data:getRttData(d2,validLabels),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
-                    {label:names[2],data:getRttData(d3,validLabels),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}
-                ]},ylab);
-            }
+            const labels=d3.map(r=>r.size),getRttData=(data,lbls)=>lbls.map(s=>{const f=data.find(r=>r.size===s);return f&&f.rtt>0?f.rtt:null}),validLabels=labels.filter(s=>d3.find(r=>r.size===s)?.rtt>0);
+            if(validLabels.length>0){mkLineChart(id,{labels:validLabels,datasets:[{label:names[0],data:getRttData(d1,validLabels),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},{label:names[1],data:getRttData(d2,validLabels),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},{label:names[2],data:getRttData(d3,validLabels),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}]},ylab);}
         });
         
-        // Phase 2 Success Rate Chart
         if(charts['successChart2'])charts['successChart2'].destroy();
-        charts['successChart2']=new Chart(document.getElementById('successChart2'),{
-            type:'bar',data:{labels:p2n64.map(r=>r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size),datasets:[
-                {label:names[0],data:p2ds.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#3b82f6',borderRadius:2},
-                {label:names[1],data:p2dl.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#10b981',borderRadius:2},
-                {label:names[2],data:p2n64.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#f59e0b',borderRadius:2}
-            ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},scales:{y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}}}
-        });
+        charts['successChart2']=new Chart(document.getElementById('successChart2'),{type:'bar',data:{labels:p2n64.map(r=>r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size),datasets:[{label:names[0],data:p2ds.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#3b82f6',borderRadius:2},{label:names[1],data:p2dl.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#10b981',borderRadius:2},{label:names[2],data:p2n64.map(r=>r.status==='✅'||r.status==='⚠️'?1:0),backgroundColor:'#f59e0b',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},scales:{y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}}});
         
-        // Heatmap
         buildHeatmap(p1ds,p1dl,p1n64);
         
-        // RTT Comparison
-        const maxNoFragDS=p1ds.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
-        const maxNoFragDL=p1dl.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
-        const maxNoFragN64=p1n64.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
+        const maxNoFragDS=p1ds.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470},maxNoFragDL=p1dl.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470},maxNoFragN64=p1n64.filter(r=>r.status==='✅').pop()||{rtt:0,size:1470};
         const fragDS=p2ds.find(r=>r.size===1500)||{rtt:0},fragDL=p2dl.find(r=>r.size===1500)||{rtt:0},fragN64=p2n64.find(r=>r.size===1500)||{rtt:0};
-        const overheadDS=maxNoFragDS.rtt>0?((fragDS.rtt-maxNoFragDS.rtt)/maxNoFragDS.rtt*100).toFixed(0):0;
-        const overheadDL=maxNoFragDL.rtt>0?((fragDL.rtt-maxNoFragDL.rtt)/maxNoFragDL.rtt*100).toFixed(0):0;
-        const overheadN64=maxNoFragN64.rtt>0?((fragN64.rtt-maxNoFragN64.rtt)/maxNoFragN64.rtt*100).toFixed(0):0;
-        document.getElementById('overheadLabels').innerHTML=`
-            <span class="overhead-ds" title="Extra RTT from fragmentation">🔵 DS: +${overheadDS}%</span>
-            <span class="overhead-dl" title="Extra RTT from fragmentation">🟢 DL: +${overheadDL}%</span>
-            <span class="overhead-n64" title="Extra RTT from fragmentation">🟠 N64: +${overheadN64}%</span>`;
+        document.getElementById('overheadLabels').innerHTML=`<span class="overhead-ds" title="Extra RTT from fragmentation">🔵 DS: +${maxNoFragDS.rtt>0?((fragDS.rtt-maxNoFragDS.rtt)/maxNoFragDS.rtt*100).toFixed(0):0}%</span><span class="overhead-dl" title="Extra RTT from fragmentation">🟢 DL: +${maxNoFragDL.rtt>0?((fragDL.rtt-maxNoFragDL.rtt)/maxNoFragDL.rtt*100).toFixed(0):0}%</span><span class="overhead-n64" title="Extra RTT from fragmentation">🟠 N64: +${maxNoFragN64.rtt>0?((fragN64.rtt-maxNoFragN64.rtt)/maxNoFragN64.rtt*100).toFixed(0):0}%</span>`;
         if(charts['rttCompareChart'])charts['rttCompareChart'].destroy();
-        charts['rttCompareChart']=new Chart(document.getElementById('rttCompareChart'),{type:'bar',data:{labels:names,datasets:[
-            {label:`No-Frag (${maxNoFragDS.size||1470}B)`,data:[maxNoFragDS.rtt,maxNoFragDL.rtt,maxNoFragN64.rtt],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},
-            {label:'Fragmented (1500B)',data:[fragDS.rtt,fragDL.rtt,fragN64.rtt],backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}
-        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
+        charts['rttCompareChart']=new Chart(document.getElementById('rttCompareChart'),{type:'bar',data:{labels:names,datasets:[{label:`No-Frag (${maxNoFragDS.size||1470}B)`,data:[maxNoFragDS.rtt,maxNoFragDL.rtt,maxNoFragN64.rtt],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},{label:'Fragmented (1500B)',data:[fragDS.rtt,fragDL.rtt,fragN64.rtt],backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
         
-        // Phase 1 Transposed Table - ALL 31 sizes
         const p1Sizes=[64,128,256,512,768,1024,1280,1290,1300,1310,1320,1330,1340,1350,1360,1370,1380,1390,1400,1410,1420,1430,1440,1450,1460,1470,1480,1490,1500,1510,1520];
         buildTransposedTable({dualstack:p1ds,dslite:p1dl,nat64:p1n64},'p1table',p1Sizes);
         const dm1=p1ds.filter(r=>r.status==='✅').pop(),dlm1=p1dl.filter(r=>r.status==='✅').pop(),nm1=p1n64.filter(r=>r.status==='✅').pop();
         document.getElementById('p1summary').innerHTML=`<strong>📊 Without Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm1?dm1.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm1?dlm1.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm1?nm1.size:0}B</span> <small style="color:#64748b">(Max payload without fragmentation)</small>`;
         
-        // Phase 2 Transposed Table - ALL 17 sizes
         const p2Sizes=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
         buildTransposedTable({dualstack:p2ds,dslite:p2dl,nat64:p2n64},'p2table',p2Sizes);
         const dm2=p2ds.filter(r=>r.status!=='❌').pop(),dlm2=p2dl.filter(r=>r.status!=='❌').pop(),nm2=p2n64.filter(r=>r.status!=='❌').pop();
         document.getElementById('p2summary').innerHTML=`<strong>📊 With Fragmentation</strong><br><span style="color:#3b82f6">DS: ${dm2?dm2.size:0}B</span> | <span style="color:#10b981">DS-Lite: ${dlm2?dlm2.size:0}B</span> | <span style="color:#f59e0b">NAT64: ${nm2?nm2.size:0}B</span> <small style="color:#64748b">(Max payload with fragmentation)</small>`;
         
-        // Final Summary
         document.getElementById('ds-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dualstack',dm1?dm1.size:0);
         document.getElementById('ds-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','dualstack',dm2?dm2.size:0);
         document.getElementById('dl-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dslite',dlm1?dlm1.size:0);
