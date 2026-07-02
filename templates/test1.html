@@ -94,6 +94,7 @@ async function load(){
             <tr><td><span class="metric-label">UDP Loss</span></td><td class="${valClass(gv(d,'T1_UDP_PC1_'+s+'_Loss_Percent','dualstack'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,'T1_UDP_PC1_'+s+'_Loss_Percent','dualstack').toFixed(1)}%</td><td class="${valClass(gv(d,'T1_UDP_PC1_'+s+'_Loss_Percent','dslite'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,'T1_UDP_PC1_'+s+'_Loss_Percent','dslite').toFixed(1)}%</td><td class="${valClass(gv(d,'T1_UDP_PC1_'+s+'_Loss_Percent','nat64'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,'T1_UDP_PC1_'+s+'_Loss_Percent','nat64').toFixed(1)}%</td></tr>`;
         });
         document.getElementById('summary').innerHTML=h;
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error</p>';}
 }
 load();
 </script>
