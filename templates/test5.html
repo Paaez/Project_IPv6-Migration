@@ -16,6 +16,7 @@
         .chart-title{font-size:0.75rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
         .chart-wrap{position:relative;height:240px}
         .chart-wrap-heat{position:relative;height:260px}
+        .chart-msg{display:flex;align-items:center;justify-content:center;height:240px;color:#94a3b8;font-size:0.7rem}
         
         .section-title{font-size:0.8rem;color:#38bdf8;font-weight:600;margin:14px 0 8px 0;padding-left:10px;border-left:3px solid #38bdf8}
         
@@ -91,6 +92,7 @@
             <div class="chart-box">
                 <div class="chart-title">Phase 2: Fragmentation Allowed</div>
                 <div class="chart-wrap"><canvas id="rttChart2"></canvas></div>
+                <div class="chart-msg" id="rtt2msg" style="display:none"></div>
             </div>
         </div>
         
@@ -218,19 +220,50 @@ async function load(){
         const p2ds=getPhaseData(d,'dualstack',2),p2dl=getPhaseData(d,'dslite',2),p2n64=getPhaseData(d,'nat64',2);
         const cols=['#3b82f6','#10b981','#f59e0b'],names=['Dual Stack','DS-Lite','NAT64'];
         
-        // Loss & RTT Charts
-        [['lossChart1',p1ds,p1dl,p1n64,'Loss (%)',false],['lossChart2',p2ds,p2dl,p2n64,'Loss (%)',false],
-         ['rttChart1',p1ds,p1dl,p1n64,'RTT (ms)',true],['rttChart2',p2ds,p2dl,p2n64,'RTT (ms)',true]]
-        .forEach(([id,d1,d2,d3,ylab,isRtt])=>{
+        // Loss Charts
+        [['lossChart1',p1ds,p1dl,p1n64,'Loss (%)'],['lossChart2',p2ds,p2dl,p2n64,'Loss (%)']].forEach(([id,d1,d2,d3,ylab])=>{
             const labels=d3.map(r=>r.size);
-            const getRttData=(data,lbls)=>lbls.map(s=>{const f=data.find(r=>r.size===s);return f&&f.rtt>0?f.rtt:null});
-            const validLabels=isRtt?labels.filter(s=>d3.find(r=>r.size===s)?.rtt>0):labels;
-            mkLineChart(id,{labels:isRtt?validLabels:labels,datasets:[
-                {label:names[0],data:isRtt?getRttData(d1,validLabels):d1.map(r=>r.loss),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
-                {label:names[1],data:isRtt?getRttData(d2,validLabels):d2.map(r=>r.loss),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
-                {label:names[2],data:isRtt?getRttData(d3,validLabels):d3.map(r=>r.loss),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}
+            mkLineChart(id,{labels,datasets:[
+                {label:names[0],data:d1.map(r=>r.loss),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2},
+                {label:names[1],data:d2.map(r=>r.loss),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2},
+                {label:names[2],data:d3.map(r=>r.loss),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2}
             ]},ylab);
         });
+        
+        // Phase 1 RTT Chart
+        [['rttChart1',p1ds,p1dl,p1n64,'RTT (ms)']].forEach(([id,d1,d2,d3,ylab])=>{
+            const labels=d3.map(r=>r.size);
+            const getRttData=(data,lbls)=>lbls.map(s=>{const f=data.find(r=>r.size===s);return f&&f.rtt>0?f.rtt:null});
+            const validLabels=labels.filter(s=>d3.find(r=>r.size===s)?.rtt>0);
+            if(validLabels.length>0){
+                mkLineChart(id,{labels:validLabels,datasets:[
+                    {label:names[0],data:getRttData(d1,validLabels),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+                    {label:names[1],data:getRttData(d2,validLabels),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+                    {label:names[2],data:getRttData(d3,validLabels),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}
+                ]},ylab);
+            }
+        });
+        
+        // Phase 2 RTT Chart - Check if there's data
+        const p2rttDS=p2ds.filter(r=>r.rtt>0);
+        const p2rttDL=p2dl.filter(r=>r.rtt>0);
+        const p2rttN64=p2n64.filter(r=>r.rtt>0);
+        
+        if(p2rttDS.length>0||p2rttDL.length>0||p2rttN64.length>0){
+            const allSizes=[...new Set([...p2rttDS,...p2rttDL,...p2rttN64].map(r=>r.size))].sort((a,b)=>a-b);
+            const getRttData=(data,lbls)=>lbls.map(s=>{const f=data.find(r=>r.size===s);return f&&f.rtt>0?f.rtt:null});
+            document.getElementById('rttChart2').style.display='block';
+            document.getElementById('rtt2msg').style.display='none';
+            mkLineChart('rttChart2',{labels:allSizes,datasets:[
+                {label:names[0],data:getRttData(p2rttDS,allSizes),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+                {label:names[1],data:getRttData(p2rttDL,allSizes),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+                {label:names[2],data:getRttData(p2rttN64,allSizes),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}
+            ]},'RTT (ms)');
+        } else {
+            document.getElementById('rttChart2').style.display='none';
+            document.getElementById('rtt2msg').style.display='flex';
+            document.getElementById('rtt2msg').innerHTML='📋 No RTT data for Phase 2<br><small>Fragmented packets - check Loss % table below</small>';
+        }
         
         // Heatmap
         buildHeatmap(p1ds,p1dl,p1n64);
