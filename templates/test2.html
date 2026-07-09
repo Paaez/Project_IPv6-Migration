@@ -63,7 +63,6 @@
         .chart-title{font-size:0.8125rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
         .chart-wrap{position:relative;height:260px}
         
-        /* Run Tabs */
         .run-tabs{display:flex;gap:6px;margin-bottom:10px}
         .run-tab{
             padding:6px 16px;
@@ -81,7 +80,6 @@
         .run-content{display:none}
         .run-content.active{display:block}
         
-        /* Drop Panels */
         .drop-panels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
         .drop-panel{
             background:#151d2b;
@@ -181,7 +179,7 @@
             <span style="color:#f59e0b">Medium (3-10 Mbps)</span>
             <span style="color:#ef4444">Slow (<3 Mbps)</span>
             <span>|</span>
-            <span title="Speed drop of 30% or more">Drop &ge;30% = Critical</span>
+            <span title="Speed drop of 30% or more">Drop 30% or more = Critical</span>
         </div>
         
         <div class="section-title">Speed Drop Analysis</div>
@@ -262,7 +260,7 @@ function showRun(run,btn){
     
     var d=allRuns[run]||allRuns[1]||{};
     updateChart(d);
-    updateDropPanels(run);
+    updateDropPanels();
 }
 
 function updateChart(d){
@@ -272,23 +270,48 @@ function updateChart(d){
     var strats=['dualstack','dslite','nat64'];
     
     if(charts['httpChart'])charts['httpChart'].destroy();
-    charts['httpChart']=new Chart(document.getElementById('httpChart'),{type:'line',data:{labels:files,datasets:strats.map(function(s,i){return{label:names[i],data:files.map(function(f){return gv(d,'T2_HTTP_PC2_'+f+'_Speed_Mbps',s);}),borderColor:cols[i],backgroundColor:cols[i]+'15',borderWidth:2,tension:0.4,fill:true,pointRadius:3};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:10},padding:10,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Speed (Mbps)',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},x:{grid:{display:false},title:{display:true,text:'File Size',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:7},maxRotation:45}}}}});
-}
-
-function updateDropPanels(run){
-    var strategies=['dualstack','dslite','nat64'];
-    var panelIds=['dropDS','dropDL','dropN64'];
-    var panelColors=['#3b82f6','#10b981','#f59e0b'];
-    var panelNames=['Dual Stack','DS-Lite','NAT64'];
-    
-    strategies.forEach(function(s,i){
-        buildDropPanel(s,panelIds[i],panelNames[i],run);
+    charts['httpChart']=new Chart(document.getElementById('httpChart'),{
+        type:'line',
+        data:{
+            labels:files,
+            datasets:strats.map(function(s,i){
+                return{
+                    label:names[i],
+                    data:files.map(function(f){return gv(d,'T2_HTTP_PC2_'+f+'_Speed_Mbps',s);}),
+                    borderColor:cols[i],
+                    backgroundColor:cols[i]+'15',
+                    borderWidth:2,
+                    tension:0.4,
+                    fill:true,
+                    pointRadius:3
+                };
+            })
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins:{legend:{labels:{color:'#cbd5e1',font:{size:10},padding:10,usePointStyle:true}}},
+            scales:{
+                y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Speed (Mbps)',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},
+                x:{grid:{display:false},title:{display:true,text:'File Size',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:7},maxRotation:45}}
+            }
+        }
     });
 }
 
-function buildDropPanel(strategy,elementId,name,run){
+function updateDropPanels(){
+    var strategies=['dualstack','dslite','nat64'];
+    var panelIds=['dropDS','dropDL','dropN64'];
+    
+    strategies.forEach(function(s,i){
+        buildDropPanel(s,panelIds[i]);
+    });
+}
+
+function buildDropPanel(strategy,elementId){
     var dropData=allDropData[strategy];
-    if(!dropData){
+    
+    if(!dropData || Object.keys(dropData).length===0){
         document.getElementById(elementId).innerHTML='<span class="drop-info">No drop analysis data available</span>';
         return;
     }
@@ -299,15 +322,26 @@ function buildDropPanel(strategy,elementId,name,run){
     var baseline=dropData.iperf_baseline_mbps||0;
     var perf=dropData.performance_summary||{};
     
-    var h='<div class="drop-info"><strong>MSS:</strong> '+mss+'B | <strong>iperf3:</strong> '+baseline.toFixed(1)+' Mbps</div>';
+    var h='';
     
+    // MSS and baseline
+    h+='<div class="drop-info"><strong>MSS:</strong> '+mss+'B | <strong>iperf3:</strong> '+baseline.toFixed(1)+' Mbps</div>';
+    
+    // Performance summary
     if(perf.max_speed_mbps){
-        h+='<div class="drop-info" style="margin-top:4px"><strong>Max:</strong> '+perf.max_speed_mbps.toFixed(1)+' | <strong>Min:</strong> '+perf.min_speed_mbps.toFixed(1)+' | <strong>Avg:</strong> '+perf.avg_speed_mbps.toFixed(1)+' Mbps</div>';
+        h+='<div class="drop-info" style="margin-top:4px">';
+        h+='<strong>Max:</strong> '+perf.max_speed_mbps.toFixed(1)+' Mbps | ';
+        h+='<strong>Min:</strong> '+perf.min_speed_mbps.toFixed(1)+' Mbps | ';
+        h+='<strong>Avg:</strong> '+perf.avg_speed_mbps.toFixed(1)+' Mbps';
+        if(perf.http_efficiency_percent){
+            h+=' | <strong>Eff:</strong> '+perf.http_efficiency_percent.toFixed(1)+'%';
+        }
+        h+='</div>';
     }
     
-    // Show speed history with drop percentages for the selected run
+    // Speed history table
     if(speeds.length>0){
-        h+='<table style="margin-top:6px"><thead><tr><th>File</th><th>Mbps</th><th>&Delta;%</th></tr></thead><tbody>';
+        h+='<table style="margin-top:6px"><thead><tr><th>File</th><th>Mbps</th><th>Change</th></tr></thead><tbody>';
         speeds.forEach(function(s,i){
             var prev=i>0?speeds[i-1].speed_mbps:null;
             var cls='';
@@ -324,18 +358,20 @@ function buildDropPanel(strategy,elementId,name,run){
         h+='</tbody></table>';
     }
     
-    // Show drops
+    // Drops detected
     if(drops.length>0){
         drops.forEach(function(drop,i){
-            h+='<div class="drop-info" style="color:#ef4444;margin-top:6px;font-weight:600">Drop #'+(i+1)+': '+drop.drop_size_range+' ('+drop.drop_percentage+'%)</div>';
+            h+='<div class="drop-info" style="color:#ef4444;margin-top:6px;font-weight:600">';
+            h+='Drop #'+(i+1)+': '+drop.drop_size_range+' ('+drop.drop_percentage+'%)';
+            h+='</div>';
             if(drop.possible_causes&&drop.possible_causes.length>0){
                 h+='<div class="drop-info" style="font-size:0.56rem;color:#94a3b8;margin-top:2px">';
-                drop.possible_causes.slice(0,2).forEach(function(c){h+='&bull; '+c+'<br>';});
+                drop.possible_causes.slice(0,2).forEach(function(c){h+=c+'<br>';});
                 h+='</div>';
             }
         });
-    }else{
-        h+='<div class="drop-info" style="color:#10b981;margin-top:6px">No drops detected</div>';
+    }else if(speeds.length>0){
+        h+='<div class="drop-info" style="color:#10b981;margin-top:6px">No critical drops detected</div>';
     }
     
     document.getElementById(elementId).innerHTML=h;
@@ -359,20 +395,30 @@ function buildTable(data,tableId,isAvg){
 
 async function load(){
     try{
-        // Load test data
-        var r=await fetch('/api/test2');var d=await r.json();
+        // Load test data from T2Rs.json
+        var r=await fetch('/api/test2');
+        var d=await r.json();
         if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data available</p>';return}
         
-        // Load drop analysis data
-        var dropPromises=[
-            fetch('/api/drop-analysis/dualstack').then(function(r){return r.json();}).catch(function(){return {};}),
-            fetch('/api/drop-analysis/dslite').then(function(r){return r.json();}).catch(function(){return {};}),
-            fetch('/api/drop-analysis/nat64').then(function(r){return r.json();}).catch(function(){return {};})
-        ];
-        var dropResults=await Promise.all(dropPromises);
-        allDropData={dualstack:dropResults[0],dslite:dropResults[1],nat64:dropResults[2]};
+        // Load drop analysis data from separate JSON files
+        try{
+            var dsR=await fetch('/api/drop-analysis/dualstack');
+            allDropData['dualstack']=await dsR.json();
+        }catch(e){allDropData['dualstack']={};}
         
-        // Simulate 3 runs from averaged data
+        try{
+            var dlR=await fetch('/api/drop-analysis/dslite');
+            allDropData['dslite']=await dlR.json();
+        }catch(e){allDropData['dslite']={};}
+        
+        try{
+            var n64R=await fetch('/api/drop-analysis/nat64');
+            allDropData['nat64']=await n64R.json();
+        }catch(e){allDropData['nat64']={};}
+        
+        console.log('Drop data loaded:', Object.keys(allDropData));
+        
+        // Create 3 runs from averaged data
         var runs={};
         for(var run=1;run<=3;run++){runs[run]=d;}
         
@@ -388,17 +434,20 @@ async function load(){
         runs['avg']=avgData;
         allRuns=runs;
         
-        // Build tables
+        // Build all tables
         buildTable(runs[1],'run1-table',false);
         buildTable(runs[2],'run2-table',false);
         buildTable(runs[3],'run3-table',false);
         buildTable(avgData,'runavg-table',true);
         
-        // Initial chart and drop panels
+        // Initial display
         updateChart(runs[1]);
-        updateDropPanels(1);
+        updateDropPanels();
         
-    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error: '+e.message+'</p>';}
+    }catch(e){
+        document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error: '+e.message+'</p>';
+        console.error(e);
+    }
 }
 load();
 </script>
