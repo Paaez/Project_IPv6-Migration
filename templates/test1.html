@@ -50,7 +50,7 @@
             <span title="Less than 1% loss is normal for UDP">UDP Loss &lt;1% = Normal</span>
         </div>
         
-        <div class="section-title">Performance Charts - All 3 Runs</div>
+        <div class="section-title">Performance Charts</div>
         <div class="charts-row">
             <div class="chart-box"><div class="chart-title">TCP Throughput</div><div class="chart-wrap"><canvas id="tcpChart"></canvas></div></div>
             <div class="chart-box"><div class="chart-title">UDP Jitter</div><div class="chart-wrap"><canvas id="udpChart"></canvas></div></div>
@@ -96,9 +96,12 @@
 </div>
 
 <script>
-let charts={};
+var charts={};
 
-function gv(d,m,s,def){if(def===undefined)def=0;return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def;}
+function gv(d,m,s,def){
+    if(def===undefined)def=0;
+    return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def;
+}
 
 function valClass(v,good,bad,lb){
     if(lb===undefined)lb=true;
@@ -108,48 +111,47 @@ function valClass(v,good,bad,lb){
 }
 
 function showRun(run, btn){
-    document.querySelectorAll('.run-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.run-content').forEach(c=>c.classList.remove('active'));
+    document.querySelectorAll('.run-tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('.run-content').forEach(function(c){c.classList.remove('active');});
     btn.classList.add('active');
     document.getElementById('run'+run+'-content').classList.add('active');
 }
 
-function buildTable(data, tableId, showAvg){
+function buildTable(data, tableId, isAvg){
     var sizes=['5M','7M','10M','15M','20M'];
     var strategies=['dualstack','dslite','nat64'];
-    var names=['Dual Stack','DS-Lite','NAT64'];
     var h='';
     
     sizes.forEach(function(s){
-        var rowClass = showAvg ? 'avg-row' : '';
-        h+='<tr class="'+rowClass+'"><td class="size-cell" rowspan="4">'+s+'</td>';
+        var rowClass = isAvg ? 'avg-row' : '';
         
         // TCP
+        h+='<tr class="'+rowClass+'"><td class="size-cell" rowspan="4">'+s+'</td>';
         h+='<td><span class="metric-label">TCP Throughput</span></td>';
         strategies.forEach(function(st){
             var v=gv(data,'T1_TCP_PC1_'+s+'_Throughput_Mbps',st);
             h+='<td class="'+valClass(v,15,5,false)+'">'+(v>0?v.toFixed(2)+' Mbps':'—')+'</td>';
         });
-        h+='</tr><tr class="'+rowClass+'">';
+        h+='</tr>';
         
         // UDP Jitter
-        h+='<td><span class="metric-label">UDP Jitter</span></td>';
+        h+='<tr class="'+rowClass+'"><td><span class="metric-label">UDP Jitter</span></td>';
         strategies.forEach(function(st){
             var v=gv(data,'T1_UDP_PC1_'+s+'_Jitter_ms',st);
             h+='<td class="'+valClass(v,0.1,0.5,true)+'">'+(v>0?v.toFixed(3)+' ms':'—')+'</td>';
         });
-        h+='</tr><tr class="'+rowClass+'">';
+        h+='</tr>';
         
         // ICMP RTT
-        h+='<td><span class="metric-label">ICMP RTT Avg</span></td>';
+        h+='<tr class="'+rowClass+'"><td><span class="metric-label">ICMP RTT Avg</span></td>';
         strategies.forEach(function(st){
             var v=gv(data,'T1_ICMP_PC1_'+s+'_RTT_Avg_ms',st);
             h+='<td class="'+valClass(v,1,5,true)+'">'+(v>0?v.toFixed(3)+' ms':'—')+'</td>';
         });
-        h+='</tr><tr class="'+rowClass+'">';
+        h+='</tr>';
         
         // UDP Loss
-        h+='<td><span class="metric-label">UDP Loss</span></td>';
+        h+='<tr class="'+rowClass+'"><td><span class="metric-label">UDP Loss</span></td>';
         strategies.forEach(function(st){
             var v=gv(data,'T1_UDP_PC1_'+s+'_Loss_Percent',st);
             h+='<td class="'+valClass(v,1,5,true)+'" title="<1% Normal, 1-5% Acceptable, >5% Poor">'+v.toFixed(1)+'%</td>';
@@ -161,10 +163,50 @@ function buildTable(data, tableId, showAvg){
 
 async function load(){
     try{
-        var r=await fetch('/api/test1');
-        var d=await r.json();
-        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data available</p>';return}
+        var rawData=null;
+        try{
+            var rawR=await fetch('/api/test1-raw');
+            rawData=await rawR.json();
+            if(rawData.error)rawData=null;
+        }catch(e){rawData=null;}
         
+        if(!rawData||!Array.isArray(rawData)){
+            var r=await fetch('/api/test1');
+            var d=await r.json();
+            if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data</p>';return;}
+            rawData=[];
+            var sizes=['5M','7M','10M','15M','20M'];
+            var strategies=['dualstack','dslite','nat64'];
+            var metrics=['Throughput_Mbps','Jitter_ms','RTT_Avg_ms','Loss_Percent'];
+            var prefixes=['T1_TCP_PC1_','T1_UDP_PC1_','T1_ICMP_PC1_','T1_UDP_PC1_'];
+            for(var run=1;run<=3;run++){
+                strategies.forEach(function(s){
+                    sizes.forEach(function(sz){
+                        prefixes.forEach(function(pf,pi){
+                            var key=pf+sz+'_'+metrics[pi];
+                            if(d[key]&&d[key][s]!==undefined){
+                                rawData.push({strategy:s,metric:key,run:run,value:d[key][s]});
+                            }
+                        });
+                    });
+                });
+            }
+        }
+        
+        // Group by run
+        var runs={};
+        rawData.forEach(function(e){
+            var rn=e.run||1;
+            if(!runs[rn])runs[rn]={};
+            var s=e.strategy,m=e.metric,v=parseFloat(e.value);
+            if(!runs[rn][m])runs[rn][m]={};
+            runs[rn][m][s]=v;
+        });
+        
+        console.log('Available runs:', Object.keys(runs));
+        
+        // Charts use Run 1 data
+        var d=runs[1]||{};
         var sizes=['5M','7M','10M','15M','20M'];
         var cols=['#3b82f6','#10b981','#f59e0b'];
         var names=['Dual Stack','DS-Lite','NAT64'];
@@ -172,21 +214,35 @@ async function load(){
         
         var co={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#94a3b8',font:{size:7}},title:{display:true,font:{size:8},color:'#94a3b8'}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:7}}}}};
         
-        // Charts show average data (single line per strategy)
         [['tcpChart','T1_TCP_PC1_%s_Throughput_Mbps','Mbps'],['udpChart','T1_UDP_PC1_%s_Jitter_ms','ms'],['icmpChart','T1_ICMP_PC1_%s_RTT_Avg_ms','ms'],['lossChart','T1_UDP_PC1_%s_Loss_Percent','%']].forEach(function(args){
             var id=args[0],m=args[1],unit=args[2];
             if(charts[id])charts[id].destroy();
             charts[id]=new Chart(document.getElementById(id),{type:'line',data:{labels:sizes,datasets:strats.map(function(s,i){return{label:names[i],data:sizes.map(function(sz){return gv(d,m.replace('%s',sz),s);}),borderColor:cols[i],backgroundColor:cols[i]+'15',borderWidth:2,tension:0.4,fill:true,pointRadius:3};})},options:co});
         });
         
-        // Build tables - all 3 runs show same data (API returns averaged)
-        // Run 1, 2, 3 are identical from the averaged API
-        buildTable(d,'run1-table',false);
-        buildTable(d,'run2-table',false);
-        buildTable(d,'run3-table',false);
-        buildTable(d,'runavg-table',true);
+        // Build per-run tables
+        buildTable(runs[1]||d,'run1-table',false);
+        buildTable(runs[2]||d,'run2-table',false);
+        buildTable(runs[3]||d,'run3-table',false);
         
-    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error loading data</p>';}
+        // Calculate average across runs
+        var avgData={};
+        var allMetrics=Object.keys(runs[1]||{});
+        allMetrics.forEach(function(m){
+            avgData[m]={};
+            strats.forEach(function(s){
+                var sum=0,cnt=0;
+                for(var rn=1;rn<=3;rn++){
+                    if(runs[rn]&&runs[rn][m]&&runs[rn][m][s]!==undefined){
+                        sum+=runs[rn][m][s];cnt++;
+                    }
+                }
+                avgData[m][s]=cnt>0?sum/cnt:0;
+            });
+        });
+        buildTable(avgData,'runavg-table',true);
+        
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error: '+e.message+'</p>';}
 }
 load();
 </script>
