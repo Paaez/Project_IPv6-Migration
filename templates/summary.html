@@ -4,160 +4,319 @@
     <meta charset="UTF-8">
     <title>Performance Summary by Strategy</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:20px 24px;overflow-y:auto;height:100vh}
-        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:10px;margin-bottom:16px;overflow:hidden}
-        .card-header{background:#151d2b;padding:12px 18px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.9rem;display:flex;align-items:center;gap:10px}
-        .card-body{padding:16px 20px}
-        .section-title{font-size:0.8rem;color:#38bdf8;font-weight:600;margin:0 0 10px 0;padding-left:10px;border-left:3px solid #38bdf8}
+        *,*::before,*::after{box-sizing:border-box}
         
-        .strategy-section{margin-bottom:24px}
-        .strategy-banner{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:10px;margin-bottom:14px;font-weight:700;font-size:0.95rem}
-        .banner-ds{background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
-        .banner-dl{background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
-        .banner-n64{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
-        .banner-icon{font-size:1.5rem}
+        body{
+            background:#0f172a;
+            color:#e2e8f0;
+            font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+            font-size:0.875rem;
+            overflow-y:auto;
+            height:100vh;
+            -webkit-font-smoothing:antialiased;
+        }
         
-        .summary-table{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-bottom:12px}
-        .summary-table-header{background:#0f172a;padding:10px 14px;font-weight:600;font-size:0.75rem;color:#38bdf8;border-bottom:1px solid #2d3a4a;display:flex;align-items:center;gap:8px;justify-content:space-between}
-        .summary-table-header .test-icon{font-size:0.9rem}
+        .container{
+            max-width:1200px;
+            margin:0 auto;
+            padding:24px 24px 40px;
+        }
+        
+        .card{
+            background:#1a2332;
+            border:1px solid #2d3a4a;
+            border-radius:12px;
+            margin-bottom:20px;
+            overflow:hidden;
+        }
+        .card-header{
+            background:#151d2b;
+            padding:14px 20px;
+            font-weight:600;
+            color:#f1f5f9;
+            border-bottom:1px solid #2d3a4a;
+            font-size:0.9375rem;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            letter-spacing:-0.005em;
+        }
+        .card-body{padding:18px 22px}
+        
+        .section-title{
+            font-size:0.875rem;
+            color:#38bdf8;
+            font-weight:600;
+            margin:0 0 12px 0;
+            padding-left:12px;
+            border-left:3px solid #38bdf8;
+        }
+        
+        /* Strategy Sections */
+        .strategy-section{margin-bottom:28px}
+        .strategy-banner{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:16px 20px;
+            border-radius:10px;
+            margin-bottom:16px;
+            font-weight:700;
+            font-size:1rem;
+        }
+        .banner-ds{background:rgba(59,130,246,0.12);color:#3b82f6;border:1px solid rgba(59,130,246,0.25)}
+        .banner-dl{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25)}
+        .banner-n64{background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.25)}
+        .banner-label{font-size:1.1rem}
+        
+        /* Tables */
+        .summary-table{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:8px;
+            overflow:hidden;
+            margin-bottom:14px;
+        }
+        .summary-table-header{
+            background:#0f172a;
+            padding:10px 16px;
+            font-weight:600;
+            font-size:0.8125rem;
+            color:#38bdf8;
+            border-bottom:1px solid #2d3a4a;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            justify-content:space-between;
+        }
         .header-left{display:flex;align-items:center;gap:8px}
-        table{width:100%;border-collapse:collapse;font-size:0.65rem}
-        th{background:#0f172a;color:#94a3b8;padding:6px 8px;text-align:left;font-weight:500;font-size:0.6rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a;letter-spacing:0.3px}
-        td{padding:6px 8px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.62rem}
+        .test-label{font-size:0.75rem;font-weight:600}
+        
+        table{width:100%;border-collapse:collapse;font-size:0.75rem}
+        th{
+            background:#0f172a;
+            color:#94a3b8;
+            padding:7px 10px;
+            text-align:left;
+            font-weight:500;
+            font-size:0.6875rem;
+            text-transform:uppercase;
+            border-bottom:2px solid #2d3a4a;
+            letter-spacing:0.02em;
+        }
+        td{padding:6px 10px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.75rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
         tr.subtotal td{border-top:2px solid #2d3a4a;font-weight:600;color:#f1f5f9}
-        tr.drop-critical{background:rgba(239,68,68,0.08)}
-        tr.drop-moderate{background:rgba(245,158,11,0.05)}
+        tr.drop-critical{background:rgba(239,68,68,0.06)}
+        tr.drop-moderate{background:rgba(245,158,11,0.04)}
+        
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
         .val-neutral{color:#38bdf8;font-weight:600}
-        .val-highlight{color:#f1f5f9;font-weight:700;font-size:0.7rem}
+        .val-highlight{color:#f1f5f9;font-weight:700;font-size:0.8125rem}
         
-        .info-box{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:6px;padding:8px 12px;font-size:0.6rem;color:#94a3b8;margin-bottom:12px}
-        .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
-        .drop-badge{background:rgba(239,68,68,0.15);color:#ef4444;padding:2px 7px;border-radius:3px;font-size:0.55rem;font-weight:600}
-        .drop-info-inline{font-size:0.5rem;color:#ef4444;margin-top:2px}
-        .no-drop-badge{background:rgba(16,185,129,0.15);color:#10b981;padding:2px 7px;border-radius:3px;font-size:0.55rem;font-weight:600}
-        .change-negative{color:#ef4444;font-size:0.5rem}
-        .change-positive{color:#10b981;font-size:0.5rem}
-        .change-neutral{color:#94a3b8;font-size:0.5rem}
+        /* Info Box */
+        .info-box{
+            background:rgba(56,189,248,0.08);
+            border:1px solid rgba(56,189,248,0.2);
+            border-radius:8px;
+            padding:10px 16px;
+            font-size:0.75rem;
+            color:#94a3b8;
+            margin-bottom:16px;
+        }
+        
+        /* Badges */
+        .badge{
+            background:rgba(56,189,248,0.12);
+            color:#38bdf8;
+            padding:3px 8px;
+            border-radius:4px;
+            font-size:0.6875rem;
+            font-weight:500;
+        }
+        .drop-badge{
+            background:rgba(239,68,68,0.15);
+            color:#ef4444;
+            padding:3px 8px;
+            border-radius:4px;
+            font-size:0.625rem;
+            font-weight:600;
+        }
+        .no-drop-badge{
+            background:rgba(16,185,129,0.15);
+            color:#10b981;
+            padding:3px 8px;
+            border-radius:4px;
+            font-size:0.625rem;
+            font-weight:600;
+        }
+        
+        .drop-info-inline{font-size:0.625rem;color:#ef4444;margin-top:2px;padding:2px 0}
+        
+        .change-negative{color:#ef4444;font-size:0.625rem}
+        .change-positive{color:#10b981;font-size:0.625rem}
+        .change-neutral{color:#94a3b8;font-size:0.625rem}
+        
+        /* Responsive */
+        @media(max-width:900px){
+            .container{padding:16px}
+            .strategy-banner{font-size:0.9rem}
+        }
     </style>
 </head>
 <body>
 
+<div class="container">
+
 <div class="card">
-    <div class="card-header">📊 Performance Summary by Strategy <span class="badge">All Tests</span></div>
+    <div class="card-header">Performance Summary by Strategy <span class="badge">All Tests</span></div>
     <div class="card-body">
         <div class="info-box" id="dataStatus">Loading data from all tests...</div>
         <div id="allStrategies"></div>
     </div>
 </div>
 
+</div>
+
 <script>
-let allData={};
+var allData={};
 
-function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
+function gv(d,m,s,def){
+    if(def===undefined)def=0;
+    return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def;
+}
 
-function valClass(v,good,bad,lb=true){
+function valClass(v,good,bad,lb){
+    if(lb===undefined)lb=true;
     if(v===0||isNaN(v))return'';
     if(lb){if(v<=good)return'val-good';if(v>=bad)return'val-bad';return'val-warn';}
     else{if(v>=good)return'val-good';if(v<=bad)return'val-bad';return'val-warn';}
 }
 
-function ratingText(v,good,bad,lb=true,ex='Excellent',g='Good',b='Poor'){
+function ratingText(v,good,bad,lb,ex,g,b){
+    if(lb===undefined)lb=true;
+    if(ex===undefined)ex='Excellent';
+    if(g===undefined)g='Good';
+    if(b===undefined)b='Poor';
     if(v===0||isNaN(v))return'—';
     if(lb){if(v<=good)return ex;if(v>=bad)return b;return g;}
     else{if(v>=good)return ex;if(v<=bad)return b;return g;}
 }
 
 function getAvgRTTData(strategy){
-    const d=allData.test3,raw=allData.test3raw;
+    var d=allData.test3,raw=allData.test3raw;
     if(!raw||raw.error||!Array.isArray(raw)){
         return{min:gv(d,'T4_RTT_PC1_Min_ms',strategy)||gv(d,'T3_RTT_PC1_Min_ms',strategy),avg:gv(d,'T4_RTT_PC1_Avg_ms',strategy)||gv(d,'T3_RTT_PC1_Avg_ms',strategy),max:gv(d,'T4_RTT_PC1_Max_ms',strategy)||gv(d,'T3_RTT_PC1_Max_ms',strategy),mdev:gv(d,'T4_RTT_PC1_Mdev_ms',strategy)||gv(d,'T3_RTT_PC1_Mdev_ms',strategy),loss:gv(d,'T4_RTT_PC1_Loss_Percent',strategy)||gv(d,'T3_RTT_PC1_Loss_Percent',strategy)};
     }
-    const entries=raw.filter(e=>e.strategy===strategy);
-    const metrics={};
-    entries.forEach(e=>{const m=e.metric||'';let key=null;if(m.includes('Min_ms'))key='min';else if(m.includes('Avg_ms'))key='avg';else if(m.includes('Max_ms'))key='max';else if(m.includes('Mdev_ms'))key='mdev';else if(m.includes('Loss'))key='loss';if(key){if(!metrics[key])metrics[key]=[];metrics[key].push(parseFloat(e.value));}});
-    const result={};
-    Object.keys(metrics).forEach(key=>{const vals=metrics[key].filter(v=>!isNaN(v));result[key]=vals.length>0?vals.reduce((a,b)=>a+b,0)/vals.length:0;});
+    var entries=raw.filter(function(e){return e.strategy===strategy;});
+    var metrics={};
+    entries.forEach(function(e){var m=e.metric||'';var key=null;if(m.includes('Min_ms'))key='min';else if(m.includes('Avg_ms'))key='avg';else if(m.includes('Max_ms'))key='max';else if(m.includes('Mdev_ms'))key='mdev';else if(m.includes('Loss'))key='loss';if(key){if(!metrics[key])metrics[key]=[];metrics[key].push(parseFloat(e.value));}});
+    var result={};
+    Object.keys(metrics).forEach(function(key){var vals=metrics[key].filter(function(v){return!isNaN(v);});result[key]=vals.length>0?vals.reduce(function(a,b){return a+b;},0)/vals.length:0;});
     return result;
 }
 
 async function loadAllData(){
     try{
-        const [t1,t2,t3,t5,t3raw,dropDS,dropDL,dropN64]=await Promise.all([
-            fetch('/api/test1').then(r=>r.json()),fetch('/api/test2').then(r=>r.json()),fetch('/api/test3').then(r=>r.json()),fetch('/api/test5').then(r=>r.json()),
-            fetch('/api/test3-raw').then(r=>r.json()).catch(()=>null),
-            fetch('/api/drop-analysis/dualstack').then(r=>r.json()).catch(()=>({})),fetch('/api/drop-analysis/dslite').then(r=>r.json()).catch(()=>({})),fetch('/api/drop-analysis/nat64').then(r=>r.json()).catch(()=>({}))
+        var results=await Promise.all([
+            fetch('/api/test1').then(function(r){return r.json();}),
+            fetch('/api/test2').then(function(r){return r.json();}),
+            fetch('/api/test3').then(function(r){return r.json();}),
+            fetch('/api/test5').then(function(r){return r.json();}),
+            fetch('/api/test3-raw').then(function(r){return r.json();}).catch(function(){return null;}),
+            fetch('/api/drop-analysis/dualstack').then(function(r){return r.json();}).catch(function(){return {};}),
+            fetch('/api/drop-analysis/dslite').then(function(r){return r.json();}).catch(function(){return {};}),
+            fetch('/api/drop-analysis/nat64').then(function(r){return r.json();}).catch(function(){return {};})
         ]);
-        allData={test1:t1,test2:t2,test3:t3,test5:t5,test3raw:t3raw,drop_dualstack:dropDS,drop_dslite:dropDL,drop_nat64:dropN64};
-        document.getElementById('dataStatus').textContent='✅ All data loaded successfully';
+        allData={test1:results[0],test2:results[1],test3:results[2],test5:results[3],test3raw:results[4],drop_dualstack:results[5],drop_dslite:results[6],drop_nat64:results[7]};
+        document.getElementById('dataStatus').textContent='All data loaded successfully';
         buildAllStrategies();
     }catch(e){
-        document.getElementById('dataStatus').textContent='❌ Error loading data: '+e.message;
+        document.getElementById('dataStatus').textContent='Error loading data: '+e.message;
     }
 }
 
 function buildAllStrategies(){
-    const st=['dualstack','dslite','nat64'];
-    const nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
-    const ic={dualstack:'🔵',dslite:'🟢',nat64:'🟠'};
-    const bc={dualstack:'banner-ds',dslite:'banner-dl',nat64:'banner-n64'};
-    let h='';
-    st.forEach(s=>{h+=`<div class="strategy-section"><div class="strategy-banner ${bc[s]}"><span class="banner-icon">${ic[s]}</span>${nm[s]}</div>`;h+=buildTest1Table(s);h+=buildTest2Table(s);h+=buildTest3Table(s);h+=buildTest5Table(s);h+=`</div>`;});
+    var st=['dualstack','dslite','nat64'];
+    var nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
+    var labels={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};
+    var bc={dualstack:'banner-ds',dslite:'banner-dl',nat64:'banner-n64'};
+    var h='';
+    st.forEach(function(s){
+        h+='<div class="strategy-section"><div class="strategy-banner '+bc[s]+'"><span class="banner-label">'+labels[s]+'</span></div>';
+        h+=buildTest1Table(s);
+        h+=buildTest2Table(s);
+        h+=buildTest3Table(s);
+        h+=buildTest5Table(s);
+        h+='</div>';
+    });
     document.getElementById('allStrategies').innerHTML=h;
 }
 
 function buildTest1Table(s){
-    const d=allData.test1;if(!d||d.error)return'';
-    const sz=['5M','7M','10M','15M','20M'];
-    let h=`<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-icon">📦</span>TEST 1: Packet Size Performance</div></div><table><thead><tr><th>Size</th><th>TCP Throughput</th><th>UDP Jitter</th><th>ICMP RTT Avg</th><th>UDP Loss</th></tr></thead><tbody>`;
-    sz.forEach(z=>{const t=gv(d,`T1_TCP_PC1_${z}_Throughput_Mbps`,s),j=gv(d,`T1_UDP_PC1_${z}_Jitter_ms`,s),ic=gv(d,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s),l=gv(d,`T1_UDP_PC1_${z}_Loss_Percent`,s);h+=`<tr><td><strong>${z}</strong></td><td class="${valClass(t,15,5,false)}">${t>0?t.toFixed(2)+' Mbps':'—'}</td><td class="${valClass(j,0.1,0.5,true)}">${j>0?j.toFixed(3)+' ms':'—'}</td><td class="${valClass(ic,1,5,true)}">${ic>0?ic.toFixed(3)+' ms':'—'}</td><td class="${valClass(l,1,5,true)}">${l.toFixed(1)}%</td></tr>`;});
-    const at=sz.reduce((sm,z)=>sm+gv(d,`T1_TCP_PC1_${z}_Throughput_Mbps`,s),0)/5,aj=sz.reduce((sm,z)=>sm+gv(d,`T1_UDP_PC1_${z}_Jitter_ms`,s),0)/5,ai=sz.reduce((sm,z)=>sm+gv(d,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s),0)/5;
-    h+=`<tr class="subtotal"><td>📊 Average</td><td class="val-highlight">${at.toFixed(2)} Mbps</td><td class="val-highlight">${aj.toFixed(3)} ms</td><td class="val-highlight">${ai.toFixed(3)} ms</td><td class="val-neutral">—</td></tr></tbody></table></div>`;
+    var d=allData.test1;if(!d||d.error)return'';
+    var sz=['5M','7M','10M','15M','20M'];
+    var h='<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-label">Test 1: Packet Size Performance</span></div></div><table><thead><tr><th>Size</th><th>TCP Throughput</th><th>UDP Jitter</th><th>ICMP RTT Avg</th><th>UDP Loss</th></tr></thead><tbody>';
+    sz.forEach(function(z){
+        var t=gv(d,'T1_TCP_PC1_'+z+'_Throughput_Mbps',s),j=gv(d,'T1_UDP_PC1_'+z+'_Jitter_ms',s),ic=gv(d,'T1_ICMP_PC1_'+z+'_RTT_Avg_ms',s),l=gv(d,'T1_UDP_PC1_'+z+'_Loss_Percent',s);
+        h+='<tr><td><strong>'+z+'</strong></td><td class="'+valClass(t,15,5,false)+'">'+(t>0?t.toFixed(2)+' Mbps':'—')+'</td><td class="'+valClass(j,0.1,0.5,true)+'">'+(j>0?j.toFixed(3)+' ms':'—')+'</td><td class="'+valClass(ic,1,5,true)+'">'+(ic>0?ic.toFixed(3)+' ms':'—')+'</td><td class="'+valClass(l,1,5,true)+'">'+l.toFixed(1)+'%</td></tr>';
+    });
+    var at=sz.reduce(function(sm,z){return sm+gv(d,'T1_TCP_PC1_'+z+'_Throughput_Mbps',s);},0)/5;
+    var aj=sz.reduce(function(sm,z){return sm+gv(d,'T1_UDP_PC1_'+z+'_Jitter_ms',s);},0)/5;
+    var ai=sz.reduce(function(sm,z){return sm+gv(d,'T1_ICMP_PC1_'+z+'_RTT_Avg_ms',s);},0)/5;
+    h+='<tr class="subtotal"><td>Average</td><td class="val-highlight">'+at.toFixed(2)+' Mbps</td><td class="val-highlight">'+aj.toFixed(3)+' ms</td><td class="val-highlight">'+ai.toFixed(3)+' ms</td><td class="val-neutral">—</td></tr></tbody></table></div>';
     return h;
 }
 
 function buildTest2Table(s){
-    const d=allData.test2;if(!d||d.error)return'';
-    const af=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
-    const files=af.filter(f=>gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s)>0);
+    var d=allData.test2;if(!d||d.error)return'';
+    var af=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+    var files=af.filter(function(f){return gv(d,'T2_HTTP_PC2_'+f+'_Speed_Mbps',s)>0;});
     if(files.length===0)return'';
-    const dk=`drop_${s}`;let dh='',dd='';
-    if(allData[dk]&&!allData[dk].error){const da=allData[dk],dr=da.drops||[],bl=da.iperf_baseline_mbps||0,ms=da.mss_clamping||'N/A';if(dr.length>0){const d0=dr[0];dh=`<span class="drop-badge">⚠️ DROP: ${d0.drop_size_range} (${d0.drop_percentage}%)</span>`;dd=`<div class="drop-info-inline">MSS: ${ms}B | iperf3: ${bl.toFixed(1)} Mbps</div>`;}else{dh=`<span class="no-drop-badge">✅ No Drops</span>`;dd=`<div class="drop-info-inline">MSS: ${ms}B | iperf3: ${bl.toFixed(1)} Mbps</div>`;}}
-    let h=`<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-icon">🌐</span>TEST 2: HTTP Download Speed</div>${dh}</div>${dd}<table><thead><tr><th>File</th><th>Speed (Mbps)</th><th>Change</th><th>Rating</th></tr></thead><tbody>`;
-    let ps=null;
-    files.forEach(f=>{const v=gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s);let dc='',ch='<span class="change-neutral">—</span>';if(ps&&ps>0&&v>0){const cp=((v-ps)/ps)*100,sg=cp>=0?'+':'';if(cp<=-30){dc='drop-critical';ch=`<span class="change-negative">${sg}${cp.toFixed(1)}% ⚠️</span>`;}else if(cp<=-10){dc='drop-moderate';ch=`<span class="change-negative">${sg}${cp.toFixed(1)}%</span>`;}else if(cp>0){ch=`<span class="change-positive">${sg}${cp.toFixed(1)}%</span>`;}else{ch=`<span class="change-neutral">${sg}${cp.toFixed(1)}%</span>`;}}h+=`<tr class="${dc}"><td><strong>${f}</strong></td><td class="${valClass(v,10,3,false)}">${v.toFixed(2)} Mbps</td><td>${ch}</td><td>${ratingText(v,10,3,false,'🚀 Fast','📶 Med','🐌 Slow')}</td></tr>`;ps=v;});
-    const avg=files.reduce((sm,f)=>sm+gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s),0)/files.length;
-    h+=`<tr class="subtotal"><td>📊 Average (${files.length} files)</td><td class="val-highlight">${avg.toFixed(2)} Mbps</td><td class="val-neutral">—</td><td class="val-neutral">—</td></tr></tbody></table></div>`;
+    var dk='drop_'+s;var dh='',dd='';
+    if(allData[dk]&&!allData[dk].error){
+        var da=allData[dk],dr=da.drops||[],bl=da.iperf_baseline_mbps||0,ms=da.mss_clamping||'N/A';
+        if(dr.length>0){var d0=dr[0];dh='<span class="drop-badge">DROP: '+d0.drop_size_range+' ('+d0.drop_percentage+'%)</span>';dd='<div class="drop-info-inline">MSS: '+ms+'B | iperf3: '+bl.toFixed(1)+' Mbps</div>';}
+        else{dh='<span class="no-drop-badge">No Drops</span>';dd='<div class="drop-info-inline">MSS: '+ms+'B | iperf3: '+bl.toFixed(1)+' Mbps</div>';}
+    }
+    var h='<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-label">Test 2: HTTP Download Speed</span></div>'+dh+'</div>'+dd+'<table><thead><tr><th>File</th><th>Speed (Mbps)</th><th>Change</th><th>Rating</th></tr></thead><tbody>';
+    var ps=null;
+    files.forEach(function(f){
+        var v=gv(d,'T2_HTTP_PC2_'+f+'_Speed_Mbps',s);var dc='',ch='<span class="change-neutral">—</span>';
+        if(ps&&ps>0&&v>0){var cp=((v-ps)/ps)*100,sg=cp>=0?'+':'';if(cp<=-30){dc='drop-critical';ch='<span class="change-negative">'+sg+cp.toFixed(1)+'%</span>';}else if(cp<=-10){dc='drop-moderate';ch='<span class="change-negative">'+sg+cp.toFixed(1)+'%</span>';}else if(cp>0){ch='<span class="change-positive">'+sg+cp.toFixed(1)+'%</span>';}else{ch='<span class="change-neutral">'+sg+cp.toFixed(1)+'%</span>';}}
+        h+='<tr class="'+dc+'"><td><strong>'+f+'</strong></td><td class="'+valClass(v,10,3,false)+'">'+v.toFixed(2)+' Mbps</td><td>'+ch+'</td><td>'+ratingText(v,10,3,false,'Fast','Medium','Slow')+'</td></tr>';
+        ps=v;
+    });
+    var avg=files.reduce(function(sm,f){return sm+gv(d,'T2_HTTP_PC2_'+f+'_Speed_Mbps',s);},0)/files.length;
+    h+='<tr class="subtotal"><td>Average ('+files.length+' files)</td><td class="val-highlight">'+avg.toFixed(2)+' Mbps</td><td class="val-neutral">—</td><td class="val-neutral">—</td></tr></tbody></table></div>';
     return h;
 }
 
 function buildTest3Table(s){
-    const rttData=getAvgRTTData(s);
-    const mt=[{k:'min',l:'Min RTT',g:2,b:10},{k:'avg',l:'Avg RTT',g:5,b:20},{k:'max',l:'Max RTT',g:10,b:50},{k:'mdev',l:'Mdev (Jitter)',g:1,b:5}];
-    let h=`<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-icon">🔴</span>TEST 3: RTT Consistency (Avg 3 Runs × 100 Pings)</div></div><table><thead><tr><th>Metric</th><th>Value</th><th>Rating</th></tr></thead><tbody>`;
-    mt.forEach(m=>{const v=rttData[m.k]||0;h+=`<tr><td><strong>${m.l}</strong></td><td class="${valClass(v,m.g,m.b,true)}">${v>0?v.toFixed(3)+' ms':'—'}</td><td>${ratingText(v,m.g,m.b,true,'✅ Excellent','⚠️ Good','❌ High')}</td></tr>`;});
-    const loss=rttData.loss||0;h+=`<tr><td><strong>Packet Loss</strong></td><td class="${loss===0?'val-good':loss<5?'val-warn':'val-bad'}">${loss.toFixed(1)}%</td><td>${loss===0?'✅ None':loss<5?'⚠️ Minor':'❌ High'}</td></tr></tbody></table></div>`;
+    var rttData=getAvgRTTData(s);
+    var mt=[{k:'min',l:'Min RTT',g:2,b:10},{k:'avg',l:'Avg RTT',g:5,b:20},{k:'max',l:'Max RTT',g:10,b:50},{k:'mdev',l:'Mdev (Jitter)',g:1,b:5}];
+    var h='<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-label">Test 3: RTT Consistency (Avg 3 Runs x 100 Pings)</span></div></div><table><thead><tr><th>Metric</th><th>Value</th><th>Rating</th></tr></thead><tbody>';
+    mt.forEach(function(m){var v=rttData[m.k]||0;h+='<tr><td><strong>'+m.l+'</strong></td><td class="'+valClass(v,m.g,m.b,true)+'">'+(v>0?v.toFixed(3)+' ms':'—')+'</td><td>'+ratingText(v,m.g,m.b,true,'Excellent','Good','High')+'</td></tr>';});
+    var loss=rttData.loss||0;h+='<tr><td><strong>Packet Loss</strong></td><td class="'+(loss===0?'val-good':loss<5?'val-warn':'val-bad')+'">'+loss.toFixed(1)+'%</td><td>'+(loss===0?'None':loss<5?'Minor':'High')+'</td></tr></tbody></table></div>';
     return h;
 }
 
 function buildTest5Table(s){
-    const d=allData.test5;if(!d||d.error)return'';
-    let mnf=0;[64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500].forEach(sz=>{if(gv(d,`T5_P1_Frag_${sz}B_Success`,s)===1&&gv(d,`T5_P1_Frag_${sz}B_Loss_Pct`,s)===0)mnf=sz;});
-    let mf=0;[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000].forEach(sz=>{if(gv(d,`T5_P2_Frag_${sz}B_Success`,s)===1)mf=sz;});
-    const r64=gv(d,'T5_P1_Frag_64B_RTT_Avg_ms',s),rm=gv(d,`T5_P1_Frag_${mnf}B_RTT_Avg_ms`,s),r15=gv(d,'T5_P2_Frag_1500B_RTT_Avg_ms',s);
-    const oh=rm>0&&r15>0?((r15-rm)/rm*100).toFixed(1):'—';
-    const cf=[1500,2000,3000,4000].some(sz=>gv(d,`T5_P2_Frag_${sz}B_Success`,s)===1);
-    const fw=!cf?'<span class="drop-badge">⚠️ Fragmentation failed</span>':'';
-    let h=`<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-icon">💥</span>TEST 5: Fragmentation Boundary</div>${fw}</div><table><thead><tr><th>Metric</th><th>Value</th><th>Details</th></tr></thead><tbody>
-    <tr><td><strong>Max No-Frag</strong></td><td class="val-neutral"><strong>${mnf} B</strong></td><td>Total: ${mnf+28} B</td></tr>
-    <tr><td><strong>Max With-Frag</strong></td><td class="val-neutral"><strong>${mf} B</strong></td><td>Total: ${mf+48} B</td></tr>
-    <tr style="border-top:2px solid #2d3a4a"><td><strong>RTT @ 64B</strong></td><td>${r64>0?r64.toFixed(2):'—'} ms</td><td>Baseline</td></tr>
-    <tr><td><strong>RTT @ ${mnf}B</strong></td><td class="${valClass(rm,5,20,true)}">${rm>0?rm.toFixed(2):'—'} ms</td><td>No fragmentation</td></tr>
-    <tr><td><strong>RTT @ 1500B</strong></td><td class="${valClass(r15,10,30,true)}">${r15>0?r15.toFixed(2):'—'} ms</td><td>+${oh}% overhead</td></tr></tbody></table></div>`;
+    var d=allData.test5;if(!d||d.error)return'';
+    var mnf=0;[64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500].forEach(function(sz){if(gv(d,'T5_P1_Frag_'+sz+'B_Success',s)===1&&gv(d,'T5_P1_Frag_'+sz+'B_Loss_Pct',s)===0)mnf=sz;});
+    var mf=0;[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000].forEach(function(sz){if(gv(d,'T5_P2_Frag_'+sz+'B_Success',s)===1)mf=sz;});
+    var r64=gv(d,'T5_P1_Frag_64B_RTT_Avg_ms',s),rm=gv(d,'T5_P1_Frag_'+mnf+'B_RTT_Avg_ms',s),r15=gv(d,'T5_P2_Frag_1500B_RTT_Avg_ms',s);
+    var oh=rm>0&&r15>0?((r15-rm)/rm*100).toFixed(1):'—';
+    var cf=[1500,2000,3000,4000].some(function(sz){return gv(d,'T5_P2_Frag_'+sz+'B_Success',s)===1;});
+    var fw=!cf?'<span class="drop-badge">Fragmentation failed</span>':'';
+    var h='<div class="summary-table"><div class="summary-table-header"><div class="header-left"><span class="test-label">Test 4: Fragmentation Boundary</span></div>'+fw+'</div><table><thead><tr><th>Metric</th><th>Value</th><th>Details</th></tr></thead><tbody>';
+    h+='<tr><td><strong>Max No-Frag</strong></td><td class="val-neutral"><strong>'+mnf+' B</strong></td><td>Total: '+(mnf+28)+' B</td></tr>';
+    h+='<tr><td><strong>Max With-Frag</strong></td><td class="val-neutral"><strong>'+mf+' B</strong></td><td>Total: '+(mf+48)+' B</td></tr>';
+    h+='<tr style="border-top:2px solid #2d3a4a"><td><strong>RTT @ 64B</strong></td><td>'+(r64>0?r64.toFixed(2):'—')+' ms</td><td>Baseline</td></tr>';
+    h+='<tr><td><strong>RTT @ '+mnf+'B</strong></td><td class="'+valClass(rm,5,20,true)+'">'+(rm>0?rm.toFixed(2):'—')+' ms</td><td>No fragmentation</td></tr>';
+    h+='<tr><td><strong>RTT @ 1500B</strong></td><td class="'+valClass(r15,10,30,true)+'">'+(r15>0?r15.toFixed(2):'—')+' ms</td><td>+'+oh+'% overhead</td></tr></tbody></table></div>';
     return h;
 }
 

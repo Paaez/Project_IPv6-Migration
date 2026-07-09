@@ -5,50 +5,138 @@
     <title>Performance Analysis</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:24px 28px;overflow-y:auto;height:100vh;line-height:1.5}
-        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:12px;margin-bottom:20px;overflow:hidden}
-        .card-header{background:#151d2b;padding:14px 20px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.9rem;display:flex;align-items:center;gap:10px}
-        .card-body{padding:20px 24px}
+        *,*::before,*::after{box-sizing:border-box}
         
-        .section-title{font-size:0.85rem;color:#38bdf8;font-weight:600;margin:0 0 14px 0;padding-left:12px;border-left:3px solid #38bdf8}
+        body{
+            background:#0f172a;
+            color:#e2e8f0;
+            font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+            font-size:0.875rem;
+            line-height:1.5;
+            overflow-y:auto;
+            height:100vh;
+            -webkit-font-smoothing:antialiased;
+        }
         
-        .exec-summary{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px}
-        .exec-summary h2{color:#38bdf8;font-size:1rem;margin-bottom:10px}
-        .exec-summary .winner{font-size:1.2rem;font-weight:700;color:#f59e0b;margin:8px 0}
-        .exec-summary .key-findings{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
-        .finding-card{background:#151d2b;border-radius:8px;padding:12px;text-align:center;border:1px solid #2d3a4a}
-        .finding-card .strat-label{font-size:0.85rem;font-weight:700;margin:6px 0}
-        .finding-card .value{font-size:0.85rem;font-weight:700;margin:4px 0}
-        .finding-card .detail{font-size:0.55rem;color:#94a3b8}
+        .container{
+            max-width:1200px;
+            margin:0 auto;
+            padding:28px 24px 40px;
+        }
         
-        .definition-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px;margin-bottom:16px}
-        .definition-box h4{color:#38bdf8;font-size:0.75rem;margin-bottom:8px}
-        .definition-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-        .def-item{font-size:0.58rem;color:#94a3b8;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px}
-        .def-item strong{color:#cbd5e1;font-size:0.62rem}
+        .card{
+            background:#1a2332;
+            border:1px solid #2d3a4a;
+            border-radius:12px;
+            margin-bottom:24px;
+            overflow:hidden;
+        }
+        .card-header{
+            background:#151d2b;
+            padding:16px 22px;
+            font-weight:600;
+            color:#f1f5f9;
+            border-bottom:1px solid #2d3a4a;
+            font-size:0.9375rem;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            letter-spacing:-0.005em;
+        }
+        .card-body{padding:22px 26px}
         
-        .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
-        .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px}
-        .chart-title{font-size:0.75rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
-        .chart-wrap{position:relative;height:300px}
+        .section-title{
+            font-size:0.875rem;
+            color:#38bdf8;
+            font-weight:600;
+            margin:0 0 16px 0;
+            padding-left:12px;
+            border-left:3px solid #38bdf8;
+        }
         
-        .dimension-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
-        .dimension-card{background:#151d2b;border-radius:8px;padding:14px;text-align:center;border:1px solid #2d3a4a}
-        .dimension-card .dim-label{font-size:0.85rem;font-weight:700}
-        .dimension-card .dim-name{font-size:0.7rem;font-weight:600;margin:6px 0;color:#cbd5e1}
-        .dimension-card .dim-winner{font-size:0.72rem;font-weight:700;margin-top:6px}
-        .dimension-card .dim-scores{font-size:0.5rem;color:#94a3b8;margin-top:4px;line-height:1.5}
+        /* Executive Summary */
+        .exec-summary{
+            background:linear-gradient(135deg,#1e293b,#0f172a);
+            border:1px solid #334155;
+            border-radius:12px;
+            padding:24px;
+            margin-bottom:24px;
+        }
+        .exec-summary h2{color:#38bdf8;font-size:1.0625rem;margin-bottom:12px;font-weight:700}
+        .exec-summary .winner{font-size:1.25rem;font-weight:700;color:#f59e0b;margin:10px 0}
+        .exec-summary .key-findings{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+        .finding-card{
+            background:#151d2b;
+            border-radius:10px;
+            padding:16px;
+            text-align:center;
+            border:1px solid #2d3a4a;
+        }
+        .finding-card .strat-label{font-size:0.9375rem;font-weight:700;margin:8px 0}
+        .finding-card .value{font-size:0.875rem;font-weight:700;margin:6px 0}
+        .finding-card .detail{font-size:0.6875rem;color:#94a3b8}
+        
+        /* Definitions */
+        .definition-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:10px;padding:18px;margin-bottom:18px}
+        .definition-box h4{color:#38bdf8;font-size:0.8125rem;margin-bottom:10px}
+        .definition-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+        .def-item{
+            font-size:0.6875rem;
+            color:#94a3b8;
+            padding:10px;
+            background:rgba(0,0,0,0.2);
+            border-radius:8px;
+            line-height:1.5;
+        }
+        .def-item strong{color:#cbd5e1;font-size:0.75rem}
+        
+        /* Charts */
+        .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+        .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:10px;padding:16px}
+        .chart-title{font-size:0.8125rem;color:#38bdf8;margin-bottom:10px;font-weight:600}
+        .chart-wrap{position:relative;height:320px}
+        
+        /* Dimension Cards */
+        .dimension-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+        .dimension-card{
+            background:#151d2b;
+            border-radius:10px;
+            padding:16px;
+            text-align:center;
+            border:1px solid #2d3a4a;
+        }
+        .dimension-card .dim-label{font-size:0.9375rem;font-weight:700}
+        .dimension-card .dim-name{font-size:0.75rem;font-weight:600;margin:8px 0;color:#cbd5e1}
+        .dimension-card .dim-winner{font-size:0.75rem;font-weight:700;margin-top:8px}
+        .dimension-card .dim-scores{font-size:0.625rem;color:#94a3b8;margin-top:6px;line-height:1.6}
         .dim-card-ds{border-left:3px solid #3b82f6}.dim-card-ds .dim-label{color:#3b82f6}
         .dim-card-dl{border-left:3px solid #10b981}.dim-card-dl .dim-label{color:#10b981}
         .dim-card-n64{border-left:3px solid #f59e0b}.dim-card-n64 .dim-label{color:#f59e0b}
         
-        .summary-table{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-bottom:18px}
-        .summary-table-header{background:#0f172a;padding:10px 14px;font-weight:600;font-size:0.75rem;color:#38bdf8;border-bottom:1px solid #2d3a4a}
+        /* Tables */
+        .summary-table{background:#151d2b;border:1px solid #2d3a4a;border-radius:10px;overflow:hidden;margin-bottom:20px}
+        .summary-table-header{
+            background:#0f172a;
+            padding:12px 16px;
+            font-weight:600;
+            font-size:0.8125rem;
+            color:#38bdf8;
+            border-bottom:1px solid #2d3a4a;
+        }
         .table-scroll{overflow-x:auto}
-        table{width:100%;border-collapse:collapse;font-size:0.62rem}
-        th{background:#0f172a;color:#94a3b8;padding:6px 7px;text-align:center;font-weight:500;font-size:0.57rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a}
-        td{padding:5px 7px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.6rem}
+        table{width:100%;border-collapse:collapse;font-size:0.75rem}
+        th{
+            background:#0f172a;
+            color:#94a3b8;
+            padding:7px 8px;
+            text-align:center;
+            font-weight:500;
+            font-size:0.6875rem;
+            text-transform:uppercase;
+            border-bottom:2px solid #2d3a4a;
+            letter-spacing:0.02em;
+        }
+        td{padding:6px 8px;border-bottom:1px solid #1e293b;color:#cbd5e1;text-align:center;font-size:0.75rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
         .reliability-high{color:#10b981;font-weight:700}
         .reliability-med{color:#f59e0b;font-weight:700}
@@ -57,42 +145,84 @@
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
         
-        .type-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;font-size:0.58rem;color:#94a3b8}
-        .type-legend span{padding:3px 8px;border-radius:3px}
+        /* Type Legend */
+        .type-legend{display:flex;gap:16px;justify-content:center;margin-bottom:14px;font-size:0.6875rem;color:#94a3b8;flex-wrap:wrap}
+        .type-legend span{padding:4px 10px;border-radius:4px;font-weight:500}
         .legend-perf{background:rgba(59,130,246,0.15);color:#3b82f6}
         .legend-rel{background:rgba(16,185,129,0.15);color:#10b981}
         .legend-stab{background:rgba(245,158,11,0.15);color:#f59e0b}
         .legend-comp{background:rgba(239,68,68,0.15);color:#ef4444}
         
-        .recommendation-box{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:10px;padding:20px;margin-top:20px}
-        .recommendation-box h3{color:#38bdf8;font-size:0.9rem;margin-bottom:12px}
-        .recommendation-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-        .rec-card{background:#151d2b;border-radius:8px;padding:14px;text-align:center;border:1px solid #2d3a4a}
-        .rec-card .rec-label{font-size:0.85rem;font-weight:700;margin:6px 0}
-        .rec-card .rec-name{font-size:0.75rem;font-weight:600;margin:6px 0}
-        .rec-card .rec-for{font-size:0.6rem;color:#94a3b8;margin:4px 0;line-height:1.4}
-        .rec-card .rec-badge{font-size:0.55rem;padding:3px 8px;border-radius:3px;display:inline-block;margin-top:6px}
+        /* Recommendations */
+        .recommendation-box{
+            background:linear-gradient(135deg,#1e293b,#0f172a);
+            border:1px solid #334155;
+            border-radius:12px;
+            padding:24px;
+            margin-top:24px;
+        }
+        .recommendation-box h3{color:#38bdf8;font-size:1rem;margin-bottom:14px}
+        .recommendation-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+        .rec-card{
+            background:#151d2b;
+            border-radius:10px;
+            padding:18px;
+            text-align:center;
+            border:1px solid #2d3a4a;
+        }
+        .rec-card .rec-label{font-size:0.9375rem;font-weight:700;margin:8px 0}
+        .rec-card .rec-name{font-size:0.8125rem;font-weight:600;margin:8px 0}
+        .rec-card .rec-for{font-size:0.6875rem;color:#94a3b8;margin:6px 0;line-height:1.5}
+        .rec-card .rec-badge{font-size:0.625rem;padding:4px 10px;border-radius:4px;display:inline-block;margin-top:8px}
         .rec-best{background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700}
         .rec-good{background:rgba(56,189,248,0.15);color:#38bdf8}
         .rec-niche{background:rgba(148,163,184,0.15);color:#94a3b8}
         
-        .info-box{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);border-radius:6px;padding:10px 14px;font-size:0.6rem;color:#94a3b8;margin-bottom:14px}
-        .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:3px 8px;border-radius:3px;font-size:0.65rem;font-weight:500}
+        /* Info Box */
+        .info-box{
+            background:rgba(56,189,248,0.08);
+            border:1px solid rgba(56,189,248,0.2);
+            border-radius:8px;
+            padding:12px 16px;
+            font-size:0.75rem;
+            color:#94a3b8;
+            margin-bottom:16px;
+        }
+        .badge{
+            background:rgba(56,189,248,0.12);
+            color:#38bdf8;
+            padding:3px 10px;
+            border-radius:4px;
+            font-size:0.6875rem;
+            font-weight:500;
+        }
+        
+        /* Responsive */
+        @media(max-width:900px){
+            .definition-grid,.dimension-grid,.recommendation-grid,.key-findings{grid-template-columns:1fr}
+            .charts-row{grid-template-columns:1fr}
+        }
+        @media(max-width:600px){
+            .exec-summary .winner{font-size:1.1rem}
+            .card-header{font-size:0.875rem}
+        }
     </style>
 </head>
 <body>
+
+<div class="container">
 
 <div class="info-box" id="dataStatus">Loading analysis data...</div>
 
 <!-- EXECUTIVE SUMMARY -->
 <div class="exec-summary" id="execSummary" style="display:none">
     <h2>Executive Summary</h2>
-    <p style="font-size:0.7rem;color:#94a3b8;margin-bottom:10px">
+    <p style="font-size:0.75rem;color:#94a3b8;margin-bottom:12px">
         This analysis compares three IPv6 migration strategies across <strong>performance, reliability, stability, scalability, consistency, and compatibility</strong>. 
         All data was collected from GNS3 network simulations using 4 test scenarios with multiple runs.
     </p>
     <div class="winner" id="winnerText"></div>
-    <p style="font-size:0.65rem;color:#94a3b8" id="winnerExplain"></p>
+    <p style="font-size:0.6875rem;color:#94a3b8" id="winnerExplain"></p>
     <div class="key-findings" id="keyFindings"></div>
 </div>
 
@@ -114,22 +244,22 @@
             <div class="def-item">
                 <strong>Reliability</strong><br>
                 "Can I count on it?"<br>
-                How consistent the results are. Low variation (CV%) means predictable, dependable performance every time.
+                How consistent the results are. Low variation (CV%) means predictable, dependable performance.
             </div>
             <div class="def-item">
                 <strong>Stability</strong><br>
                 "Does it stay smooth?"<br>
-                Minimal jitter and speed fluctuations. Stable connections = better user experience for video/voice.
+                Minimal jitter and speed fluctuations. Stable connections = better experience for video/voice.
             </div>
             <div class="def-item">
                 <strong>Consistency</strong><br>
                 "Same result every time?"<br>
-                When we repeat the same test, do we get the same answer? Low variation across test runs = trustworthy data.
+                When we repeat the same test, do we get the same answer? Low variation = trustworthy data.
             </div>
             <div class="def-item">
                 <strong>Compatibility</strong><br>
                 "Does it work with existing networks?"<br>
-                Can it handle standard MTU sizes? Does fragmentation work when needed? Essential for real-world deployment.
+                Can it handle standard MTU sizes? Does fragmentation work? Essential for deployment.
             </div>
         </div>
     </div>
@@ -139,7 +269,7 @@
 <div class="card" id="dimCard" style="display:none">
     <div class="card-header">Who Wins in Each Area?</div>
     <div class="card-body">
-        <p style="font-size:0.62rem;color:#94a3b8;margin-bottom:12px">
+        <p style="font-size:0.6875rem;color:#94a3b8;margin-bottom:14px">
             Each dimension has a clear winner. A strategy can dominate one area while another excels elsewhere. 
             The <strong>overall winner</strong> is determined by weighted scoring that prioritizes reliability and real-world performance.
         </p>
@@ -151,7 +281,7 @@
 <div class="card" id="radarCard" style="display:none">
     <div class="card-header">Visual Comparison - All Dimensions at Once</div>
     <div class="card-body">
-        <p style="font-size:0.62rem;color:#94a3b8;margin-bottom:12px">
+        <p style="font-size:0.6875rem;color:#94a3b8;margin-bottom:14px">
             The radar chart shows how each strategy performs across all 6 dimensions on a scale of 0-10. 
             A larger shape means better overall coverage. The <strong>outermost line</strong> in each direction wins that dimension.
         </p>
@@ -163,16 +293,16 @@
 <div class="card" id="relCard" style="display:none">
     <div class="card-header">Reliability Deep Dive - Consistency Across Tests</div>
     <div class="card-body">
-        <p style="font-size:0.62rem;color:#94a3b8;margin-bottom:12px">
+        <p style="font-size:0.6875rem;color:#94a3b8;margin-bottom:14px">
             <strong>Coefficient of Variation (CV%)</strong> measures how much results vary. 
             <span style="color:#10b981">Lower CV% = More Reliable</span>. 
-            For example, a CV of 5% means results only vary by 5% between tests - highly predictable.
+            A CV of 5% means results only vary by 5% between tests - highly predictable.
         </p>
         <div class="summary-table"><div class="table-scroll"><table>
             <thead><tr><th>Metric</th><th>What It Tells Us</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th><th>Most Reliable</th></tr></thead>
             <tbody id="reliabilityBody"></tbody>
         </table></div></div>
-        <div style="display:flex;gap:14px;margin-top:10px;font-size:0.53rem;color:#64748b;justify-content:center">
+        <div style="display:flex;gap:16px;margin-top:12px;font-size:0.625rem;color:#64748b;justify-content:center;flex-wrap:wrap">
             <span style="color:#10b981">&lt;5% = Highly Predictable</span>
             <span style="color:#f59e0b">5-15% = Somewhat Variable</span>
             <span style="color:#ef4444">&gt;15% = Unpredictable</span>
@@ -201,71 +331,67 @@
 <!-- RECOMMENDATIONS -->
 <div class="recommendation-box" id="recBox" style="display:none">
     <h3>Which Strategy Should You Choose?</h3>
-    <p style="font-size:0.65rem;color:#94a3b8;margin-bottom:14px">
+    <p style="font-size:0.6875rem;color:#94a3b8;margin-bottom:16px">
         There is no single "best" strategy - the right choice depends on your priorities.
     </p>
     <div class="recommendation-grid" id="recommendationGrid"></div>
 </div>
 
+</div>
+
 <script>
 let allData={};
-function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
-function calcCV(values){if(!values||values.length<2)return 0;const mean=values.reduce((a,b)=>a+b,0)/values.length;if(mean===0)return 0;const variance=values.reduce((a,b)=>a+Math.pow(b-mean,2),0)/values.length;return(Math.sqrt(variance)/mean)*100;}
-function getAvgRTTData(strategy){const d=allData.test3,raw=allData.test3raw;if(!raw||raw.error||!Array.isArray(raw)){return{min:gv(d,'T4_RTT_PC1_Min_ms',strategy)||gv(d,'T3_RTT_PC1_Min_ms',strategy),avg:gv(d,'T4_RTT_PC1_Avg_ms',strategy)||gv(d,'T3_RTT_PC1_Avg_ms',strategy),max:gv(d,'T4_RTT_PC1_Max_ms',strategy)||gv(d,'T3_RTT_PC1_Max_ms',strategy),mdev:gv(d,'T4_RTT_PC1_Mdev_ms',strategy)||gv(d,'T3_RTT_PC1_Mdev_ms',strategy),loss:gv(d,'T4_RTT_PC1_Loss_Percent',strategy)||gv(d,'T3_RTT_PC1_Loss_Percent',strategy)};}const entries=raw.filter(e=>e.strategy===strategy);const metrics={};entries.forEach(e=>{const m=e.metric||'';let key=null;if(m.includes('Min_ms'))key='min';else if(m.includes('Avg_ms'))key='avg';else if(m.includes('Max_ms'))key='max';else if(m.includes('Mdev_ms'))key='mdev';else if(m.includes('Loss'))key='loss';if(key){if(!metrics[key])metrics[key]=[];metrics[key].push(parseFloat(e.value));}});const result={};Object.keys(metrics).forEach(key=>{const vals=metrics[key].filter(v=>!isNaN(v));result[key]=vals.length>0?vals.reduce((a,b)=>a+b,0)/vals.length:0;});return result;}
+function gv(d,m,s,def){if(def===undefined)def=0;return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def;}
+function calcCV(values){if(!values||values.length<2)return 0;var mean=values.reduce(function(a,b){return a+b;},0)/values.length;if(mean===0)return 0;var variance=values.reduce(function(a,b){return a+Math.pow(b-mean,2);},0)/values.length;return(Math.sqrt(variance)/mean)*100;}
+function getAvgRTTData(strategy){var d=allData.test3,raw=allData.test3raw;if(!raw||raw.error||!Array.isArray(raw)){return{min:gv(d,'T4_RTT_PC1_Min_ms',strategy)||gv(d,'T3_RTT_PC1_Min_ms',strategy),avg:gv(d,'T4_RTT_PC1_Avg_ms',strategy)||gv(d,'T3_RTT_PC1_Avg_ms',strategy),max:gv(d,'T4_RTT_PC1_Max_ms',strategy)||gv(d,'T3_RTT_PC1_Max_ms',strategy),mdev:gv(d,'T4_RTT_PC1_Mdev_ms',strategy)||gv(d,'T3_RTT_PC1_Mdev_ms',strategy),loss:gv(d,'T4_RTT_PC1_Loss_Percent',strategy)||gv(d,'T3_RTT_PC1_Loss_Percent',strategy)};}var entries=raw.filter(function(e){return e.strategy===strategy;});var metrics={};entries.forEach(function(e){var m=e.metric||'';var key=null;if(m.includes('Min_ms'))key='min';else if(m.includes('Avg_ms'))key='avg';else if(m.includes('Max_ms'))key='max';else if(m.includes('Mdev_ms'))key='mdev';else if(m.includes('Loss'))key='loss';if(key){if(!metrics[key])metrics[key]=[];metrics[key].push(parseFloat(e.value));}});var result={};Object.keys(metrics).forEach(function(key){var vals=metrics[key].filter(function(v){return!isNaN(v);});result[key]=vals.length>0?vals.reduce(function(a,b){return a+b;},0)/vals.length:0;});return result;}
 
-async function loadAllData(){try{const [t1,t2,t3,t5,t3raw]=await Promise.all([fetch('/api/test1').then(r=>r.json()),fetch('/api/test2').then(r=>r.json()),fetch('/api/test3').then(r=>r.json()),fetch('/api/test5').then(r=>r.json()),fetch('/api/test3-raw').then(r=>r.json()).catch(()=>null)]);allData={test1:t1,test2:t2,test3:t3,test5:t5,test3raw:t3raw};document.getElementById('dataStatus').textContent='Analysis data loaded successfully';buildAll();}catch(e){document.getElementById('dataStatus').innerHTML='Error: '+e.message;}}
+async function loadAllData(){try{var results=await Promise.all([fetch('/api/test1').then(function(r){return r.json();}),fetch('/api/test2').then(function(r){return r.json();}),fetch('/api/test3').then(function(r){return r.json();}),fetch('/api/test5').then(function(r){return r.json();}),fetch('/api/test3-raw').then(function(r){return r.json();}).catch(function(){return null;})]);allData={test1:results[0],test2:results[1],test3:results[2],test5:results[3],test3raw:results[4]};document.getElementById('dataStatus').textContent='Analysis data loaded successfully';buildAll();}catch(e){document.getElementById('dataStatus').innerHTML='Error: '+e.message;}}
 
 function buildAll(){
-    const st=['dualstack','dslite','nat64'];const nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};const d1=allData.test1,d2=allData.test2,d5=allData.test5;const t1Sizes=['5M','7M','10M','15M','20M'];const t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+    var st=['dualstack','dslite','nat64'];var nm={dualstack:'Dual Stack',dslite:'DS-Lite',nat64:'NAT64'};var d1=allData.test1,d2=allData.test2,d5=allData.test5;var t1Sizes=['5M','7M','10M','15M','20M'];var t2Files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
     
-    const dimScores={},cvData={},fragPen={},finalScores={};
-    st.forEach(s=>{const rt=getAvgRTTData(s);const tcpVals=t1Sizes.map(z=>gv(d1,`T1_TCP_PC1_${z}_Throughput_Mbps`,s));const jitterVals=t1Sizes.map(z=>gv(d1,`T1_UDP_PC1_${z}_Jitter_ms`,s));const icmpVals=t1Sizes.map(z=>gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s));const httpVals=t2Files.map(f=>gv(d2,`T2_HTTP_PC2_${f}_Speed_Mbps`,s));const avgTCP=tcpVals.reduce((a,b)=>a+b,0)/5;const avgHTTP=httpVals.reduce((a,b)=>a+b,0)/t2Files.length;const avgJitter=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_UDP_PC1_${z}_Jitter_ms`,s),0)/5;const avgICMP=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_ICMP_PC1_${z}_RTT_Avg_ms`,s),0)/5;const avgUDPLoss=t1Sizes.reduce((sm,z)=>sm+gv(d1,`T1_UDP_PC1_${z}_Loss_Percent`,s),0)/5;const mf=[1500,2000,3000,4000].reduce((mx,sz)=>gv(d5,`T5_P2_Frag_${sz}B_Success`,s)===1?sz:mx,0);fragPen[s]=mf===0;let mts=Math.min(10,gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150);if(fragPen[s])mts*=0.5;
+    var dimScores={},cvData={},fragPen={},finalScores={};
+    st.forEach(function(s){var rt=getAvgRTTData(s);var tcpVals=t1Sizes.map(function(z){return gv(d1,'T1_TCP_PC1_'+z+'_Throughput_Mbps',s);});var jitterVals=t1Sizes.map(function(z){return gv(d1,'T1_UDP_PC1_'+z+'_Jitter_ms',s);});var icmpVals=t1Sizes.map(function(z){return gv(d1,'T1_ICMP_PC1_'+z+'_RTT_Avg_ms',s);});var httpVals=t2Files.map(function(f){return gv(d2,'T2_HTTP_PC2_'+f+'_Speed_Mbps',s);});var avgTCP=tcpVals.reduce(function(a,b){return a+b;},0)/5;var avgHTTP=httpVals.reduce(function(a,b){return a+b;},0)/t2Files.length;var avgJitter=t1Sizes.reduce(function(sm,z){return sm+gv(d1,'T1_UDP_PC1_'+z+'_Jitter_ms',s);},0)/5;var avgICMP=t1Sizes.reduce(function(sm,z){return sm+gv(d1,'T1_ICMP_PC1_'+z+'_RTT_Avg_ms',s);},0)/5;var avgUDPLoss=t1Sizes.reduce(function(sm,z){return sm+gv(d1,'T1_UDP_PC1_'+z+'_Loss_Percent',s);},0)/5;var mf=[1500,2000,3000,4000].reduce(function(mx,sz){return gv(d5,'T5_P2_Frag_'+sz+'B_Success',s)===1?sz:mx;},0);fragPen[s]=mf===0;var mts=Math.min(10,gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150);if(fragPen[s])mts*=0.5;
     dimScores[s]={Performance:Math.min(10,avgTCP/2+avgHTTP/2),Scalability:Math.min(10,10-calcCV(tcpVals)/5),Reliability:Math.min(10,10-(rt.loss||0)*2-calcCV(icmpVals)/3),Stability:Math.min(10,10-calcCV(jitterVals)/3-(rt.mdev||0)),Consistency:Math.min(10,10-calcCV(httpVals)/5),Compatibility:Math.min(10,(gv(d5,'T5_Final_Max_NoFrag_Payload',s)/150))};
-    cvData[s]={'TCP Throughput':calcCV(tcpVals),'UDP Jitter':calcCV(jitterVals),'ICMP RTT':calcCV(icmpVals),'UDP Loss':calcCV(t1Sizes.map(z=>gv(d1,`T1_UDP_PC1_${z}_Loss_Percent`,s))),'HTTP Speed':calcCV(httpVals),'RTT Variation':rt.avg>0?(rt.mdev||0)/rt.avg*100:0};
-    const pt={tcp:Math.min(12,avgTCP*0.6),tcpRel:Math.max(0,8-calcCV(tcpVals)/5),jitter:Math.max(0,8-avgJitter*40),udpLoss:Math.max(0,5-avgUDPLoss*1),icmp:Math.max(0,8-avgICMP*0.4),icmpRel:Math.max(0,5-calcCV(icmpVals)/4),http:Math.min(15,avgHTTP*1.2),httpStab:Math.max(0,8-calcCV(httpVals)/5),rtt:Math.max(0,10-(rt.avg||0)*1.2),rttRel:Math.max(0,6-(rt.mdev||0)*2),loss:Math.max(0,5-(rt.loss||0)*2),mtu:mts};pt.total=pt.tcp+pt.tcpRel+pt.jitter+pt.udpLoss+pt.icmp+pt.icmpRel+pt.http+pt.httpStab+pt.rtt+pt.rttRel+pt.loss+pt.mtu;finalScores[s]=pt;});
+    cvData[s]={'TCP Throughput':calcCV(tcpVals),'UDP Jitter':calcCV(jitterVals),'ICMP RTT':calcCV(icmpVals),'UDP Loss':calcCV(t1Sizes.map(function(z){return gv(d1,'T1_UDP_PC1_'+z+'_Loss_Percent',s);})),'HTTP Speed':calcCV(httpVals),'RTT Variation':rt.avg>0?(rt.mdev||0)/rt.avg*100:0};
+    var pt={tcp:Math.min(12,avgTCP*0.6),tcpRel:Math.max(0,8-calcCV(tcpVals)/5),jitter:Math.max(0,8-avgJitter*40),udpLoss:Math.max(0,5-avgUDPLoss*1),icmp:Math.max(0,8-avgICMP*0.4),icmpRel:Math.max(0,5-calcCV(icmpVals)/4),http:Math.min(15,avgHTTP*1.2),httpStab:Math.max(0,8-calcCV(httpVals)/5),rtt:Math.max(0,10-(rt.avg||0)*1.2),rttRel:Math.max(0,6-(rt.mdev||0)*2),loss:Math.max(0,5-(rt.loss||0)*2),mtu:mts};pt.total=pt.tcp+pt.tcpRel+pt.jitter+pt.udpLoss+pt.icmp+pt.icmpRel+pt.http+pt.httpStab+pt.rtt+pt.rttRel+pt.loss+pt.mtu;finalScores[s]=pt;});
     
-    const ranked=st.sort((a,b)=>finalScores[b].total-finalScores[a].total);const overallWinner=ranked[0];
+    var ranked=st.sort(function(a,b){return finalScores[b].total-finalScores[a].total;});var overallWinner=ranked[0];
     
-    // Winner text
     document.getElementById('winnerText').innerHTML='<span style="font-size:1.5rem;font-weight:700;color:'+(overallWinner==='dualstack'?'#3b82f6':overallWinner==='dslite'?'#10b981':'#f59e0b')+'">'+nm[overallWinner]+'</span> <span style="font-size:0.9rem;color:#94a3b8">is the overall winner</span> <span style="font-size:0.75rem;color:#64748b">('+finalScores[overallWinner].total.toFixed(1)+'/100 points)</span>';
     document.getElementById('winnerExplain').textContent=nm[overallWinner]+' scored highest in the weighted evaluation that prioritizes reliability and real-world performance, not just raw speed.';
     
-    const dims=[{name:'Performance',label:'P'},{name:'Scalability',label:'S'},{name:'Reliability',label:'R'},{name:'Stability',label:'St'},{name:'Consistency',label:'C'},{name:'Compatibility',label:'Cp'}];
-    let winners={};dims.forEach(d=>{let w=st[0];st.forEach(s=>{if(dimScores[s][d.name]>dimScores[w][d.name])w=s;});winners[d.name]=w;});
-    const dsWins=dims.filter(d=>winners[d.name]==='dualstack').length;const dlWins=dims.filter(d=>winners[d.name]==='dslite').length;const n64Wins=dims.filter(d=>winners[d.name]==='nat64').length;
+    var dims=[{name:'Performance',label:'P'},{name:'Scalability',label:'S'},{name:'Reliability',label:'R'},{name:'Stability',label:'St'},{name:'Consistency',label:'C'},{name:'Compatibility',label:'Cp'}];
+    var winners={};dims.forEach(function(d){var w=st[0];st.forEach(function(s){if(dimScores[s][d.name]>dimScores[w][d.name])w=s;});winners[d.name]=w;});
+    var dsWins=dims.filter(function(d){return winners[d.name]==='dualstack';}).length;var dlWins=dims.filter(function(d){return winners[d.name]==='dslite';}).length;var n64Wins=dims.filter(function(d){return winners[d.name]==='nat64';}).length;
     
     document.getElementById('keyFindings').innerHTML=
-        '<div class="finding-card"><div class="strat-label" style="color:#3b82f6">Dual Stack</div><div class="value">'+dsWins+'/6 dimensions</div><div class="detail">'+dims.filter(d=>winners[d.name]==='dualstack').map(d=>d.name).join(', ')+'</div></div>'+
-        '<div class="finding-card"><div class="strat-label" style="color:#10b981">DS-Lite</div><div class="value">'+dlWins+'/6 dimensions</div><div class="detail">'+dims.filter(d=>winners[d.name]==='dslite').map(d=>d.name).join(', ')+'</div></div>'+
-        '<div class="finding-card"><div class="strat-label" style="color:#f59e0b">NAT64</div><div class="value">'+n64Wins+'/6 dimensions</div><div class="detail">'+(n64Wins>0?dims.filter(d=>winners[d.name]==='nat64').map(d=>d.name).join(', '):'No dimension wins')+'</div></div>';
+        '<div class="finding-card"><div class="strat-label" style="color:#3b82f6">Dual Stack</div><div class="value">'+dsWins+'/6 dimensions</div><div class="detail">'+dims.filter(function(d){return winners[d.name]==='dualstack';}).map(function(d){return d.name;}).join(', ')+'</div></div>'+
+        '<div class="finding-card"><div class="strat-label" style="color:#10b981">DS-Lite</div><div class="value">'+dlWins+'/6 dimensions</div><div class="detail">'+dims.filter(function(d){return winners[d.name]==='dslite';}).map(function(d){return d.name;}).join(', ')+'</div></div>'+
+        '<div class="finding-card"><div class="strat-label" style="color:#f59e0b">NAT64</div><div class="value">'+n64Wins+'/6 dimensions</div><div class="detail">'+(n64Wins>0?dims.filter(function(d){return winners[d.name]==='nat64';}).map(function(d){return d.name;}).join(', '):'No dimension wins')+'</div></div>';
     
-    // Dimension cards
-    let dh='';dims.forEach(dim=>{let winner=st[0];st.forEach(s=>{if(dimScores[s][dim.name]>dimScores[winner][dim.name])winner=s;});
+    var dh='';dims.forEach(function(dim){var winner=st[0];st.forEach(function(s){if(dimScores[s][dim.name]>dimScores[winner][dim.name])winner=s;});
     dh+='<div class="dimension-card dim-card-'+(winner==='dualstack'?'ds':winner==='dslite'?'dl':'n64')+'"><div class="dim-label">'+dim.label+'</div><div class="dim-name">'+dim.name+'</div><div class="dim-winner">Winner: '+nm[winner]+'</div><div class="dim-scores">DS:'+dimScores['dualstack'][dim.name].toFixed(1)+' | DL:'+dimScores['dslite'][dim.name].toFixed(1)+' | N64:'+dimScores['nat64'][dim.name].toFixed(1)+'</div></div>';});
     document.getElementById('dimensionGrid').innerHTML=dh;
     
-    // Radar chart
-    const ctx=document.getElementById('radarChart').getContext('2d');new Chart(ctx,{type:'radar',data:{labels:dims.map(d=>d.name),datasets:st.map((s,i)=>({label:nm[s],data:dims.map(d=>dimScores[s][d.name]),borderColor:['#3b82f6','#10b981','#f59e0b'][i],backgroundColor:['#3b82f6','#10b981','#f59e0b'][i]+'20',borderWidth:2.5,pointRadius:5}))},options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:10,grid:{color:'rgba(255,255,255,0.1)'},ticks:{color:'#94a3b8',font:{size:7},stepSize:2},pointLabels:{color:'#cbd5e1',font:{size:8}}}},plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:12,usePointStyle:true}}}}});
+    var ctx=document.getElementById('radarChart').getContext('2d');new Chart(ctx,{type:'radar',data:{labels:dims.map(function(d){return d.name;}),datasets:st.map(function(s,i){return{label:nm[s],data:dims.map(function(d){return dimScores[s][d.name];}),borderColor:['#3b82f6','#10b981','#f59e0b'][i],backgroundColor:['#3b82f6','#10b981','#f59e0b'][i]+'20',borderWidth:2.5,pointRadius:5};})},options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:10,grid:{color:'rgba(255,255,255,0.1)'},ticks:{color:'#94a3b8',font:{size:7},stepSize:2},pointLabels:{color:'#cbd5e1',font:{size:9}}}},plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:12,usePointStyle:true}}}}});
     
-    // Reliability table
-    const relMetrics=['TCP Throughput','UDP Jitter','ICMP RTT','UDP Loss','HTTP Speed','RTT Variation'];const relWhat=['Consistency across packet sizes','Jitter stability','Latency predictability','Loss pattern consistency','Download speed stability','RTT variation between runs'];
-    let rh='';relMetrics.forEach((m,i)=>{let best=st[0];st.forEach(s=>{if(cvData[s][m]<cvData[best][m])best=s;});rh+='<tr><td><strong>'+m+'</strong></td><td style="font-size:0.5rem;color:#64748b">'+relWhat[i]+'</td>';st.forEach(s=>{const cv=cvData[s][m];const cls=cv<5?'reliability-high':cv<15?'reliability-med':'reliability-low';rh+='<td class="'+cls+'">'+cv.toFixed(1)+'%'+(cv===cvData[best][m]&&cv<50?' *':'')+'</td>';});rh+='<td style="font-weight:700">'+nm[best]+'</td></tr>';});
+    var relMetrics=['TCP Throughput','UDP Jitter','ICMP RTT','UDP Loss','HTTP Speed','RTT Variation'];var relWhat=['Consistency across packet sizes','Jitter stability','Latency predictability','Loss pattern consistency','Download speed stability','RTT variation between runs'];
+    var rh='';relMetrics.forEach(function(m,i){var best=st[0];st.forEach(function(s){if(cvData[s][m]<cvData[best][m])best=s;});rh+='<tr><td><strong>'+m+'</strong></td><td style="font-size:0.625rem;color:#64748b">'+relWhat[i]+'</td>';st.forEach(function(s){var cv=cvData[s][m];var cls=cv<5?'reliability-high':cv<15?'reliability-med':'reliability-low';rh+='<td class="'+cls+'">'+cv.toFixed(1)+'%'+(cv===cvData[best][m]&&cv<50?' *':'')+'</td>';});rh+='<td style="font-weight:700">'+nm[best]+'</td></tr>';});
     document.getElementById('reliabilityBody').innerHTML=rh;
     
-    // Scoring table
-    const cats=[{k:'tcp',l:'TCP Throughput',m:12,t:'perf'},{k:'tcpRel',l:'TCP Consistency',m:8,t:'rel'},{k:'jitter',l:'UDP Jitter',m:8,t:'stab'},{k:'udpLoss',l:'UDP Loss',m:5,t:'rel'},{k:'icmp',l:'ICMP RTT',m:8,t:'perf'},{k:'icmpRel',l:'ICMP Consistency',m:5,t:'rel'},{k:'http',l:'HTTP Speed',m:15,t:'perf'},{k:'httpStab',l:'HTTP Stability',m:8,t:'stab'},{k:'rtt',l:'RTT Average',m:10,t:'perf'},{k:'rttRel',l:'RTT Consistency',m:6,t:'rel'},{k:'loss',l:'Packet Loss',m:5,t:'rel'},{k:'mtu',l:'MTU Compatibility',m:10,t:'comp'}];
-    const typeLabels={perf:'Performance',rel:'Reliability',stab:'Stability',comp:'Compatibility'};const typeColors={perf:'#3b82f6',rel:'#10b981',stab:'#f59e0b',comp:'#ef4444'};
-    let sh='';cats.forEach(c=>{sh+='<tr><td><strong>'+c.l+'</strong></td><td style="color:#64748b">'+c.m+'</td><td style="color:'+typeColors[c.t]+';font-size:0.5rem">'+typeLabels[c.t]+'</td>';st.forEach(s=>{const sc=finalScores[s][c.k];let cl=sc>=c.m*0.8?'val-good':sc>=c.m*0.4?'val-warn':'val-bad';if(c.k==='mtu'&&fragPen[s]){cl+=' val-bad';sh+='<td class="'+cl+'">'+sc.toFixed(1)+' *</td>';}else{sh+='<td class="'+cl+'">'+sc.toFixed(1)+'</td>';}});sh+='</tr>';});
+    var cats=[{k:'tcp',l:'TCP Throughput',m:12,t:'perf'},{k:'tcpRel',l:'TCP Consistency',m:8,t:'rel'},{k:'jitter',l:'UDP Jitter',m:8,t:'stab'},{k:'udpLoss',l:'UDP Loss',m:5,t:'rel'},{k:'icmp',l:'ICMP RTT',m:8,t:'perf'},{k:'icmpRel',l:'ICMP Consistency',m:5,t:'rel'},{k:'http',l:'HTTP Speed',m:15,t:'perf'},{k:'httpStab',l:'HTTP Stability',m:8,t:'stab'},{k:'rtt',l:'RTT Average',m:10,t:'perf'},{k:'rttRel',l:'RTT Consistency',m:6,t:'rel'},{k:'loss',l:'Packet Loss',m:5,t:'rel'},{k:'mtu',l:'MTU Compatibility',m:10,t:'comp'}];
+    var typeLabels={perf:'Performance',rel:'Reliability',stab:'Stability',comp:'Compatibility'};var typeColors={perf:'#3b82f6',rel:'#10b981',stab:'#f59e0b',comp:'#ef4444'};
+    var sh='';cats.forEach(function(c){sh+='<tr><td><strong>'+c.l+'</strong></td><td style="color:#64748b">'+c.m+'</td><td style="color:'+typeColors[c.t]+';font-size:0.625rem">'+typeLabels[c.t]+'</td>';st.forEach(function(s){var sc=finalScores[s][c.k];var cl=sc>=c.m*0.8?'val-good':sc>=c.m*0.4?'val-warn':'val-bad';if(c.k==='mtu'&&fragPen[s]){cl+=' val-bad';sh+='<td class="'+cl+'">'+sc.toFixed(1)+' *</td>';}else{sh+='<td class="'+cl+'">'+sc.toFixed(1)+'</td>';}});sh+='</tr>';});
     document.getElementById('scoringBody').innerHTML=sh;
-    let fh='<tr style="border-top:3px solid #38bdf8;font-weight:700;font-size:0.7rem"><td colspan="3"><strong>TOTAL SCORE</strong></td>';st.forEach(s=>{const cl=finalScores[s].total>=70?'val-good':finalScores[s].total>=50?'val-warn':'val-bad';fh+='<td class="'+cl+'" style="font-size:0.8rem">'+finalScores[s].total.toFixed(1)+'/100</td>';});fh+='</tr>';document.getElementById('scoringFoot').innerHTML=fh;
+    var fh='<tr style="border-top:3px solid #38bdf8;font-weight:700;font-size:0.75rem"><td colspan="3"><strong>TOTAL SCORE</strong></td>';st.forEach(function(s){var cl=finalScores[s].total>=70?'val-good':finalScores[s].total>=50?'val-warn':'val-bad';fh+='<td class="'+cl+'" style="font-size:0.875rem">'+finalScores[s].total.toFixed(1)+'/100</td>';});fh+='</tr>';document.getElementById('scoringFoot').innerHTML=fh;
     
-    // Recommendations
     document.getElementById('recommendationGrid').innerHTML=
         '<div class="rec-card" style="border-color:#3b82f6"><div class="rec-label" style="color:#3b82f6">Dual Stack</div><div class="rec-name">Native Dual-Stack</div><div class="rec-for">Best for raw performance<br>When speed is the priority<br>Native IPv4/IPv6 environments</div><span class="rec-badge '+(overallWinner==='dualstack'?'rec-best':'rec-good')+'">'+(overallWinner==='dualstack'?'Best Overall':'Strong Performer')+'</span></div>'+
-        '<div class="rec-card" style="border-color:#10b981"><div class="rec-label" style="color:#10b981">DS-Lite</div><div class="rec-name">Dual-Stack Lite</div><div class="rec-for">Best for reliability & consistency<br>When predictable performance matters<br>ISP deployments with IPv6 backbone</div><span class="rec-badge '+(overallWinner==='dslite'?'rec-best':'rec-good')+'">'+(overallWinner==='dslite'?'Best Overall':'Strong Performer')+'</span></div>'+
+        '<div class="rec-card" style="border-color:#10b981"><div class="rec-label" style="color:#10b981">DS-Lite</div><div class="rec-name">Dual-Stack Lite</div><div class="rec-for">Best for reliability and consistency<br>When predictable performance matters<br>ISP deployments with IPv6 backbone</div><span class="rec-badge '+(overallWinner==='dslite'?'rec-best':'rec-good')+'">'+(overallWinner==='dslite'?'Best Overall':'Strong Performer')+'</span></div>'+
         '<div class="rec-card" style="border-color:#f59e0b"><div class="rec-label" style="color:#f59e0b">NAT64</div><div class="rec-name">NAT64/DNS64</div><div class="rec-for">Best for IPv6-only clients<br>When IPv4 compatibility needed<br>Transitional environments</div><span class="rec-badge rec-niche">Higher Latency</span></div>';
     
-    ['execSummary','dimCard','radarCard','relCard','scoreCard','recBox'].forEach(id=>document.getElementById(id).style.display='block');
+    ['execSummary','dimCard','radarCard','relCard','scoreCard','recBox'].forEach(function(id){document.getElementById(id).style.display='block';});
 }
 loadAllData();
 </script>
