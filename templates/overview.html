@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Overview</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:24px 28px;overflow-y:auto;height:100vh;line-height:1.6}
+        
+        .hero{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:12px;padding:28px;margin-bottom:20px;text-align:center}
+        .hero h1{font-size:1.5rem;color:#38bdf8;margin-bottom:12px}
+        .hero p{font-size:0.75rem;color:#94a3b8;max-width:750px;margin:0 auto;line-height:1.7}
+        .hero .highlight{color:#e2e8f0;font-weight:600}
+        
+        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:12px;margin-bottom:20px;overflow:hidden}
+        .card-header{background:#151d2b;padding:14px 20px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.9rem}
+        .card-body{padding:20px 24px}
+        
+        h2{font-size:0.95rem;color:#38bdf8;margin-bottom:12px}
+        h3{font-size:0.8rem;color:#cbd5e1;margin:12px 0 6px 0}
+        p{font-size:0.7rem;color:#94a3b8;margin-bottom:8px}
+        ul{font-size:0.65rem;color:#94a3b8;margin-left:16px;margin-bottom:8px}
+        ul li{margin-bottom:4px}
+        
+        .problem-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+        .problem-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:10px;padding:18px}
+        .problem-card .number{font-size:0.7rem;color:#38bdf8;font-weight:700;margin-bottom:6px}
+        .problem-card .title{font-size:0.72rem;color:#cbd5e1;font-weight:600;margin-bottom:8px;line-height:1.3}
+        .problem-card .detail{font-size:0.58rem;color:#94a3b8;line-height:1.5}
+        
+        .strategy-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+        .strat-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:10px;padding:16px;text-align:center}
+        .strat-card .name{font-size:0.8rem;font-weight:700;margin-bottom:6px}
+        .strat-card .desc{font-size:0.6rem;color:#94a3b8;line-height:1.5;margin-bottom:8px}
+        .strat-card .example{font-size:0.55rem;color:#64748b;font-style:italic}
+        .card-ds{border-top:3px solid #3b82f6}.card-ds .name{color:#3b82f6}
+        .card-dl{border-top:3px solid #10b981}.card-dl .name{color:#10b981}
+        .card-n64{border-top:3px solid #f59e0b}.card-n64 .name{color:#f59e0b}
+        
+        .test-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .test-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px}
+        .test-card .test-name{font-size:0.72rem;font-weight:600;color:#cbd5e1;margin-bottom:4px}
+        .test-card .test-measures{font-size:0.58rem;color:#38bdf8;margin-bottom:4px}
+        .test-card .test-why{font-size:0.58rem;color:#94a3b8;line-height:1.4}
+        
+        .question-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:16px;margin-bottom:12px}
+        .question-box .q{font-size:0.7rem;color:#cbd5e1;font-weight:600;margin-bottom:4px}
+        .question-box .a{font-size:0.6rem;color:#38bdf8}
+        
+        .color-guide{display:flex;gap:20px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+        .color-item{display:flex;align-items:center;gap:8px;font-size:0.65rem}
+        .color-dot{width:12px;height:12px;border-radius:3px}
+        
+        .nav-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+        .nav-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px;text-align:center;text-decoration:none;transition:all 0.2s;display:block}
+        .nav-card:hover{background:#1e2a3a;border-color:#38bdf8}
+        .nav-card .nav-name{font-size:0.7rem;font-weight:600;color:#cbd5e1;margin-bottom:4px}
+        .nav-card .nav-desc{font-size:0.55rem;color:#94a3b8}
+        .nav-card .nav-link-text{font-size:0.5rem;color:#38bdf8;margin-top:6px}
+        
+        .footer{text-align:center;font-size:0.55rem;color:#64748b;margin-top:20px;padding-top:16px;border-top:1px solid #2d3a4a}
+        
+        .solution-box{background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:16px;margin-top:16px}
+        .solution-box p{font-size:0.65rem;color:#cbd5e1}
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>IPv6 Migration Performance Dashboard</h1>
+    <p>
+        The exhaustion of IPv4 addresses is forcing organizations worldwide to migrate to IPv6. 
+        However, <span class="highlight">there is no single migration path</span> — different strategies suit different environments. 
+        This research evaluates <span class="highlight">three IPv6 transition mechanisms</span> to determine which provides 
+        the best balance of <span class="highlight">performance, reliability, and compatibility</span>.
+    </p>
+</div>
+
+<!-- PROBLEM STATEMENTS -->
+<div class="card">
+    <div class="card-header">Research Problem</div>
+    <div class="card-body">
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="number">Problem 1</div>
+                <div class="title">IPv6 Migration and Specific Environments</div>
+                <div class="detail">
+                    Not every migration strategy works for every organization. ISPs, enterprises, and mobile networks have 
+                    fundamentally different infrastructure needs. Choosing the wrong strategy leads to poor performance, 
+                    compatibility issues, and wasted resources.
+                </div>
+            </div>
+            <div class="problem-card">
+                <div class="number">Problem 2</div>
+                <div class="title">Balancing Network Performance with IPv4 Address Conservation</div>
+                <div class="detail">
+                    The ideal solution must preserve IPv4 connectivity while maximizing performance on IPv6 infrastructure. 
+                    Strategies that save addresses often sacrifice speed. Strategies that prioritize speed often waste addresses. 
+                    Finding the right balance is critical.
+                </div>
+            </div>
+            <div class="problem-card">
+                <div class="number">Problem 3</div>
+                <div class="title">The Hassle of Data Collection</div>
+                <div class="detail">
+                    Meaningful performance comparison requires consistent, repeatable testing across multiple strategies — 
+                    a process that is time-consuming, error-prone, and complex. Without reliable data, 
+                    migration decisions become guesswork.
+                </div>
+            </div>
+        </div>
+        
+        <div class="solution-box">
+            <p><strong>Our Approach:</strong> We built a controlled GNS3 network lab to test all three strategies under identical conditions. 
+            Every test was automated, repeated multiple times, and results are visualized in real-time through this dashboard. 
+            This provides <strong>objective, data-driven evidence</strong> to guide IPv6 migration decisions.</p>
+        </div>
+    </div>
+</div>
+
+<!-- STRATEGIES -->
+<div class="card">
+    <div class="card-header">The Three Strategies Under Evaluation</div>
+    <div class="card-body">
+        <div class="strategy-cards">
+            <div class="strat-card card-ds">
+                <div class="name">Dual Stack</div>
+                <div class="desc">Runs both IPv4 and IPv6 simultaneously. Devices communicate using whichever protocol they prefer. No translation or tunneling required.</div>
+                <div class="example">Best for: Enterprises with existing IPv4 infrastructure transitioning gradually</div>
+            </div>
+            <div class="strat-card card-dl">
+                <div class="name">DS-Lite (Dual-Stack Lite)</div>
+                <div class="desc">Sends IPv4 traffic through an IPv6 tunnel. The core network runs IPv6 while preserving IPv4 connectivity for end users.</div>
+                <div class="example">Best for: ISPs with IPv6 backbone needing to support legacy IPv4 customers</div>
+            </div>
+            <div class="strat-card card-n64">
+                <div class="name">NAT64 / DNS64</div>
+                <div class="desc">Translates between IPv6 and IPv4 at the network edge. IPv6-only clients can reach IPv4-only servers through address translation.</div>
+                <div class="example">Best for: Mobile networks and IPv6-only deployments needing IPv4 access</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TEST METHODOLOGY -->
+<div class="card">
+    <div class="card-header">How We Tested: 4 Performance Dimensions</div>
+    <div class="card-body">
+        <div class="test-grid">
+            <div class="test-card">
+                <div class="test-name">Test 1: Packet Size Performance</div>
+                <div class="test-measures">TCP Throughput • UDP Jitter • ICMP Latency • Packet Loss</div>
+                <div class="test-why">Tests 5 data sizes (5M to 20M) to measure scalability. Reveals if performance degrades under increasing network load.</div>
+            </div>
+            <div class="test-card">
+                <div class="test-name">Test 2: HTTP Download Speed</div>
+                <div class="test-measures">Download Speed (1KB to 1MB) • Drop Detection • MSS Clamping</div>
+                <div class="test-why">Simulates real-world web browsing. Detects critical speed drops that would impact user experience.</div>
+            </div>
+            <div class="test-card">
+                <div class="test-name">Test 3: RTT Latency Consistency</div>
+                <div class="test-measures">Min/Avg/Max RTT • Jitter (Mdev) • Packet Loss (3 runs × 100 pings)</div>
+                <div class="test-why">Repeated 3 times to verify consistency. Low latency = better video calls, gaming, and responsive applications.</div>
+            </div>
+            <div class="test-card">
+                <div class="test-name">Test 4: Fragmentation Boundary</div>
+                <div class="test-measures">MTU Discovery • Fragmentation Success Rate • RTT Overhead</div>
+                <div class="test-why">Finds the maximum packet size before splitting occurs. Critical for VPN performance, streaming quality, and network efficiency.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KEY FINDINGS (Links to Analysis) -->
+<div class="card">
+    <div class="card-header">Key Questions Answered in This Dashboard</div>
+    <div class="card-body">
+        <div class="question-box">
+            <div class="q">Which strategy delivers the best raw performance?</div>
+            <div class="a">See: Analysis Page → Performance Dimension & Scoring Table</div>
+        </div>
+        <div class="question-box">
+            <div class="q">Which strategy is most reliable across repeated tests?</div>
+            <div class="a">See: Analysis Page → Reliability Section (CV% Analysis)</div>
+        </div>
+        <div class="question-box">
+            <div class="q">Which strategy handles increasing load best?</div>
+            <div class="a">See: Analysis Page → Scalability Dimension on Radar Chart</div>
+        </div>
+        <div class="question-box">
+            <div class="q">Which strategy should I choose for my environment?</div>
+            <div class="a">See: Analysis Page → Recommendations Section</div>
+        </div>
+    </div>
+</div>
+
+<!-- HOW TO USE -->
+<div class="card">
+    <div class="card-header">How to Use This Dashboard</div>
+    <div class="card-body">
+        <div class="color-guide">
+            <div class="color-item"><span class="color-dot" style="background:#10b981"></span> Green = Good Performance</div>
+            <div class="color-item"><span class="color-dot" style="background:#f59e0b"></span> Yellow = Acceptable / Warning</div>
+            <div class="color-item"><span class="color-dot" style="background:#ef4444"></span> Red = Poor / Needs Attention</div>
+        </div>
+        <div class="color-guide">
+            <div class="color-item"><span class="color-dot" style="background:#3b82f6"></span> Dual Stack</div>
+            <div class="color-item"><span class="color-dot" style="background:#10b981"></span> DS-Lite</div>
+            <div class="color-item"><span class="color-dot" style="background:#f59e0b"></span> NAT64</div>
+        </div>
+        <p style="text-align:center;margin-top:8px;font-size:0.65rem;color:#94a3b8">
+            <strong>Higher values are better</strong> for Throughput/Speed (Mbps) &nbsp;|&nbsp; 
+            <strong>Lower values are better</strong> for Latency/Jitter (ms) and Packet Loss (%) &nbsp;|&nbsp; 
+            Hover over underlined terms for technical explanations
+        </p>
+    </div>
+</div>
+
+<!-- NAVIGATION -->
+<div class="card">
+    <div class="card-header">Explore Test Results</div>
+    <div class="card-body">
+        <div class="nav-grid">
+            <a href="/test1" class="nav-card">
+                <div class="nav-name">Packet Size Performance</div>
+                <div class="nav-desc">TCP, UDP, ICMP across 5M-20M</div>
+                <div class="nav-link-text">View Results →</div>
+            </a>
+            <a href="/test2" class="nav-card">
+                <div class="nav-name">HTTP Download Speed</div>
+                <div class="nav-desc">1KB-1MB with drop detection</div>
+                <div class="nav-link-text">View Results →</div>
+            </a>
+            <a href="/test3" class="nav-card">
+                <div class="nav-name">RTT Latency Consistency</div>
+                <div class="nav-desc">3 runs × 100 pings each</div>
+                <div class="nav-link-text">View Results →</div>
+            </a>
+            <a href="/test5" class="nav-card">
+                <div class="nav-name">Fragmentation Boundary</div>
+                <div class="nav-desc">MTU discovery with heatmap</div>
+                <div class="nav-link-text">View Results →</div>
+            </a>
+            <a href="/summary" class="nav-card">
+                <div class="nav-name">Strategy Summary</div>
+                <div class="nav-desc">Side-by-side comparison</div>
+                <div class="nav-link-text">View Results →</div>
+            </a>
+            <a href="/analysis" class="nav-card">
+                <div class="nav-name">Performance Analysis</div>
+                <div class="nav-desc">Rankings & recommendations</div>
+                <div class="nav-link-text">View Results →</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    FYP CSP600 • IPv6 Migration Performance Dashboard • GNS3 Network Simulation Lab • All tests conducted under controlled, repeatable conditions
+</div>
+
+</body>
+</html>
