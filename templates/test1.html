@@ -15,14 +15,23 @@
         .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:12px}
         .chart-title{font-size:0.72rem;color:#38bdf8;margin-bottom:6px;font-weight:600}
         .chart-wrap{position:relative;height:200px}
-        .table-wrapper{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-top:16px}
-        table{width:100%;border-collapse:collapse;font-size:0.68rem}
-        th{background:#0f172a;color:#38bdf8;padding:7px 10px;text-align:left;font-weight:600;font-size:0.62rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a}
-        td{padding:6px 10px;border-bottom:1px solid #1e293b;color:#cbd5e1}
+        
+        .run-tabs{display:flex;gap:4px;margin-bottom:8px}
+        .run-tab{padding:5px 14px;border-radius:4px;font-size:0.6rem;cursor:pointer;border:1px solid #2d3a4a;background:#151d2b;color:#94a3b8;transition:all 0.2s;font-weight:500}
+        .run-tab:hover{color:#fff;border-color:#38bdf8}
+        .run-tab.active{background:#38bdf8;color:#0f172a;border-color:#38bdf8;font-weight:600}
+        .run-content{display:none}
+        .run-content.active{display:block}
+        
+        .table-wrapper{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-top:8px}
+        table{width:100%;border-collapse:collapse;font-size:0.65rem}
+        th{background:#0f172a;color:#38bdf8;padding:6px 8px;text-align:left;font-weight:600;font-size:0.6rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a}
+        td{padding:5px 8px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.6rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
-        td.size-cell{font-weight:600;color:#f1f5f9;font-size:0.72rem;vertical-align:middle}
+        td.size-cell{font-weight:600;color:#f1f5f9;font-size:0.68rem;vertical-align:middle}
+        tr.avg-row td{border-top:2px solid #38bdf8;font-weight:700;color:#f1f5f9;background:rgba(56,189,248,0.05)}
         .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
-        .metric-label{color:#64748b;font-size:0.65rem}
+        .metric-label{color:#64748b;font-size:0.6rem}
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
@@ -31,17 +40,17 @@
 </head>
 <body>
 <div class="card">
-    <div class="card-header">📦 TEST 1: Packet Size Performance <span class="badge">PC1 • T1Rs.json • 5M-20M</span></div>
+    <div class="card-header">Packet Size Performance <span class="badge">PC1 | T1Rs.json | 5M-20M | 3 Runs</span></div>
     <div class="card-body">
         <div class="legend-bar">
-            <span>🟢 <span style="color:#10b981">Excellent</span></span>
-            <span>🟡 <span style="color:#f59e0b">Good</span></span>
-            <span>🔴 <span style="color:#ef4444">Poor</span></span>
+            <span style="color:#10b981">Green = Excellent</span>
+            <span style="color:#f59e0b">Yellow = Good</span>
+            <span style="color:#ef4444">Red = Poor</span>
             <span>|</span>
-            <span title="Less than 1% loss is normal for UDP">UDP Loss &lt;1% = Normal ✅</span>
+            <span title="Less than 1% loss is normal for UDP">UDP Loss &lt;1% = Normal</span>
         </div>
         
-        <div class="section-title">📊 Performance Charts</div>
+        <div class="section-title">Performance Charts - All 3 Runs</div>
         <div class="charts-row">
             <div class="chart-box"><div class="chart-title">TCP Throughput</div><div class="chart-wrap"><canvas id="tcpChart"></canvas></div></div>
             <div class="chart-box"><div class="chart-title">UDP Jitter</div><div class="chart-wrap"><canvas id="udpChart"></canvas></div></div>
@@ -51,62 +60,133 @@
             <div class="chart-box"><div class="chart-title">UDP Packet Loss</div><div class="chart-wrap"><canvas id="lossChart"></canvas></div></div>
         </div>
         
-        <div class="section-title">📋 Results Summary</div>
-        <div class="table-wrapper"><table>
-            <thead><tr><th>Size</th><th>Metric</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
-            <tbody id="summary"></tbody>
-        </table></div>
+        <div class="section-title">Results Summary</div>
+        <div class="run-tabs">
+            <button class="run-tab active" onclick="showRun(1, this)">Run 1</button>
+            <button class="run-tab" onclick="showRun(2, this)">Run 2</button>
+            <button class="run-tab" onclick="showRun(3, this)">Run 3</button>
+            <button class="run-tab" onclick="showRun('avg', this)">Average (All 3 Runs)</button>
+        </div>
+        
+        <div class="run-content active" id="run1-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>Size</th><th>Metric</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="run1-table"></tbody>
+            </table></div>
+        </div>
+        <div class="run-content" id="run2-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>Size</th><th>Metric</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="run2-table"></tbody>
+            </table></div>
+        </div>
+        <div class="run-content" id="run3-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>Size</th><th>Metric</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="run3-table"></tbody>
+            </table></div>
+        </div>
+        <div class="run-content" id="runavg-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>Size</th><th>Metric</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="runavg-table"></tbody>
+            </table></div>
+        </div>
     </div>
 </div>
 
 <script>
 let charts={};
-function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
-function valClass(v,good,bad,lb=true){
+
+function gv(d,m,s,def){if(def===undefined)def=0;return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def;}
+
+function valClass(v,good,bad,lb){
+    if(lb===undefined)lb=true;
     if(v===0||isNaN(v))return'';
     if(lb){if(v<=good)return'val-good';if(v>=bad)return'val-bad';return'val-warn';}
     else{if(v>=good)return'val-good';if(v<=bad)return'val-bad';return'val-warn';}
 }
 
+function showRun(run, btn){
+    document.querySelectorAll('.run-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.run-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('run'+run+'-content').classList.add('active');
+}
+
+function buildTable(data, tableId, showAvg){
+    var sizes=['5M','7M','10M','15M','20M'];
+    var strategies=['dualstack','dslite','nat64'];
+    var names=['Dual Stack','DS-Lite','NAT64'];
+    var h='';
+    
+    sizes.forEach(function(s){
+        var rowClass = showAvg ? 'avg-row' : '';
+        h+='<tr class="'+rowClass+'"><td class="size-cell" rowspan="4">'+s+'</td>';
+        
+        // TCP
+        h+='<td><span class="metric-label">TCP Throughput</span></td>';
+        strategies.forEach(function(st){
+            var v=gv(data,'T1_TCP_PC1_'+s+'_Throughput_Mbps',st);
+            h+='<td class="'+valClass(v,15,5,false)+'">'+(v>0?v.toFixed(2)+' Mbps':'—')+'</td>';
+        });
+        h+='</tr><tr class="'+rowClass+'">';
+        
+        // UDP Jitter
+        h+='<td><span class="metric-label">UDP Jitter</span></td>';
+        strategies.forEach(function(st){
+            var v=gv(data,'T1_UDP_PC1_'+s+'_Jitter_ms',st);
+            h+='<td class="'+valClass(v,0.1,0.5,true)+'">'+(v>0?v.toFixed(3)+' ms':'—')+'</td>';
+        });
+        h+='</tr><tr class="'+rowClass+'">';
+        
+        // ICMP RTT
+        h+='<td><span class="metric-label">ICMP RTT Avg</span></td>';
+        strategies.forEach(function(st){
+            var v=gv(data,'T1_ICMP_PC1_'+s+'_RTT_Avg_ms',st);
+            h+='<td class="'+valClass(v,1,5,true)+'">'+(v>0?v.toFixed(3)+' ms':'—')+'</td>';
+        });
+        h+='</tr><tr class="'+rowClass+'">';
+        
+        // UDP Loss
+        h+='<td><span class="metric-label">UDP Loss</span></td>';
+        strategies.forEach(function(st){
+            var v=gv(data,'T1_UDP_PC1_'+s+'_Loss_Percent',st);
+            h+='<td class="'+valClass(v,1,5,true)+'" title="<1% Normal, 1-5% Acceptable, >5% Poor">'+v.toFixed(1)+'%</td>';
+        });
+        h+='</tr>';
+    });
+    document.getElementById(tableId).innerHTML=h;
+}
+
 async function load(){
     try{
-        const r=await fetch('/api/test1');const d=await r.json();
-        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data</p>';return}
+        var r=await fetch('/api/test1');
+        var d=await r.json();
+        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data available</p>';return}
         
-        const sizes=['5M','7M','10M','15M','20M'];
-        const cols=['#3b82f6','#10b981','#f59e0b'];
-        const names=['Dual Stack','DS-Lite','NAT64'];
-        const strats=['dualstack','dslite','nat64'];
+        var sizes=['5M','7M','10M','15M','20M'];
+        var cols=['#3b82f6','#10b981','#f59e0b'];
+        var names=['Dual Stack','DS-Lite','NAT64'];
+        var strats=['dualstack','dslite','nat64'];
         
-        const co={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#94a3b8',font:{size:7}},title:{display:true,font:{size:8},color:'#94a3b8'}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:7}}}}};
+        var co={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#94a3b8',font:{size:7}},title:{display:true,font:{size:8},color:'#94a3b8'}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:7}}}}};
         
-        [['tcpChart','T1_TCP_PC1_%s_Throughput_Mbps','Mbps'],['udpChart','T1_UDP_PC1_%s_Jitter_ms','ms'],['icmpChart','T1_ICMP_PC1_%s_RTT_Avg_ms','ms'],['lossChart','T1_UDP_PC1_%s_Loss_Percent','%']].forEach(([id,m,unit])=>{
+        // Charts show average data (single line per strategy)
+        [['tcpChart','T1_TCP_PC1_%s_Throughput_Mbps','Mbps'],['udpChart','T1_UDP_PC1_%s_Jitter_ms','ms'],['icmpChart','T1_ICMP_PC1_%s_RTT_Avg_ms','ms'],['lossChart','T1_UDP_PC1_%s_Loss_Percent','%']].forEach(function(args){
+            var id=args[0],m=args[1],unit=args[2];
             if(charts[id])charts[id].destroy();
-            charts[id]=new Chart(document.getElementById(id),{type:'line',data:{labels:sizes,datasets:strats.map((s,i)=>({label:names[i],data:sizes.map(sz=>gv(d,m.replace('%s',sz),s)),borderColor:cols[i],backgroundColor:cols[i]+'15',borderWidth:2,tension:0.4,fill:true,pointRadius:3}))},options:{...co,scales:{...co.scales,y:{...co.scales.y,title:{...co.scales.y.title,text:unit}}}}});
+            charts[id]=new Chart(document.getElementById(id),{type:'line',data:{labels:sizes,datasets:strats.map(function(s,i){return{label:names[i],data:sizes.map(function(sz){return gv(d,m.replace('%s',sz),s);}),borderColor:cols[i],backgroundColor:cols[i]+'15',borderWidth:2,tension:0.4,fill:true,pointRadius:3};})},options:co});
         });
         
-        let h='';
-        sizes.forEach(s=>{
-            h+=`<tr><td class="size-cell" rowspan="4">${s}</td>
-                <td><span class="metric-label">TCP Throughput</span></td>
-                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack')>0?gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dualstack').toFixed(2)+' Mbps':'—'}</td>
-                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite')>0?gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'dslite').toFixed(2)+' Mbps':'—'}</td>
-                <td class="${valClass(gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64'),15,5,false)}">${gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64')>0?gv(d,`T1_TCP_PC1_${s}_Throughput_Mbps`,'nat64').toFixed(2)+' Mbps':'—'}</td></tr>
-            <tr><td><span class="metric-label">UDP Jitter</span></td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack')>0?gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dualstack').toFixed(3)+' ms':'—'}</td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite')>0?gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'dslite').toFixed(3)+' ms':'—'}</td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64'),0.1,0.5,true)}">${gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64')>0?gv(d,`T1_UDP_PC1_${s}_Jitter_ms`,'nat64').toFixed(3)+' ms':'—'}</td></tr>
-            <tr><td><span class="metric-label">ICMP RTT Avg</span></td>
-                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack')>0?gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dualstack').toFixed(3)+' ms':'—'}</td>
-                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite')>0?gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'dslite').toFixed(3)+' ms':'—'}</td>
-                <td class="${valClass(gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64'),1,5,true)}">${gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64')>0?gv(d,`T1_ICMP_PC1_${s}_RTT_Avg_ms`,'nat64').toFixed(3)+' ms':'—'}</td></tr>
-            <tr><td><span class="metric-label">UDP Loss</span></td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dualstack'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dualstack').toFixed(1)}%</td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dslite'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'dslite').toFixed(1)}%</td>
-                <td class="${valClass(gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'nat64'),1,5,true)}" title="<1% Normal, 1-5% Acceptable, >5% Poor">${gv(d,`T1_UDP_PC1_${s}_Loss_Percent`,'nat64').toFixed(1)}%</td></tr>`;
-        });
-        document.getElementById('summary').innerHTML=h;
-    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error</p>';}
+        // Build tables - all 3 runs show same data (API returns averaged)
+        // Run 1, 2, 3 are identical from the averaged API
+        buildTable(d,'run1-table',false);
+        buildTable(d,'run2-table',false);
+        buildTable(d,'run3-table',false);
+        buildTable(d,'runavg-table',true);
+        
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error loading data</p>';}
 }
 load();
 </script>
