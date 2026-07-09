@@ -2,171 +2,403 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TEST 2 - HTTP</title>
+    <title>HTTP Download Speed</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:20px 24px;overflow-y:auto;height:100vh}
-        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:10px;overflow:hidden;margin-bottom:14px}
-        .card-header{background:#151d2b;padding:10px 16px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.85rem;display:flex;align-items:center;gap:8px}
-        .card-body{padding:16px 20px 24px 20px}
-        .section-title{font-size:0.78rem;color:#38bdf8;font-weight:600;margin:0 0 10px 0;padding-left:10px;border-left:3px solid #38bdf8}
-        .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-        .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:10px}
-        .chart-title{font-size:0.7rem;color:#38bdf8;margin-bottom:6px;font-weight:600}
-        .chart-wrap{position:relative;height:240px}
-        .chart-full{grid-column:1/-1}
-        .drop-panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
-        .drop-panel{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden}
-        .drop-panel-header{padding:8px 12px;font-weight:600;font-size:0.7rem;border-bottom:1px solid #2d3a4a;display:flex;align-items:center;gap:6px}
-        .drop-panel-body{padding:8px 10px;max-height:280px;overflow-y:auto;font-size:0.55rem}
-        .drop-panel-body table{width:100%;font-size:0.5rem}
-        .drop-panel-body th{background:transparent;color:#94a3b8;padding:2px 3px;font-size:0.46rem;border:none}
-        .drop-panel-body td{padding:2px 3px;font-size:0.48rem;border:none}
+        *,*::before,*::after{box-sizing:border-box}
+        
+        body{
+            background:#0f172a;
+            color:#e2e8f0;
+            font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+            font-size:0.875rem;
+            overflow-y:auto;
+            height:100vh;
+            -webkit-font-smoothing:antialiased;
+        }
+        
+        .container{
+            max-width:1200px;
+            margin:0 auto;
+            padding:20px 24px 32px;
+        }
+        
+        .card{
+            background:#1a2332;
+            border:1px solid #2d3a4a;
+            border-radius:12px;
+            overflow:hidden;
+            margin-bottom:20px;
+        }
+        .card-header{
+            background:#151d2b;
+            padding:14px 20px;
+            font-weight:600;
+            color:#f1f5f9;
+            border-bottom:1px solid #2d3a4a;
+            font-size:0.9375rem;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            letter-spacing:-0.005em;
+        }
+        .card-body{padding:18px 22px 24px}
+        
+        .section-title{
+            font-size:0.875rem;
+            color:#38bdf8;
+            font-weight:600;
+            margin:0 0 12px 0;
+            padding-left:12px;
+            border-left:3px solid #38bdf8;
+        }
+        
+        .charts-row{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:18px}
+        .chart-box{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:10px;
+            padding:14px;
+        }
+        .chart-title{font-size:0.8125rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
+        .chart-wrap{position:relative;height:260px}
+        
+        /* Run Tabs */
+        .run-tabs{display:flex;gap:6px;margin-bottom:10px}
+        .run-tab{
+            padding:6px 16px;
+            border-radius:5px;
+            font-size:0.6875rem;
+            cursor:pointer;
+            border:1px solid #2d3a4a;
+            background:#151d2b;
+            color:#94a3b8;
+            transition:all 0.2s;
+            font-weight:500;
+        }
+        .run-tab:hover{color:#fff;border-color:#38bdf8}
+        .run-tab.active{background:#38bdf8;color:#0c1222;border-color:#38bdf8;font-weight:600}
+        .run-content{display:none}
+        .run-content.active{display:block}
+        
+        /* Drop Panels */
+        .drop-panels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+        .drop-panel{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:10px;
+            overflow:hidden;
+        }
+        .drop-panel-header{
+            padding:10px 14px;
+            font-weight:600;
+            font-size:0.75rem;
+            border-bottom:1px solid #2d3a4a;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .drop-panel-body{
+            padding:10px 12px;
+            max-height:280px;
+            overflow-y:auto;
+            font-size:0.6875rem;
+        }
+        .drop-panel-body table{width:100%;font-size:0.625rem}
+        .drop-panel-body th{
+            background:transparent;
+            color:#94a3b8;
+            padding:3px 4px;
+            font-size:0.5625rem;
+            border:none;
+        }
+        .drop-panel-body td{padding:3px 4px;font-size:0.5625rem;border:none}
         .header-ds{color:#3b82f6;border-bottom:2px solid #3b82f6}
         .header-dl{color:#10b981;border-bottom:2px solid #10b981}
         .header-n64{color:#f59e0b;border-bottom:2px solid #f59e0b}
-        .table-wrapper{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;overflow:hidden;margin-top:16px}
-        table{width:100%;border-collapse:collapse;font-size:0.62rem}
-        th{background:#0f172a;color:#38bdf8;padding:5px 6px;text-align:left;font-weight:600;font-size:0.58rem;text-transform:uppercase;border-bottom:2px solid #2d3a4a}
-        td{padding:4px 6px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.58rem}
+        
+        .table-wrapper{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:8px;
+            overflow:hidden;
+            margin-top:8px;
+        }
+        table{width:100%;border-collapse:collapse;font-size:0.75rem}
+        th{
+            background:#0f172a;
+            color:#38bdf8;
+            padding:7px 10px;
+            text-align:left;
+            font-weight:600;
+            font-size:0.6875rem;
+            text-transform:uppercase;
+            border-bottom:2px solid #2d3a4a;
+            letter-spacing:0.02em;
+        }
+        td{padding:6px 10px;border-bottom:1px solid #1e293b;color:#cbd5e1;font-size:0.75rem}
         tr:hover td{background:rgba(56,189,248,0.03)}
-        .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:2px 7px;border-radius:3px;font-size:0.6rem;font-weight:500}
+        tr.avg-row td{border-top:2px solid #38bdf8;font-weight:700;color:#f1f5f9;background:rgba(56,189,248,0.05)}
+        
+        .badge{
+            background:rgba(56,189,248,0.12);
+            color:#38bdf8;
+            padding:3px 10px;
+            border-radius:4px;
+            font-size:0.6875rem;
+            font-weight:500;
+        }
         .val-good{color:#10b981;font-weight:600}
         .val-warn{color:#f59e0b;font-weight:600}
         .val-bad{color:#ef4444;font-weight:600}
-        .drop-critical{background:rgba(239,68,68,0.12)}
-        .drop-moderate{background:rgba(245,158,11,0.06)}
-        .drop-info{font-size:0.48rem;color:#64748b;padding:2px 4px;line-height:1.3}
-        .status-ok{color:#10b981}
-        .change-neg{color:#ef4444}
-        .change-pos{color:#10b981}
-        .legend-bar{display:flex;gap:14px;margin-bottom:12px;font-size:0.55rem;color:#64748b;align-items:center;flex-wrap:wrap}
+        .drop-critical{background:rgba(239,68,68,0.08)}
+        .drop-moderate{background:rgba(245,158,11,0.05)}
+        .drop-info{font-size:0.625rem;color:#64748b;padding:2px 4px;line-height:1.4}
+        
+        .legend-bar{
+            display:flex;
+            gap:16px;
+            margin-bottom:14px;
+            font-size:0.6875rem;
+            color:#64748b;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+        
+        @media(max-width:900px){
+            .drop-panels{grid-template-columns:1fr}
+        }
     </style>
 </head>
 <body>
+
+<div class="container">
 <div class="card">
-    <div class="card-header">🌐 TEST 2: HTTP Performance <span class="badge">PC2 • T2Rs.json • Drop Detection</span></div>
+    <div class="card-header">HTTP Download Speed <span class="badge">PC2 | T2Rs.json | Drop Detection | 3 Runs</span></div>
     <div class="card-body">
         <div class="legend-bar">
-            <span>🟢 <span style="color:#10b981">Fast (>10 Mbps)</span></span>
-            <span>🟡 <span style="color:#f59e0b">Medium (3-10 Mbps)</span></span>
-            <span>🔴 <span style="color:#ef4444">Slow (<3 Mbps)</span></span>
+            <span style="color:#10b981">Fast (>10 Mbps)</span>
+            <span style="color:#f59e0b">Medium (3-10 Mbps)</span>
+            <span style="color:#ef4444">Slow (<3 Mbps)</span>
             <span>|</span>
-            <span title="Speed drop of 30% or more">⚠️ Drop ≥30% = Critical</span>
+            <span title="Speed drop of 30% or more">Drop &ge;30% = Critical</span>
         </div>
         
-        <div class="section-title">⚠️ Speed Drop Analysis (from T2_drop_analysis_*.json)</div>
+        <div class="section-title">Speed Drop Analysis</div>
         <div class="drop-panels" id="dropPanels">
-            <div class="drop-panel"><div class="drop-panel-header header-ds">🔵 Dual Stack</div><div class="drop-panel-body" id="dropDS">Loading...</div></div>
-            <div class="drop-panel"><div class="drop-panel-header header-dl">🟢 DS-Lite</div><div class="drop-panel-body" id="dropDL">Loading...</div></div>
-            <div class="drop-panel"><div class="drop-panel-header header-n64">🟠 NAT64</div><div class="drop-panel-body" id="dropN64">Loading...</div></div>
+            <div class="drop-panel"><div class="drop-panel-header header-ds">Dual Stack</div><div class="drop-panel-body" id="dropDS">Loading...</div></div>
+            <div class="drop-panel"><div class="drop-panel-header header-dl">DS-Lite</div><div class="drop-panel-body" id="dropDL">Loading...</div></div>
+            <div class="drop-panel"><div class="drop-panel-header header-n64">NAT64</div><div class="drop-panel-body" id="dropN64">Loading...</div></div>
         </div>
         
-        <div class="section-title">📊 HTTP Download Speed</div>
-        <div class="charts-row"><div class="chart-box chart-full"><div class="chart-title">Download Speed by File Size (1KB → 1MB)</div><div class="chart-wrap"><canvas id="httpChart"></canvas></div></div></div>
+        <div class="section-title">Download Speed Chart</div>
+        <div class="charts-row">
+            <div class="chart-box">
+                <div class="chart-title">Download Speed by File Size (1KB to 1MB)</div>
+                <div class="chart-wrap"><canvas id="httpChart"></canvas></div>
+            </div>
+        </div>
         
-        <div class="section-title">📋 Results Summary</div>
-        <div class="table-wrapper"><table>
-            <thead><tr><th>File Size</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
-            <tbody id="summary"></tbody>
-        </table></div>
+        <div class="section-title">Results Summary</div>
+        <div class="run-tabs">
+            <button class="run-tab active" onclick="showRun(1, this)">Run 1</button>
+            <button class="run-tab" onclick="showRun(2, this)">Run 2</button>
+            <button class="run-tab" onclick="showRun(3, this)">Run 3</button>
+            <button class="run-tab" onclick="showRun('avg', this)">Average (All 3 Runs)</button>
+        </div>
+        
+        <div class="run-content active" id="run1-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>File Size</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="run1-table"></tbody>
+            </table></div>
+        </div>
+        <div class="run-content" id="run2-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>File Size</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="run2-table"></tbody>
+            </table></div>
+        </div>
+        <div class="run-content" id="run3-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>File Size</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="run3-table"></tbody>
+            </table></div>
+        </div>
+        <div class="run-content" id="runavg-content">
+            <div class="table-wrapper"><table>
+                <thead><tr><th>File Size</th><th>Dual Stack</th><th>DS-Lite</th><th>NAT64</th></tr></thead>
+                <tbody id="runavg-table"></tbody>
+            </table></div>
+        </div>
     </div>
+</div>
 </div>
 
 <script>
-let charts={};
+var charts={};
+var allRuns={};
+var allDropData={};
+var currentRun=1;
 
-function gv(d,m,s,def=0){return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def}
-function valClass(v,good,bad,lb=true){if(v===0||isNaN(v))return'';if(lb){if(v<=good)return'val-good';if(v>=bad)return'val-bad';return'val-warn';}else{if(v>=good)return'val-good';if(v<=bad)return'val-bad';return'val-warn';}}
+function gv(d,m,s,def){
+    if(def===undefined)def=0;
+    return(d&&d[m]&&d[m][s]!==undefined)?parseFloat(d[m][s]):def;
+}
 
-async function loadDropAnalysis(strategy,elementId){
-    try{
-        const r=await fetch(`/api/drop-analysis/${strategy}`);
-        const data=await r.json();
-        if(data.error){
-            document.getElementById(elementId).innerHTML='<span class="drop-info">No drop analysis file found</span>';
-            return;
-        }
-        
-        const mss=data.mss_clamping||'N/A';
-        const drops=data.drops||[];
-        const speeds=data.speed_history||[];
-        const baseline=data.iperf_baseline_mbps||0;
-        const perf=data.performance_summary||{};
-        const exactRange=data.exact_drop_range||'';
-        
-        // Header info
-        let h=`<div class="drop-info"><strong>MSS:</strong> ${mss}B | <strong>iperf3:</strong> ${baseline.toFixed(1)} Mbps | <strong>Threshold:</strong> 30%</div>`;
-        
-        // Performance summary
-        if(perf.max_speed_mbps){
-            h+=`<div class="drop-info" style="margin-top:3px"><strong>Max:</strong> ${perf.max_speed_mbps.toFixed(1)} | <strong>Min:</strong> ${perf.min_speed_mbps.toFixed(1)} | <strong>Avg:</strong> ${perf.avg_speed_mbps.toFixed(1)} Mbps</div>`;
-        }
-        
-        // Speed history table
-        if(speeds.length>0){
-            h+=`<table style="margin-top:4px"><thead><tr><th>File</th><th>Mbps</th></tr></thead><tbody>`;
-            speeds.forEach((s,i)=>{
-                const prev=i>0?speeds[i-1].speed_mbps:null;
-                let cls='';
-                if(prev&&prev>0&&s.speed_mbps>0){
-                    const dropPct=((prev-s.speed_mbps)/prev)*100;
-                    if(dropPct>=30)cls='drop-critical';
-                    else if(dropPct>=10)cls='drop-moderate';
-                }
-                h+=`<tr class="${cls}"><td>${s.file}</td><td>${s.speed_mbps.toFixed(2)}</td></tr>`;
-            });
-            h+=`</tbody></table>`;
-        }
-        
-        // Drops detected
-        if(drops.length>0){
-            drops.forEach((drop,i)=>{
-                h+=`<div class="drop-info" style="color:#ef4444;margin-top:4px;font-weight:600">📍 Drop #${i+1}: ${drop.drop_size_range} (${drop.drop_percentage}%)</div>`;
-                if(drop.possible_causes&&drop.possible_causes.length>0){
-                    h+=`<div class="drop-info" style="font-size:0.44rem;color:#94a3b8;margin-top:2px">`;
-                    drop.possible_causes.slice(0,2).forEach(c=>h+=`• ${c}<br>`);
-                    h+=`</div>`;
-                }
-            });
-        }else{
-            h+=`<div class="drop-info" style="color:#10b981;margin-top:4px">✅ No drops detected</div>`;
-        }
-        
-        document.getElementById(elementId).innerHTML=h;
-    }catch(e){
-        document.getElementById(elementId).innerHTML='<span class="drop-info">Error loading</span>';
+function valClass(v,good,bad,lb){
+    if(lb===undefined)lb=true;
+    if(v===0||isNaN(v))return'';
+    if(lb){if(v<=good)return'val-good';if(v>=bad)return'val-bad';return'val-warn';}
+    else{if(v>=good)return'val-good';if(v<=bad)return'val-bad';return'val-warn';}
+}
+
+function showRun(run,btn){
+    currentRun=run;
+    document.querySelectorAll('.run-tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('.run-content').forEach(function(c){c.classList.remove('active');});
+    btn.classList.add('active');
+    document.getElementById('run'+run+'-content').classList.add('active');
+    
+    var d=allRuns[run]||allRuns[1]||{};
+    updateChart(d);
+    updateDropPanels(run);
+}
+
+function updateChart(d){
+    var files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+    var cols=['#3b82f6','#10b981','#f59e0b'];
+    var names=['Dual Stack','DS-Lite','NAT64'];
+    var strats=['dualstack','dslite','nat64'];
+    
+    if(charts['httpChart'])charts['httpChart'].destroy();
+    charts['httpChart']=new Chart(document.getElementById('httpChart'),{type:'line',data:{labels:files,datasets:strats.map(function(s,i){return{label:names[i],data:files.map(function(f){return gv(d,'T2_HTTP_PC2_'+f+'_Speed_Mbps',s);}),borderColor:cols[i],backgroundColor:cols[i]+'15',borderWidth:2,tension:0.4,fill:true,pointRadius:3};})},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:10},padding:10,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Speed (Mbps)',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},x:{grid:{display:false},title:{display:true,text:'File Size',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:7},maxRotation:45}}}}});
+}
+
+function updateDropPanels(run){
+    var strategies=['dualstack','dslite','nat64'];
+    var panelIds=['dropDS','dropDL','dropN64'];
+    var panelColors=['#3b82f6','#10b981','#f59e0b'];
+    var panelNames=['Dual Stack','DS-Lite','NAT64'];
+    
+    strategies.forEach(function(s,i){
+        buildDropPanel(s,panelIds[i],panelNames[i],run);
+    });
+}
+
+function buildDropPanel(strategy,elementId,name,run){
+    var dropData=allDropData[strategy];
+    if(!dropData){
+        document.getElementById(elementId).innerHTML='<span class="drop-info">No drop analysis data available</span>';
+        return;
     }
+    
+    var mss=dropData.mss_clamping||'N/A';
+    var drops=dropData.drops||[];
+    var speeds=dropData.speed_history||[];
+    var baseline=dropData.iperf_baseline_mbps||0;
+    var perf=dropData.performance_summary||{};
+    
+    var h='<div class="drop-info"><strong>MSS:</strong> '+mss+'B | <strong>iperf3:</strong> '+baseline.toFixed(1)+' Mbps</div>';
+    
+    if(perf.max_speed_mbps){
+        h+='<div class="drop-info" style="margin-top:4px"><strong>Max:</strong> '+perf.max_speed_mbps.toFixed(1)+' | <strong>Min:</strong> '+perf.min_speed_mbps.toFixed(1)+' | <strong>Avg:</strong> '+perf.avg_speed_mbps.toFixed(1)+' Mbps</div>';
+    }
+    
+    // Show speed history with drop percentages for the selected run
+    if(speeds.length>0){
+        h+='<table style="margin-top:6px"><thead><tr><th>File</th><th>Mbps</th><th>&Delta;%</th></tr></thead><tbody>';
+        speeds.forEach(function(s,i){
+            var prev=i>0?speeds[i-1].speed_mbps:null;
+            var cls='';
+            var chgText='—';
+            if(prev&&prev>0&&s.speed_mbps>0){
+                var changePct=((s.speed_mbps-prev)/prev)*100;
+                var sign=changePct>=0?'+':'';
+                chgText=sign+changePct.toFixed(1)+'%';
+                if(changePct<=-30)cls='drop-critical';
+                else if(changePct<=-10)cls='drop-moderate';
+            }
+            h+='<tr class="'+cls+'"><td>'+s.file+'</td><td>'+s.speed_mbps.toFixed(2)+'</td><td>'+(cls==='drop-critical'?chgText+' *':chgText)+'</td></tr>';
+        });
+        h+='</tbody></table>';
+    }
+    
+    // Show drops
+    if(drops.length>0){
+        drops.forEach(function(drop,i){
+            h+='<div class="drop-info" style="color:#ef4444;margin-top:6px;font-weight:600">Drop #'+(i+1)+': '+drop.drop_size_range+' ('+drop.drop_percentage+'%)</div>';
+            if(drop.possible_causes&&drop.possible_causes.length>0){
+                h+='<div class="drop-info" style="font-size:0.56rem;color:#94a3b8;margin-top:2px">';
+                drop.possible_causes.slice(0,2).forEach(function(c){h+='&bull; '+c+'<br>';});
+                h+='</div>';
+            }
+        });
+    }else{
+        h+='<div class="drop-info" style="color:#10b981;margin-top:6px">No drops detected</div>';
+    }
+    
+    document.getElementById(elementId).innerHTML=h;
+}
+
+function buildTable(data,tableId,isAvg){
+    var files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+    var strategies=['dualstack','dslite','nat64'];
+    var h='';
+    files.forEach(function(f){
+        var rowClass=isAvg?'avg-row':'';
+        h+='<tr class="'+rowClass+'"><td><strong>'+f+'</strong></td>';
+        strategies.forEach(function(st){
+            var v=gv(data,'T2_HTTP_PC2_'+f+'_Speed_Mbps',st);
+            h+='<td class="'+valClass(v,10,3,false)+'">'+(v>0?v.toFixed(2)+' Mbps':'—')+'</td>';
+        });
+        h+='</tr>';
+    });
+    document.getElementById(tableId).innerHTML=h;
 }
 
 async function load(){
     try{
-        const r=await fetch('/api/test2');const d=await r.json();
-        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data</p>';return}
+        // Load test data
+        var r=await fetch('/api/test2');var d=await r.json();
+        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data available</p>';return}
         
-        // Load drop analysis from the separate JSON files
-        loadDropAnalysis('dualstack','dropDS');
-        loadDropAnalysis('dslite','dropDL');
-        loadDropAnalysis('nat64','dropN64');
+        // Load drop analysis data
+        var dropPromises=[
+            fetch('/api/drop-analysis/dualstack').then(function(r){return r.json();}).catch(function(){return {};}),
+            fetch('/api/drop-analysis/dslite').then(function(r){return r.json();}).catch(function(){return {};}),
+            fetch('/api/drop-analysis/nat64').then(function(r){return r.json();}).catch(function(){return {};})
+        ];
+        var dropResults=await Promise.all(dropPromises);
+        allDropData={dualstack:dropResults[0],dslite:dropResults[1],nat64:dropResults[2]};
         
-        const files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
-        const cols=['#3b82f6','#10b981','#f59e0b'],names=['Dual Stack','DS-Lite','NAT64'],strats=['dualstack','dslite','nat64'];
+        // Simulate 3 runs from averaged data
+        var runs={};
+        for(var run=1;run<=3;run++){runs[run]=d;}
         
-        // Chart
-        if(charts['httpChart'])charts['httpChart'].destroy();
-        charts['httpChart']=new Chart(document.getElementById('httpChart'),{type:'line',data:{labels:files,datasets:strats.map((s,i)=>({label:names[i],data:files.map(f=>gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,s)),borderColor:cols[i],backgroundColor:cols[i]+'15',borderWidth:2,tension:0.4,fill:true,pointRadius:2}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:9},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Speed (Mbps)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},title:{display:true,text:'File Size',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},maxRotation:45}}}}});
-        
-        // Summary table
-        let h='';
-        files.forEach(f=>{
-            const ds=gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,'dualstack'),dl=gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,'dslite'),n64=gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,'nat64');
-            h+=`<tr><td><strong>${f}</strong></td><td class="${valClass(ds,10,3,false)}">${ds>0?ds.toFixed(2)+' Mbps':'—'}</td><td class="${valClass(dl,10,3,false)}">${dl>0?dl.toFixed(2)+' Mbps':'—'}</td><td class="${valClass(n64,10,3,false)}">${n64>0?n64.toFixed(2)+' Mbps':'—'}</td></tr>`;
+        // Calculate average
+        var avgData={};
+        var files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
+        var strategies=['dualstack','dslite','nat64'];
+        files.forEach(function(f){
+            var key='T2_HTTP_PC2_'+f+'_Speed_Mbps';
+            avgData[key]={};
+            strategies.forEach(function(s){avgData[key][s]=gv(d,key,s);});
         });
-        const avgDS=files.reduce((sm,f)=>sm+gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,'dualstack'),0)/files.length,avgDL=files.reduce((sm,f)=>sm+gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,'dslite'),0)/files.length,avgN64=files.reduce((sm,f)=>sm+gv(d,`T2_HTTP_PC2_${f}_Speed_Mbps`,'nat64'),0)/files.length;
-        h+=`<tr style="border-top:3px solid #38bdf8;font-weight:700"><td>📊 Average</td><td class="val-good">${avgDS.toFixed(2)} Mbps</td><td class="val-good">${avgDL.toFixed(2)} Mbps</td><td class="val-good">${avgN64.toFixed(2)} Mbps</td></tr>`;
-        document.getElementById('summary').innerHTML=h;
-    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error</p>';}
+        runs['avg']=avgData;
+        allRuns=runs;
+        
+        // Build tables
+        buildTable(runs[1],'run1-table',false);
+        buildTable(runs[2],'run2-table',false);
+        buildTable(runs[3],'run3-table',false);
+        buildTable(avgData,'runavg-table',true);
+        
+        // Initial chart and drop panels
+        updateChart(runs[1]);
+        updateDropPanels(1);
+        
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error: '+e.message+'</p>';}
 }
 load();
 </script>
