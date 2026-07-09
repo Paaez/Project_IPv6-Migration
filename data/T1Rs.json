@@ -2182,5 +2182,215 @@
         "run": 3,
         "value": 0.935,
         "timestamp": "2026-07-10 01:11:38"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_TCP_PC1_5M_Throughput_Mbps",
+        "run": 3,
+        "value": 3.15,
+        "timestamp": "2026-07-10 04:35:14"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_5M_Loss_Percent",
+        "run": 3,
+        "value": 0.0,
+        "timestamp": "2026-07-10 04:37:00"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_5M_RTT_Min_ms",
+        "run": 3,
+        "value": 4.179,
+        "timestamp": "2026-07-10 04:37:00"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_5M_RTT_Avg_ms",
+        "run": 3,
+        "value": 18.149,
+        "timestamp": "2026-07-10 04:37:00"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_5M_RTT_Max_ms",
+        "run": 3,
+        "value": 34.502,
+        "timestamp": "2026-07-10 04:37:00"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_5M_RTT_Mdev_ms",
+        "run": 3,
+        "value": 10.597,
+        "timestamp": "2026-07-10 04:37:00"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_TCP_PC1_7M_Throughput_Mbps",
+        "run": 3,
+        "value": 4.21,
+        "timestamp": "2026-07-10 04:37:55"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_7M_Loss_Percent",
+        "run": 3,
+        "value": 0.0,
+        "timestamp": "2026-07-10 04:39:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_7M_RTT_Min_ms",
+        "run": 3,
+        "value": 3.475,
+        "timestamp": "2026-07-10 04:39:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_7M_RTT_Avg_ms",
+        "run": 3,
+        "value": 11.802,
+        "timestamp": "2026-07-10 04:39:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_7M_RTT_Max_ms",
+        "run": 3,
+        "value": 23.14,
+        "timestamp": "2026-07-10 04:39:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_7M_RTT_Mdev_ms",
+        "run": 3,
+        "value": 6.735,
+        "timestamp": "2026-07-10 04:39:41"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_TCP_PC1_10M_Throughput_Mbps",
+        "run": 3,
+        "value": 3.17,
+        "timestamp": "2026-07-10 04:40:36"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_10M_Loss_Percent",
+        "run": 3,
+        "value": 0.0,
+        "timestamp": "2026-07-10 04:42:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_10M_RTT_Min_ms",
+        "run": 3,
+        "value": 3.307,
+        "timestamp": "2026-07-10 04:42:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_10M_RTT_Avg_ms",
+        "run": 3,
+        "value": 13.567,
+        "timestamp": "2026-07-10 04:42:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_10M_RTT_Max_ms",
+        "run": 3,
+        "value": 48.308,
+        "timestamp": "2026-07-10 04:42:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_10M_RTT_Mdev_ms",
+        "run": 3,
+        "value": 10.479,
+        "timestamp": "2026-07-10 04:42:22"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_TCP_PC1_15M_Throughput_Mbps",
+        "run": 3,
+        "value": 4.24,
+        "timestamp": "2026-07-10 04:43:16"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_15M_Loss_Percent",
+        "run": 3,
+        "value": 0.0,
+        "timestamp": "2026-07-10 04:45:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_15M_RTT_Min_ms",
+        "run": 3,
+        "value": 2.49,
+        "timestamp": "2026-07-10 04:45:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_15M_RTT_Avg_ms",
+        "run": 3,
+        "value": 10.183,
+        "timestamp": "2026-07-10 04:45:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_15M_RTT_Max_ms",
+        "run": 3,
+        "value": 48.273,
+        "timestamp": "2026-07-10 04:45:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_15M_RTT_Mdev_ms",
+        "run": 3,
+        "value": 10.711,
+        "timestamp": "2026-07-10 04:45:02"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_TCP_PC1_20M_Throughput_Mbps",
+        "run": 3,
+        "value": 3.14,
+        "timestamp": "2026-07-10 04:45:57"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_20M_Loss_Percent",
+        "run": 3,
+        "value": 0.0,
+        "timestamp": "2026-07-10 04:47:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_20M_RTT_Min_ms",
+        "run": 3,
+        "value": 3.401,
+        "timestamp": "2026-07-10 04:47:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_20M_RTT_Avg_ms",
+        "run": 3,
+        "value": 12.92,
+        "timestamp": "2026-07-10 04:47:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_20M_RTT_Max_ms",
+        "run": 3,
+        "value": 43.818,
+        "timestamp": "2026-07-10 04:47:43"
+    },
+    {
+        "strategy": "dslite",
+        "metric": "T1_ICMP_PC1_20M_RTT_Mdev_ms",
+        "run": 3,
+        "value": 8.451,
+        "timestamp": "2026-07-10 04:47:43"
     }
 ]
