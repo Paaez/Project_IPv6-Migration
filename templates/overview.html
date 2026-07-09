@@ -4,67 +4,226 @@
     <meta charset="UTF-8">
     <title>Dashboard Overview</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:24px 28px;overflow-y:auto;height:100vh;line-height:1.6}
+        *,*::before,*::after{box-sizing:border-box}
         
-        .hero{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #334155;border-radius:12px;padding:28px;margin-bottom:20px;text-align:center}
-        .hero h1{font-size:1.5rem;color:#38bdf8;margin-bottom:12px}
-        .hero p{font-size:0.75rem;color:#94a3b8;max-width:750px;margin:0 auto;line-height:1.7}
+        body{
+            background:#0f172a;
+            color:#e2e8f0;
+            font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+            font-size:0.875rem;
+            line-height:1.6;
+            overflow-y:auto;
+            height:100vh;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+        
+        .container{
+            max-width:1200px;
+            margin:0 auto;
+            padding:28px 24px 40px;
+        }
+        
+        /* Hero */
+        .hero{
+            background:linear-gradient(135deg,#1e293b,#0f172a);
+            border:1px solid #334155;
+            border-radius:12px;
+            padding:32px;
+            margin-bottom:24px;
+            text-align:center;
+        }
+        .hero h1{
+            font-size:1.25rem;
+            font-weight:700;
+            color:#38bdf8;
+            margin-bottom:12px;
+            letter-spacing:-0.01em;
+        }
+        .hero p{
+            font-size:0.8125rem;
+            color:#94a3b8;
+            max-width:700px;
+            margin:0 auto;
+            line-height:1.7;
+        }
         .hero .highlight{color:#e2e8f0;font-weight:600}
         
-        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:12px;margin-bottom:20px;overflow:hidden}
-        .card-header{background:#151d2b;padding:14px 20px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.9rem}
-        .card-body{padding:20px 24px}
+        /* Cards */
+        .card{
+            background:#1a2332;
+            border:1px solid #2d3a4a;
+            border-radius:12px;
+            margin-bottom:24px;
+            overflow:hidden;
+        }
+        .card-header{
+            background:#151d2b;
+            padding:16px 22px;
+            font-weight:600;
+            color:#f1f5f9;
+            border-bottom:1px solid #2d3a4a;
+            font-size:0.9375rem;
+            letter-spacing:-0.005em;
+        }
+        .card-body{padding:22px 26px}
         
-        h2{font-size:0.95rem;color:#38bdf8;margin-bottom:12px}
-        h3{font-size:0.8rem;color:#cbd5e1;margin:12px 0 6px 0}
-        p{font-size:0.7rem;color:#94a3b8;margin-bottom:8px}
-        ul{font-size:0.65rem;color:#94a3b8;margin-left:16px;margin-bottom:8px}
+        h2{font-size:1rem;color:#38bdf8;margin-bottom:14px;font-weight:600}
+        h3{font-size:0.875rem;color:#cbd5e1;margin:14px 0 8px 0;font-weight:600}
+        p{font-size:0.8125rem;color:#94a3b8;margin-bottom:10px}
+        ul{font-size:0.75rem;color:#94a3b8;margin-left:18px;margin-bottom:10px}
         ul li{margin-bottom:4px}
         
-        .problem-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-        .problem-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:10px;padding:18px}
-        .problem-card .number{font-size:0.7rem;color:#38bdf8;font-weight:700;margin-bottom:6px}
-        .problem-card .title{font-size:0.72rem;color:#cbd5e1;font-weight:600;margin-bottom:8px;line-height:1.3}
-        .problem-card .detail{font-size:0.58rem;color:#94a3b8;line-height:1.5}
+        /* Problem Grid */
+        .problem-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:18px;
+            margin-bottom:18px;
+        }
+        .problem-card{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:10px;
+            padding:20px;
+        }
+        .problem-card .number{
+            font-size:0.75rem;
+            color:#38bdf8;
+            font-weight:700;
+            margin-bottom:8px;
+            text-transform:uppercase;
+            letter-spacing:0.05em;
+        }
+        .problem-card .title{
+            font-size:0.8125rem;
+            color:#cbd5e1;
+            font-weight:600;
+            margin-bottom:10px;
+            line-height:1.4;
+        }
+        .problem-card .detail{
+            font-size:0.75rem;
+            color:#94a3b8;
+            line-height:1.6;
+        }
         
-        .strategy-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-        .strat-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:10px;padding:16px;text-align:center}
-        .strat-card .name{font-size:0.8rem;font-weight:700;margin-bottom:6px}
-        .strat-card .desc{font-size:0.6rem;color:#94a3b8;line-height:1.5;margin-bottom:8px}
-        .strat-card .example{font-size:0.55rem;color:#64748b;font-style:italic}
+        /* Strategy Cards */
+        .strategy-cards{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:18px;
+            margin-bottom:18px;
+        }
+        .strat-card{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:10px;
+            padding:20px;
+            text-align:center;
+        }
+        .strat-card .name{font-size:0.875rem;font-weight:700;margin-bottom:8px}
+        .strat-card .desc{font-size:0.75rem;color:#94a3b8;line-height:1.6;margin-bottom:10px}
+        .strat-card .example{font-size:0.6875rem;color:#64748b;font-style:italic}
         .card-ds{border-top:3px solid #3b82f6}.card-ds .name{color:#3b82f6}
         .card-dl{border-top:3px solid #10b981}.card-dl .name{color:#10b981}
         .card-n64{border-top:3px solid #f59e0b}.card-n64 .name{color:#f59e0b}
         
-        .test-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .test-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px}
-        .test-card .test-name{font-size:0.72rem;font-weight:600;color:#cbd5e1;margin-bottom:4px}
-        .test-card .test-measures{font-size:0.58rem;color:#38bdf8;margin-bottom:4px}
-        .test-card .test-why{font-size:0.58rem;color:#94a3b8;line-height:1.4}
+        /* Test Grid */
+        .test-grid{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:14px;
+        }
+        .test-card{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:8px;
+            padding:16px;
+        }
+        .test-card .test-name{font-size:0.8125rem;font-weight:600;color:#cbd5e1;margin-bottom:6px}
+        .test-card .test-measures{font-size:0.6875rem;color:#38bdf8;margin-bottom:6px}
+        .test-card .test-why{font-size:0.6875rem;color:#94a3b8;line-height:1.5}
         
-        .question-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:16px;margin-bottom:12px}
-        .question-box .q{font-size:0.7rem;color:#cbd5e1;font-weight:600;margin-bottom:4px}
-        .question-box .a{font-size:0.6rem;color:#38bdf8}
+        /* Questions */
+        .question-box{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:8px;
+            padding:18px;
+            margin-bottom:12px;
+        }
+        .question-box .q{font-size:0.8125rem;color:#cbd5e1;font-weight:600;margin-bottom:6px}
+        .question-box .a{font-size:0.6875rem;color:#38bdf8}
         
-        .color-guide{display:flex;gap:20px;justify-content:center;margin:16px 0;flex-wrap:wrap}
-        .color-item{display:flex;align-items:center;gap:8px;font-size:0.65rem}
-        .color-dot{width:12px;height:12px;border-radius:3px}
+        /* Color Guide */
+        .color-guide{
+            display:flex;
+            gap:22px;
+            justify-content:center;
+            margin:18px 0;
+            flex-wrap:wrap;
+        }
+        .color-item{display:flex;align-items:center;gap:8px;font-size:0.75rem}
+        .color-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
         
-        .nav-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-        .nav-card{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:14px;text-align:center;text-decoration:none;transition:all 0.2s;display:block}
-        .nav-card:hover{background:#1e2a3a;border-color:#38bdf8}
-        .nav-card .nav-name{font-size:0.7rem;font-weight:600;color:#cbd5e1;margin-bottom:4px}
-        .nav-card .nav-desc{font-size:0.55rem;color:#94a3b8}
-        .nav-card .nav-link-text{font-size:0.5rem;color:#38bdf8;margin-top:6px}
+        /* Navigation */
+        .nav-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:12px;
+        }
+        .nav-card{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:8px;
+            padding:16px;
+            text-align:center;
+            text-decoration:none;
+            transition:all 0.2s;
+            display:block;
+        }
+        .nav-card:hover{background:#1e2a3a;border-color:#38bdf8;transform:translateY(-1px)}
+        .nav-card .nav-name{font-size:0.75rem;font-weight:600;color:#cbd5e1;margin-bottom:4px}
+        .nav-card .nav-desc{font-size:0.6875rem;color:#94a3b8}
+        .nav-card .nav-link-text{font-size:0.625rem;color:#38bdf8;margin-top:8px}
         
-        .footer{text-align:center;font-size:0.55rem;color:#64748b;margin-top:20px;padding-top:16px;border-top:1px solid #2d3a4a}
+        /* Footer */
+        .footer{
+            text-align:center;
+            font-size:0.6875rem;
+            color:#64748b;
+            margin-top:24px;
+            padding-top:18px;
+            border-top:1px solid #2d3a4a;
+        }
         
-        .solution-box{background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:16px;margin-top:16px}
-        .solution-box p{font-size:0.65rem;color:#cbd5e1}
+        /* Solution Box */
+        .solution-box{
+            background:rgba(56,189,248,0.05);
+            border:1px solid rgba(56,189,248,0.2);
+            border-radius:8px;
+            padding:18px;
+            margin-top:18px;
+        }
+        .solution-box p{font-size:0.75rem;color:#cbd5e1;margin:0}
+        .solution-box strong{color:#38bdf8}
+        
+        /* Responsive */
+        @media(max-width:900px){
+            .problem-grid,.strategy-cards{grid-template-columns:1fr}
+            .test-grid,.nav-grid{grid-template-columns:1fr}
+            .container{padding:16px}
+        }
+        @media(max-width:600px){
+            .hero h1{font-size:1.1rem}
+            .card-header{font-size:0.875rem}
+        }
     </style>
 </head>
 <body>
+
+<div class="container">
 
 <!-- HERO -->
 <div class="hero">
@@ -150,47 +309,47 @@
         <div class="test-grid">
             <div class="test-card">
                 <div class="test-name">Test 1: Packet Size Performance</div>
-                <div class="test-measures">TCP Throughput • UDP Jitter • ICMP Latency • Packet Loss</div>
+                <div class="test-measures">TCP Throughput &bull; UDP Jitter &bull; ICMP Latency &bull; Packet Loss</div>
                 <div class="test-why">Tests 5 data sizes (5M to 20M) to measure scalability. Reveals if performance degrades under increasing network load.</div>
             </div>
             <div class="test-card">
                 <div class="test-name">Test 2: HTTP Download Speed</div>
-                <div class="test-measures">Download Speed (1KB to 1MB) • Drop Detection • MSS Clamping</div>
+                <div class="test-measures">Download Speed (1KB to 1MB) &bull; Drop Detection &bull; MSS Clamping</div>
                 <div class="test-why">Simulates real-world web browsing. Detects critical speed drops that would impact user experience.</div>
             </div>
             <div class="test-card">
                 <div class="test-name">Test 3: RTT Latency Consistency</div>
-                <div class="test-measures">Min/Avg/Max RTT • Jitter (Mdev) • Packet Loss (3 runs × 100 pings)</div>
+                <div class="test-measures">Min/Avg/Max RTT &bull; Jitter (Mdev) &bull; Packet Loss (3 runs &times; 100 pings)</div>
                 <div class="test-why">Repeated 3 times to verify consistency. Low latency = better video calls, gaming, and responsive applications.</div>
             </div>
             <div class="test-card">
                 <div class="test-name">Test 4: Fragmentation Boundary</div>
-                <div class="test-measures">MTU Discovery • Fragmentation Success Rate • RTT Overhead</div>
+                <div class="test-measures">MTU Discovery &bull; Fragmentation Success Rate &bull; RTT Overhead</div>
                 <div class="test-why">Finds the maximum packet size before splitting occurs. Critical for VPN performance, streaming quality, and network efficiency.</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- KEY FINDINGS (Links to Analysis) -->
+<!-- KEY QUESTIONS -->
 <div class="card">
     <div class="card-header">Key Questions Answered in This Dashboard</div>
     <div class="card-body">
         <div class="question-box">
             <div class="q">Which strategy delivers the best raw performance?</div>
-            <div class="a">See: Analysis Page → Performance Dimension & Scoring Table</div>
+            <div class="a">See: Analysis Page &rarr; Performance Dimension &amp; Scoring Table</div>
         </div>
         <div class="question-box">
             <div class="q">Which strategy is most reliable across repeated tests?</div>
-            <div class="a">See: Analysis Page → Reliability Section (CV% Analysis)</div>
+            <div class="a">See: Analysis Page &rarr; Reliability Section (CV% Analysis)</div>
         </div>
         <div class="question-box">
             <div class="q">Which strategy handles increasing load best?</div>
-            <div class="a">See: Analysis Page → Scalability Dimension on Radar Chart</div>
+            <div class="a">See: Analysis Page &rarr; Scalability Dimension on Radar Chart</div>
         </div>
         <div class="question-box">
             <div class="q">Which strategy should I choose for my environment?</div>
-            <div class="a">See: Analysis Page → Recommendations Section</div>
+            <div class="a">See: Analysis Page &rarr; Recommendations Section</div>
         </div>
     </div>
 </div>
@@ -209,7 +368,7 @@
             <div class="color-item"><span class="color-dot" style="background:#10b981"></span> DS-Lite</div>
             <div class="color-item"><span class="color-dot" style="background:#f59e0b"></span> NAT64</div>
         </div>
-        <p style="text-align:center;margin-top:8px;font-size:0.65rem;color:#94a3b8">
+        <p style="text-align:center;margin-top:10px;font-size:0.75rem;color:#94a3b8">
             <strong>Higher values are better</strong> for Throughput/Speed (Mbps) &nbsp;|&nbsp; 
             <strong>Lower values are better</strong> for Latency/Jitter (ms) and Packet Loss (%) &nbsp;|&nbsp; 
             Hover over underlined terms for technical explanations
@@ -225,40 +384,41 @@
             <a href="/test1" class="nav-card">
                 <div class="nav-name">Packet Size Performance</div>
                 <div class="nav-desc">TCP, UDP, ICMP across 5M-20M</div>
-                <div class="nav-link-text">View Results →</div>
+                <div class="nav-link-text">View Results &rarr;</div>
             </a>
             <a href="/test2" class="nav-card">
                 <div class="nav-name">HTTP Download Speed</div>
                 <div class="nav-desc">1KB-1MB with drop detection</div>
-                <div class="nav-link-text">View Results →</div>
+                <div class="nav-link-text">View Results &rarr;</div>
             </a>
             <a href="/test3" class="nav-card">
                 <div class="nav-name">RTT Latency Consistency</div>
-                <div class="nav-desc">3 runs × 100 pings each</div>
-                <div class="nav-link-text">View Results →</div>
+                <div class="nav-desc">3 runs &times; 100 pings each</div>
+                <div class="nav-link-text">View Results &rarr;</div>
             </a>
             <a href="/test5" class="nav-card">
                 <div class="nav-name">Fragmentation Boundary</div>
                 <div class="nav-desc">MTU discovery with heatmap</div>
-                <div class="nav-link-text">View Results →</div>
+                <div class="nav-link-text">View Results &rarr;</div>
             </a>
             <a href="/summary" class="nav-card">
                 <div class="nav-name">Strategy Summary</div>
                 <div class="nav-desc">Side-by-side comparison</div>
-                <div class="nav-link-text">View Results →</div>
+                <div class="nav-link-text">View Results &rarr;</div>
             </a>
             <a href="/analysis" class="nav-card">
                 <div class="nav-name">Performance Analysis</div>
-                <div class="nav-desc">Rankings & recommendations</div>
-                <div class="nav-link-text">View Results →</div>
+                <div class="nav-desc">Rankings &amp; recommendations</div>
+                <div class="nav-link-text">View Results &rarr;</div>
             </a>
         </div>
     </div>
 </div>
 
 <div class="footer">
-    FYP CSP600 • IPv6 Migration Performance Dashboard • GNS3 Network Simulation Lab • All tests conducted under controlled, repeatable conditions
+    FYP CSP600 &bull; IPv6 Migration Performance Dashboard &bull; GNS3 Network Simulation Lab &bull; All tests conducted under controlled, repeatable conditions
 </div>
 
+</div>
 </body>
 </html>
