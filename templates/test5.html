@@ -2,31 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TEST 5 - Fragmentation</title>
+    <title>Fragmentation Boundary</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',system-ui,sans-serif;padding:16px 20px;overflow-y:auto;height:100vh}
-        .card{background:#1a2332;border:1px solid #2d3a4a;border-radius:10px;margin-bottom:14px;overflow:hidden}
-        .card-header{background:#151d2b;padding:10px 16px;font-weight:600;color:#f1f5f9;border-bottom:1px solid #2d3a4a;font-size:0.88rem;display:flex;align-items:center;gap:8px}
-        .card-body{padding:14px 18px}
+        *,*::before,*::after{box-sizing:border-box}
         
-        .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-        .chart-box{background:#151d2b;border:1px solid #2d3a4a;border-radius:8px;padding:12px}
-        .chart-title{font-size:0.75rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
+        body{
+            background:#0f172a;
+            color:#e2e8f0;
+            font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+            font-size:0.875rem;
+            overflow-y:auto;
+            height:100vh;
+            -webkit-font-smoothing:antialiased;
+        }
+        
+        .container{
+            max-width:1300px;
+            margin:0 auto;
+            padding:20px 24px 32px;
+        }
+        
+        .card{
+            background:#1a2332;
+            border:1px solid #2d3a4a;
+            border-radius:12px;
+            margin-bottom:20px;
+            overflow:hidden;
+        }
+        .card-header{
+            background:#151d2b;
+            padding:14px 20px;
+            font-weight:600;
+            color:#f1f5f9;
+            border-bottom:1px solid #2d3a4a;
+            font-size:0.9375rem;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            letter-spacing:-0.005em;
+        }
+        .card-body{padding:18px 22px 24px}
+        
+        .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+        .chart-box{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:10px;
+            padding:14px;
+        }
+        .chart-title{font-size:0.8125rem;color:#38bdf8;margin-bottom:8px;font-weight:600}
         .chart-wrap{position:relative;height:240px}
         .chart-wrap-heat{position:relative;height:260px}
         
-        .section-title{font-size:0.8rem;color:#38bdf8;font-weight:600;margin:14px 0 8px 0;padding-left:10px;border-left:3px solid #38bdf8}
+        .section-title{
+            font-size:0.875rem;
+            color:#38bdf8;
+            font-weight:600;
+            margin:16px 0 10px 0;
+            padding-left:12px;
+            border-left:3px solid #38bdf8;
+        }
         
-        .table-scroll{max-height:380px;overflow:auto;border:1px solid #2d3a4a;border-radius:6px}
-        table{width:100%;border-collapse:collapse;font-size:0.6rem}
-        th{background:#151d2b;color:#38bdf8;padding:5px 4px;text-align:center;font-weight:600;position:sticky;top:0;z-index:2;font-size:0.55rem;text-transform:uppercase;white-space:nowrap}
-        th.row-label{position:sticky;left:0;z-index:3;background:#151d2b;min-width:85px;text-align:center;font-size:0.62rem}
-        th.met-label{position:sticky;left:85px;z-index:3;background:#151d2b;min-width:45px;font-size:0.5rem}
-        td{padding:4px 4px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center;font-size:0.58rem}
-        td.row-label{position:sticky;left:0;z-index:1;font-weight:700;text-align:center;vertical-align:middle;font-size:0.65rem;border-right:2px solid #2d3a4a}
-        td.met-label{position:sticky;left:85px;z-index:1;color:#94a3b8;font-weight:500;font-size:0.5rem;text-transform:uppercase}
+        .table-scroll{max-height:380px;overflow:auto;border:1px solid #2d3a4a;border-radius:8px}
+        table{width:100%;border-collapse:collapse;font-size:0.6875rem}
+        th{
+            background:#151d2b;
+            color:#38bdf8;
+            padding:5px 4px;
+            text-align:center;
+            font-weight:600;
+            position:sticky;
+            top:0;
+            z-index:2;
+            font-size:0.6rem;
+            text-transform:uppercase;
+            white-space:nowrap;
+            letter-spacing:0.02em;
+        }
+        th.row-label{position:sticky;left:0;z-index:3;background:#151d2b;min-width:90px;text-align:center;font-size:0.6875rem}
+        th.met-label{position:sticky;left:90px;z-index:3;background:#151d2b;min-width:48px;font-size:0.5625rem}
+        td{padding:4px 4px;border-bottom:1px solid #2d3a4a;color:#cbd5e1;text-align:center;font-size:0.6875rem}
+        td.row-label{position:sticky;left:0;z-index:1;font-weight:700;text-align:center;vertical-align:middle;font-size:0.75rem;border-right:2px solid #2d3a4a}
+        td.met-label{position:sticky;left:90px;z-index:1;color:#94a3b8;font-weight:500;font-size:0.5625rem;text-transform:uppercase}
         tr:hover td{background:rgba(56,189,248,0.03)}
         tr.strat-separator td{border-top:3px solid #2d3a4a;background:#0f172a;padding:0;height:3px}
         
@@ -37,68 +95,142 @@
         td.met-label-dl{background:rgba(16,185,129,0.04)}
         td.met-label-n64{background:rgba(245,158,11,0.04)}
         
-        .s-ok{color:#10b981;font-weight:700;font-size:0.62rem}.s-fail{color:#ef4444;font-weight:700;font-size:0.62rem}.s-frag{color:#f59e0b;font-weight:700;font-size:0.62rem}
+        .s-ok{color:#10b981;font-weight:700;font-size:0.6875rem}
+        .s-fail{color:#ef4444;font-weight:700;font-size:0.6875rem}
+        .s-frag{color:#f59e0b;font-weight:700;font-size:0.6875rem}
         
-        .summary-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-        .summary-item{background:#151d2b;border:1px solid #2d3a4a;border-radius:6px;padding:10px 14px;font-size:0.7rem}
-        .summary-item strong{color:#38bdf8;font-size:0.75rem}
+        .summary-bar{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+        .summary-item{
+            background:#151d2b;
+            border:1px solid #2d3a4a;
+            border-radius:8px;
+            padding:12px 16px;
+            font-size:0.75rem;
+        }
+        .summary-item strong{color:#38bdf8;font-size:0.8125rem}
         
-        .final-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
-        .final-card{background:#151d2b;border-radius:8px;padding:12px;border-left:3px solid}
-        .final-card strong{font-size:0.75rem}.final-card p{font-size:0.7rem;color:#cbd5e1;margin:4px 0}
+        .final-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+        .final-card{
+            background:#151d2b;
+            border-radius:10px;
+            padding:14px;
+            border-left:3px solid;
+        }
+        .final-card strong{font-size:0.8125rem}
+        .final-card p{font-size:0.75rem;color:#cbd5e1;margin:4px 0}
         
-        .badge{background:rgba(56,189,248,0.12);color:#38bdf8;padding:3px 8px;border-radius:3px;font-size:0.65rem;font-weight:500}
-        .legend-bar{display:flex;gap:14px;margin-bottom:12px;font-size:0.55rem;color:#64748b;align-items:center;flex-wrap:wrap}
-        .legend-row{display:flex;gap:12px;align-items:center;font-size:0.6rem;color:#94a3b8;margin-top:6px;flex-wrap:wrap}
+        .badge{
+            background:rgba(56,189,248,0.12);
+            color:#38bdf8;
+            padding:3px 10px;
+            border-radius:4px;
+            font-size:0.6875rem;
+            font-weight:500;
+        }
+        .legend-bar{
+            display:flex;
+            gap:16px;
+            margin-bottom:14px;
+            font-size:0.6875rem;
+            color:#64748b;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+        .legend-row{
+            display:flex;
+            gap:14px;
+            align-items:center;
+            font-size:0.6875rem;
+            color:#94a3b8;
+            margin-top:8px;
+            flex-wrap:wrap;
+        }
         .legend-row span{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:4px}
-        .overhead-row{display:flex;gap:10px;justify-content:center;margin-top:8px;font-size:0.58rem;color:#94a3b8}
-        .overhead-row span{padding:2px 6px;border-radius:3px;font-weight:600}
+        
+        .overhead-row{
+            display:flex;
+            gap:12px;
+            justify-content:center;
+            margin-top:10px;
+            font-size:0.6875rem;
+            color:#94a3b8;
+        }
+        .overhead-row span{padding:3px 8px;border-radius:4px;font-weight:600}
         .overhead-ds{background:rgba(59,130,246,0.15);color:#3b82f6}
         .overhead-dl{background:rgba(16,185,129,0.15);color:#10b981}
         .overhead-n64{background:rgba(245,158,11,0.15);color:#f59e0b}
-        .heatmap-container{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:5px}
+        
+        .heatmap-container{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            height:100%;
+            padding:5px;
+        }
         .heatmap-header{display:grid;gap:3px;margin-bottom:3px;width:100%}
-        .heatmap-header span{font-size:0.48rem;color:#64748b;text-align:center}
+        .heatmap-header span{font-size:0.5625rem;color:#64748b;text-align:center}
         .heatmap-grid{display:flex;flex-direction:column;gap:3px;width:100%}
         .heatmap-row{display:grid;gap:3px;align-items:center}
-        .heatmap-label{font-size:0.6rem;color:#94a3b8;text-align:right;padding-right:6px;font-weight:600;line-height:1.1}
-        .heatmap-cell{border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:0.52rem;font-weight:600;min-height:24px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.6)}
+        .heatmap-label{font-size:0.6875rem;color:#94a3b8;text-align:right;padding-right:6px;font-weight:600;line-height:1.1}
+        .heatmap-cell{
+            border-radius:3px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:0.625rem;
+            font-weight:600;
+            min-height:24px;
+            color:#fff;
+            text-shadow:0 1px 2px rgba(0,0,0,0.6);
+        }
+        
+        @media(max-width:1000px){
+            .charts-grid{grid-template-columns:1fr}
+            .final-grid{grid-template-columns:1fr}
+        }
     </style>
 </head>
 <body>
+
+<div class="container">
 <div class="card">
-    <div class="card-header">💥 TEST 5: Fragmentation Boundary <span class="badge">PC1 • T5Rs.json</span></div>
+    <div class="card-header">Fragmentation Boundary <span class="badge">PC1 | T5Rs.json</span></div>
     <div class="card-body">
         <div class="legend-bar">
-            <span>🟢 <span style="color:#10b981">Success</span></span>
-            <span>🟡 <span style="color:#f59e0b">Fragmented</span></span>
-            <span>🔴 <span style="color:#ef4444">Failed</span></span>
+            <span style="color:#10b981">Success</span>
+            <span style="color:#f59e0b">Fragmented</span>
+            <span style="color:#ef4444">Failed</span>
             <span>|</span>
             <span title="Don't Fragment flag">DF = Don't Fragment</span>
             <span title="Maximum Transmission Unit">MTU = 1500 bytes</span>
         </div>
         
-        <div class="section-title">📊 Packet Loss: Without vs With Fragmentation</div>
+        <div class="section-title">Packet Loss: Without vs With Fragmentation</div>
         <div class="charts-grid">
             <div class="chart-box"><div class="chart-title">Without Fragmentation (DF Set)</div><div class="chart-wrap"><canvas id="lossChart1"></canvas></div></div>
             <div class="chart-box"><div class="chart-title">With Fragmentation Allowed</div><div class="chart-wrap"><canvas id="lossChart2"></canvas></div></div>
         </div>
         
-        <div class="section-title">📊 RTT (Without Frag) & Success Rate (With Frag)</div>
+        <div class="section-title">RTT (Without Frag) &amp; Success Rate (With Frag)</div>
         <div class="charts-grid">
             <div class="chart-box"><div class="chart-title">RTT - Without Fragmentation</div><div class="chart-wrap"><canvas id="rttChart1"></canvas></div></div>
             <div class="chart-box"><div class="chart-title">Success Rate - With Fragmentation</div><div class="chart-wrap"><canvas id="successChart2"></canvas></div></div>
         </div>
         
-        <div class="section-title">🔥 RTT Heatmap & RTT Comparison at MTU Boundary</div>
+        <div class="section-title">RTT Heatmap &amp; RTT Comparison at MTU Boundary</div>
         <div class="charts-grid">
             <div class="chart-box">
-                <div class="chart-title">RTT Heatmap: Strategy × Packet Size (Without Frag)</div>
+                <div class="chart-title">RTT Heatmap: Strategy x Packet Size (Without Frag)</div>
                 <div class="heatmap-container">
                     <div class="heatmap-header" id="heatmapHeader"></div>
                     <div class="heatmap-grid" id="heatmapGrid"></div>
                     <div class="legend-row">
-                        <span style="background:#10b981"></span>Fast <span style="background:#84cc16"></span>Medium <span style="background:#f59e0b"></span>Slow <span style="background:#ef4444"></span>V.Slow <span style="background:#6b7280"></span>Failed
+                        <span style="background:#10b981"></span>Fast
+                        <span style="background:#84cc16"></span>Medium
+                        <span style="background:#f59e0b"></span>Slow
+                        <span style="background:#ef4444"></span>V.Slow
+                        <span style="background:#6b7280"></span>Failed
                     </div>
                 </div>
             </div>
@@ -109,31 +241,32 @@
             </div>
         </div>
         
-        <div class="section-title" title="Without Fragmentation: Strategies as rows, packet sizes as columns">🔬 Without Fragmentation (DF Set) - Full Scale</div>
+        <div class="section-title" title="Without Fragmentation: Strategies as rows, packet sizes as columns">Without Fragmentation (DF Set) - Full Scale</div>
         <div class="table-scroll"><table>
             <thead><tr><th class="row-label">Strategy</th><th class="met-label">Mtr</th><th>64B</th><th>128B</th><th>256B</th><th>512B</th><th>768B</th><th>1024B</th><th>1280B</th><th>1290B</th><th>1300B</th><th>1310B</th><th>1320B</th><th>1330B</th><th>1340B</th><th>1350B</th><th>1360B</th><th>1370B</th><th>1380B</th><th>1390B</th><th>1400B</th><th>1410B</th><th>1420B</th><th>1430B</th><th>1440B</th><th>1450B</th><th>1460B</th><th>1470B</th><th>1480B</th><th>1490B</th><th>1500B</th><th>1510B</th><th>1520B</th></tr></thead>
             <tbody id="p1table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p1summary"></div></div>
         
-        <div class="section-title" title="With Fragmentation: Strategies as rows, packet sizes as columns">🔬 With Fragmentation Allowed - Full Scale</div>
+        <div class="section-title" title="With Fragmentation: Strategies as rows, packet sizes as columns">With Fragmentation Allowed - Full Scale</div>
         <div class="table-scroll"><table>
             <thead><tr><th class="row-label">Strategy</th><th class="met-label">Mtr</th><th>1.5K</th><th>2K</th><th>3K</th><th>4K</th><th>5K</th><th>6K</th><th>7K</th><th>8K</th><th>9K</th><th>10K</th><th>12K</th><th>15K</th><th>20K</th><th>30K</th><th>40K</th><th>50K</th><th>60K</th></tr></thead>
             <tbody id="p2table"></tbody>
         </table></div>
         <div class="summary-bar"><div class="summary-item" id="p2summary"></div></div>
         
-        <div class="section-title">📈 Final Summary</div>
+        <div class="section-title">Final Summary</div>
         <div class="final-grid">
-            <div class="final-card" style="border-color:#3b82f6"><strong style="color:#3b82f6">🔵 Dual Stack</strong><p>No-frag max: <span id="ds-nofrag">-</span> B</p><p>With-frag max: <span id="ds-withfrag">-</span> B</p></div>
-            <div class="final-card" style="border-color:#10b981"><strong style="color:#10b981">🟢 DS-Lite</strong><p>No-frag max: <span id="dl-nofrag">-</span> B</p><p>With-frag max: <span id="dl-withfrag">-</span> B</p></div>
-            <div class="final-card" style="border-color:#f59e0b"><strong style="color:#f59e0b">🟠 NAT64</strong><p>No-frag max: <span id="n64-nofrag">-</span> B</p><p>With-frag max: <span id="n64-withfrag">-</span> B</p></div>
+            <div class="final-card" style="border-color:#3b82f6"><strong style="color:#3b82f6">Dual Stack</strong><p>No-frag max: <span id="ds-nofrag">-</span> B</p><p>With-frag max: <span id="ds-withfrag">-</span> B</p></div>
+            <div class="final-card" style="border-color:#10b981"><strong style="color:#10b981">DS-Lite</strong><p>No-frag max: <span id="dl-nofrag">-</span> B</p><p>With-frag max: <span id="dl-withfrag">-</span> B</p></div>
+            <div class="final-card" style="border-color:#f59e0b"><strong style="color:#f59e0b">NAT64</strong><p>No-frag max: <span id="n64-nofrag">-</span> B</p><p>With-frag max: <span id="n64-withfrag">-</span> B</p></div>
         </div>
     </div>
 </div>
+</div>
 
 <script>
-let charts={};
+var charts={};
 
 function gv(d,m,s,def){
     if(def===undefined)def=0;
@@ -151,10 +284,10 @@ function getPhaseData(d,strategy,phase){
         var loss=gv(d,prefix+sz+'B_Loss_Pct',strategy,0);
         var rtt=gv(d,prefix+sz+'B_RTT_Avg_ms',strategy,0);
         var st='',cls='';
-        if(success===1&&loss===0){st='✅';cls='s-ok';}
-        else if(loss===100){st='❌';cls='s-fail';}
-        else if(loss>0){st='⚠️';cls='s-frag';}
-        else{st='❌';cls='s-fail';}
+        if(success===1&&loss===0){st='PASS';cls='s-ok';}
+        else if(loss===100){st='FAIL';cls='s-fail';}
+        else if(loss>0){st='FRAG';cls='s-frag';}
+        else{st='FAIL';cls='s-fail';}
         return{size:sz,total:total,status:st,cls:cls,loss:loss,rtt:rtt>0?rtt:0,rttDisplay:rtt>0?rtt.toFixed(1):'—'};
     });
 }
@@ -177,7 +310,7 @@ function getHeatColor(rtt,maxRtt,loss){
 function buildHeatmap(p1ds,p1dl,p1n64){
     var keySizes=[64,128,256,512,768,1024,1280,1400,1450,1470,1472,1480,1500];
     var allData=[p1ds,p1dl,p1n64];
-    var labels=['🔵 DS','🟢 DL','🟠 N64'];
+    var labels=['DS','DL','N64'];
     var maxRtt=0;
     allData.forEach(function(d){keySizes.forEach(function(sz){var f=d.find(function(r){return r.size===sz;});if(f&&f.rtt>maxRtt)maxRtt=f.rtt;});});
     if(maxRtt===0)maxRtt=10;
@@ -200,55 +333,32 @@ function buildHeatmap(p1ds,p1dl,p1n64){
 
 function buildTransposedTable(data,tableId,sizes){
     var strategies=['dualstack','dslite','nat64'];
-    var names=['🔵 Dual Stack','🟢 DS-Lite','🟠 NAT64'];
+    var names=['Dual Stack','DS-Lite','NAT64'];
     var labelClasses=['row-label-ds','row-label-dl','row-label-n64'];
     var metClasses=['met-label-ds','met-label-dl','met-label-n64'];
     var h='';
     strategies.forEach(function(s,si){
-        // Status row with rowspan
         h+='<tr><td class="row-label '+labelClasses[si]+'" rowspan="3">'+names[si]+'</td><td class="met-label '+metClasses[si]+'">St</td>';
-        sizes.forEach(function(sz){
-            var found=data[s].find(function(r){return r.size===sz;});
-            h+=found?'<td class="'+found.cls+'">'+found.status+'</td>':'<td>—</td>';
-        });
+        sizes.forEach(function(sz){var found=data[s].find(function(r){return r.size===sz;});h+=found?'<td class="'+found.cls+'">'+found.status+'</td>':'<td>—</td>';});
+        h+='</tr><tr><td class="met-label '+metClasses[si]+'">Loss</td>';
+        sizes.forEach(function(sz){var found=data[s].find(function(r){return r.size===sz;});if(found){var cls=found.loss===0?'s-ok':found.loss===100?'s-fail':'s-frag';h+='<td class="'+cls+'">'+found.loss+'%</td>';}else{h+='<td>—</td>';}});
+        h+='</tr><tr><td class="met-label '+metClasses[si]+'">RTT</td>';
+        sizes.forEach(function(sz){var found=data[s].find(function(r){return r.size===sz;});h+=found?'<td>'+found.rttDisplay+'</td>':'<td>—</td>';});
         h+='</tr>';
-        // Loss row
-        h+='<tr><td class="met-label '+metClasses[si]+'">Loss</td>';
-        sizes.forEach(function(sz){
-            var found=data[s].find(function(r){return r.size===sz;});
-            if(found){var cls=found.loss===0?'s-ok':found.loss===100?'s-fail':'s-frag';h+='<td class="'+cls+'">'+found.loss+'%</td>';}
-            else{h+='<td>—</td>';}
-        });
-        h+='</tr>';
-        // RTT row
-        h+='<tr><td class="met-label '+metClasses[si]+'">RTT</td>';
-        sizes.forEach(function(sz){
-            var found=data[s].find(function(r){return r.size===sz;});
-            h+=found?'<td>'+found.rttDisplay+'</td>':'<td>—</td>';
-        });
-        h+='</tr>';
-        // Separator
-        if(si<strategies.length-1){h+='<tr class="strat-separator"><td colspan="'+(sizes.length+2)+'"></td></tr>';}
+        if(si<strategies.length-1)h+='<tr class="strat-separator"><td colspan="'+(sizes.length+2)+'"></td></tr>';
     });
     document.getElementById(tableId).innerHTML=h;
 }
 
 async function load(){
     try{
-        var r=await fetch('/api/test5');
-        var d=await r.json();
-        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ No data available</p>';return;}
+        var r=await fetch('/api/test5');var d=await r.json();
+        if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data available</p>';return;}
         
-        var p1ds=getPhaseData(d,'dualstack',1);
-        var p1dl=getPhaseData(d,'dslite',1);
-        var p1n64=getPhaseData(d,'nat64',1);
-        var p2ds=getPhaseData(d,'dualstack',2);
-        var p2dl=getPhaseData(d,'dslite',2);
-        var p2n64=getPhaseData(d,'nat64',2);
-        var cols=['#3b82f6','#10b981','#f59e0b'];
-        var names=['Dual Stack','DS-Lite','NAT64'];
+        var p1ds=getPhaseData(d,'dualstack',1),p1dl=getPhaseData(d,'dslite',1),p1n64=getPhaseData(d,'nat64',1);
+        var p2ds=getPhaseData(d,'dualstack',2),p2dl=getPhaseData(d,'dslite',2),p2n64=getPhaseData(d,'nat64',2);
+        var cols=['#3b82f6','#10b981','#f59e0b'],names=['Dual Stack','DS-Lite','NAT64'];
         
-        // Loss Charts
         [['lossChart1',p1ds,p1dl,p1n64,'Loss (%)'],['lossChart2',p2ds,p2dl,p2n64,'Loss (%)']].forEach(function(args){
             var id=args[0],d1=args[1],d2=args[2],d3=args[3],ylab=args[4];
             mkLineChart(id,{labels:d3.map(function(r){return r.size;}),datasets:[
@@ -258,78 +368,52 @@ async function load(){
             ]},ylab);
         });
         
-        // RTT Chart
         var labels=p1n64.map(function(r){return r.size;});
         var getRttData=function(data,lbls){return lbls.map(function(s){var f=data.find(function(r){return r.size===s;});return f&&f.rtt>0?f.rtt:null;});};
         var validLabels=labels.filter(function(s){var f=p1n64.find(function(r){return r.size===s;});return f&&f.rtt>0;});
-        if(validLabels.length>0){
-            mkLineChart('rttChart1',{labels:validLabels,datasets:[
-                {label:names[0],data:getRttData(p1ds,validLabels),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
-                {label:names[1],data:getRttData(p1dl,validLabels),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
-                {label:names[2],data:getRttData(p1n64,validLabels),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}
-            ]},'RTT (ms)');
-        }
+        if(validLabels.length>0){mkLineChart('rttChart1',{labels:validLabels,datasets:[
+            {label:names[0],data:getRttData(p1ds,validLabels),borderColor:cols[0],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+            {label:names[1],data:getRttData(p1dl,validLabels),borderColor:cols[1],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true},
+            {label:names[2],data:getRttData(p1n64,validLabels),borderColor:cols[2],borderWidth:2,tension:0.3,fill:false,pointRadius:2,spanGaps:true}
+        ]},'RTT (ms)');}
         
-        // Success Rate Chart
         if(charts['successChart2'])charts['successChart2'].destroy();
-        charts['successChart2']=new Chart(document.getElementById('successChart2'),{
-            type:'bar',
-            data:{labels:p2n64.map(function(r){return r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size;}),datasets:[
-                {label:names[0],data:p2ds.map(function(r){return r.status==='✅'||r.status==='⚠️'?1:0;}),backgroundColor:'#3b82f6',borderRadius:2},
-                {label:names[1],data:p2dl.map(function(r){return r.status==='✅'||r.status==='⚠️'?1:0;}),backgroundColor:'#10b981',borderRadius:2},
-                {label:names[2],data:p2n64.map(function(r){return r.status==='✅'||r.status==='⚠️'?1:0;}),backgroundColor:'#f59e0b',borderRadius:2}
-            ]},
-            options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},scales:{y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}}}
-        });
+        charts['successChart2']=new Chart(document.getElementById('successChart2'),{type:'bar',data:{labels:p2n64.map(function(r){return r.size>=1000?(r.size/1000).toFixed(1)+'K':r.size;}),datasets:[
+            {label:names[0],data:p2ds.map(function(r){return r.status==='PASS'||r.status==='FRAG'?1:0;}),backgroundColor:'#3b82f6',borderRadius:2},
+            {label:names[1],data:p2dl.map(function(r){return r.status==='PASS'||r.status==='FRAG'?1:0;}),backgroundColor:'#10b981',borderRadius:2},
+            {label:names[2],data:p2n64.map(function(r){return r.status==='PASS'||r.status==='FRAG'?1:0;}),backgroundColor:'#f59e0b',borderRadius:2}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:6}}},scales:{y:{beginAtZero:true,max:1,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Success',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7},stepSize:1}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:6},maxRotation:45}}}});
         
-        // Heatmap
         buildHeatmap(p1ds,p1dl,p1n64);
         
-        // RTT Comparison
-        var maxNoFragDS=p1ds.filter(function(r){return r.status==='✅';}).pop()||{rtt:0,size:1470};
-        var maxNoFragDL=p1dl.filter(function(r){return r.status==='✅';}).pop()||{rtt:0,size:1470};
-        var maxNoFragN64=p1n64.filter(function(r){return r.status==='✅';}).pop()||{rtt:0,size:1470};
-        var fragDS=p2ds.find(function(r){return r.size===1500;})||{rtt:0};
-        var fragDL=p2dl.find(function(r){return r.size===1500;})||{rtt:0};
-        var fragN64=p2n64.find(function(r){return r.size===1500;})||{rtt:0};
-        var ohDS=maxNoFragDS.rtt>0?((fragDS.rtt-maxNoFragDS.rtt)/maxNoFragDS.rtt*100).toFixed(0):0;
-        var ohDL=maxNoFragDL.rtt>0?((fragDL.rtt-maxNoFragDL.rtt)/maxNoFragDL.rtt*100).toFixed(0):0;
-        var ohN64=maxNoFragN64.rtt>0?((fragN64.rtt-maxNoFragN64.rtt)/maxNoFragN64.rtt*100).toFixed(0):0;
-        document.getElementById('overheadLabels').innerHTML='<span class="overhead-ds" title="Extra RTT from fragmentation">🔵 DS: +'+ohDS+'%</span><span class="overhead-dl" title="Extra RTT from fragmentation">🟢 DL: +'+ohDL+'%</span><span class="overhead-n64" title="Extra RTT from fragmentation">🟠 N64: +'+ohN64+'%</span>';
-        
+        var mnfDS=p1ds.filter(function(r){return r.status==='PASS';}).pop()||{rtt:0,size:1470};
+        var mnfDL=p1dl.filter(function(r){return r.status==='PASS';}).pop()||{rtt:0,size:1470};
+        var mnfN64=p1n64.filter(function(r){return r.status==='PASS';}).pop()||{rtt:0,size:1470};
+        var fDS=p2ds.find(function(r){return r.size===1500;})||{rtt:0},fDL=p2dl.find(function(r){return r.size===1500;})||{rtt:0},fN64=p2n64.find(function(r){return r.size===1500;})||{rtt:0};
+        document.getElementById('overheadLabels').innerHTML='<span class="overhead-ds" title="Extra RTT from fragmentation">DS: +'+(mnfDS.rtt>0?((fDS.rtt-mnfDS.rtt)/mnfDS.rtt*100).toFixed(0):0)+'%</span><span class="overhead-dl" title="Extra RTT from fragmentation">DS-Lite: +'+(mnfDL.rtt>0?((fDL.rtt-mnfDL.rtt)/mnfDL.rtt*100).toFixed(0):0)+'%</span><span class="overhead-n64" title="Extra RTT from fragmentation">NAT64: +'+(mnfN64.rtt>0?((fN64.rtt-mnfN64.rtt)/mnfN64.rtt*100).toFixed(0):0)+'%</span>';
         if(charts['rttCompareChart'])charts['rttCompareChart'].destroy();
         charts['rttCompareChart']=new Chart(document.getElementById('rttCompareChart'),{type:'bar',data:{labels:names,datasets:[
-            {label:'No-Frag ('+(maxNoFragDS.size||1470)+'B)',data:[maxNoFragDS.rtt,maxNoFragDL.rtt,maxNoFragN64.rtt],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},
-            {label:'Fragmented (1500B)',data:[fragDS.rtt,fragDL.rtt,fragN64.rtt],backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}
+            {label:'No-Frag ('+(mnfDS.size||1470)+'B)',data:[mnfDS.rtt,mnfDL.rtt,mnfN64.rtt],backgroundColor:['#3b82f6','#10b981','#f59e0b'],borderRadius:4},
+            {label:'Fragmented (1500B)',data:[fDS.rtt,fDL.rtt,fN64.rtt],backgroundColor:['#3b82f699','#10b98199','#f59e0b99'],borderRadius:4,borderColor:['#3b82f6','#10b981','#f59e0b'],borderWidth:1,borderDash:[4,2]}
         ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#cbd5e1',font:{size:8},padding:8,usePointStyle:true}}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'RTT (ms)',color:'#94a3b8',font:{size:8}},ticks:{color:'#94a3b8',font:{size:7}}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:8}}}}}});
         
-        // Phase 1 Table
         var p1Sizes=[64,128,256,512,768,1024,1280,1290,1300,1310,1320,1330,1340,1350,1360,1370,1380,1390,1400,1410,1420,1430,1440,1450,1460,1470,1480,1490,1500,1510,1520];
         buildTransposedTable({dualstack:p1ds,dslite:p1dl,nat64:p1n64},'p1table',p1Sizes);
-        var dm1=p1ds.filter(function(r){return r.status==='✅';}).pop();
-        var dlm1=p1dl.filter(function(r){return r.status==='✅';}).pop();
-        var nm1=p1n64.filter(function(r){return r.status==='✅';}).pop();
-        document.getElementById('p1summary').innerHTML='<strong>📊 Without Fragmentation</strong><br><span style="color:#3b82f6">DS: '+(dm1?dm1.size:0)+'B</span> | <span style="color:#10b981">DS-Lite: '+(dlm1?dlm1.size:0)+'B</span> | <span style="color:#f59e0b">NAT64: '+(nm1?nm1.size:0)+'B</span> <small style="color:#64748b">(Max payload without fragmentation)</small>';
+        var dm1=p1ds.filter(function(r){return r.status==='PASS';}).pop(),dlm1=p1dl.filter(function(r){return r.status==='PASS';}).pop(),nm1=p1n64.filter(function(r){return r.status==='PASS';}).pop();
+        document.getElementById('p1summary').innerHTML='<strong>Without Fragmentation</strong><br><span style="color:#3b82f6">DS: '+(dm1?dm1.size:0)+'B</span> | <span style="color:#10b981">DS-Lite: '+(dlm1?dlm1.size:0)+'B</span> | <span style="color:#f59e0b">NAT64: '+(nm1?nm1.size:0)+'B</span> <small style="color:#64748b">(Max payload without fragmentation)</small>';
         
-        // Phase 2 Table
         var p2Sizes=[1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,15000,20000,30000,40000,50000,60000];
         buildTransposedTable({dualstack:p2ds,dslite:p2dl,nat64:p2n64},'p2table',p2Sizes);
-        var dm2=p2ds.filter(function(r){return r.status!=='❌';}).pop();
-        var dlm2=p2dl.filter(function(r){return r.status!=='❌';}).pop();
-        var nm2=p2n64.filter(function(r){return r.status!=='❌';}).pop();
-        document.getElementById('p2summary').innerHTML='<strong>📊 With Fragmentation</strong><br><span style="color:#3b82f6">DS: '+(dm2?dm2.size:0)+'B</span> | <span style="color:#10b981">DS-Lite: '+(dlm2?dlm2.size:0)+'B</span> | <span style="color:#f59e0b">NAT64: '+(nm2?nm2.size:0)+'B</span> <small style="color:#64748b">(Max payload with fragmentation)</small>';
+        var dm2=p2ds.filter(function(r){return r.status!=='FAIL';}).pop(),dlm2=p2dl.filter(function(r){return r.status!=='FAIL';}).pop(),nm2=p2n64.filter(function(r){return r.status!=='FAIL';}).pop();
+        document.getElementById('p2summary').innerHTML='<strong>With Fragmentation</strong><br><span style="color:#3b82f6">DS: '+(dm2?dm2.size:0)+'B</span> | <span style="color:#10b981">DS-Lite: '+(dlm2?dlm2.size:0)+'B</span> | <span style="color:#f59e0b">NAT64: '+(nm2?nm2.size:0)+'B</span> <small style="color:#64748b">(Max payload with fragmentation)</small>';
         
-        // Final Summary
         document.getElementById('ds-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dualstack',dm1?dm1.size:0);
         document.getElementById('ds-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','dualstack',dm2?dm2.size:0);
         document.getElementById('dl-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','dslite',dlm1?dlm1.size:0);
         document.getElementById('dl-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','dslite',dlm2?dlm2.size:0);
         document.getElementById('n64-nofrag').textContent=gv(d,'T5_Final_Max_NoFrag_Payload','nat64',nm1?nm1.size:0);
         document.getElementById('n64-withfrag').textContent=gv(d,'T5_Final_Max_Frag_Allowed_Payload','nat64',nm2?nm2.size:0);
-    }catch(e){
-        document.body.innerHTML='<p style="color:#ef4444;padding:20px">❌ Error: '+e.message+'</p>';
-        console.error(e);
-    }
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error: '+e.message+'</p>';}
 }
 load();
 </script>
