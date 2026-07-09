@@ -98,7 +98,7 @@
         }
         .drop-panel-body{
             padding:10px 12px;
-            max-height:280px;
+            max-height:300px;
             overflow-y:auto;
             font-size:0.6875rem;
         }
@@ -260,7 +260,7 @@ function showRun(run,btn){
     
     var d=allRuns[run]||allRuns[1]||{};
     updateChart(d);
-    updateDropPanels();
+    updateDropPanels(run);
 }
 
 function updateChart(d){
@@ -288,8 +288,7 @@ function updateChart(d){
             })
         },
         options:{
-            responsive:true,
-            maintainAspectRatio:false,
+            responsive:true,maintainAspectRatio:false,
             plugins:{legend:{labels:{color:'#cbd5e1',font:{size:10},padding:10,usePointStyle:true}}},
             scales:{
                 y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.06)'},title:{display:true,text:'Speed (Mbps)',color:'#94a3b8',font:{size:9}},ticks:{color:'#94a3b8',font:{size:8}}},
@@ -299,20 +298,35 @@ function updateChart(d){
     });
 }
 
-function updateDropPanels(){
+function updateDropPanels(run){
     var strategies=['dualstack','dslite','nat64'];
     var panelIds=['dropDS','dropDL','dropN64'];
     
     strategies.forEach(function(s,i){
-        buildDropPanel(s,panelIds[i]);
+        buildDropPanel(s,panelIds[i],run);
     });
 }
 
-function buildDropPanel(strategy,elementId){
-    var dropData=allDropData[strategy];
+function buildDropPanel(strategy,elementId,run){
+    var dropDataArray=allDropData[strategy];
     
-    if(!dropData || Object.keys(dropData).length===0){
+    if(!dropDataArray||!Array.isArray(dropDataArray)||dropDataArray.length===0){
         document.getElementById(elementId).innerHTML='<span class="drop-info">No drop analysis data available</span>';
+        return;
+    }
+    
+    // Find the data for the selected run
+    var dropData=null;
+    if(run==='avg'){
+        dropData=dropDataArray[0];
+    }else{
+        var runNum=parseInt(run);
+        dropData=dropDataArray.find(function(d){return d.run_number===runNum;});
+        if(!dropData)dropData=dropDataArray[0];
+    }
+    
+    if(!dropData){
+        document.getElementById(elementId).innerHTML='<span class="drop-info">No data for this run</span>';
         return;
     }
     
@@ -323,23 +337,19 @@ function buildDropPanel(strategy,elementId){
     var perf=dropData.performance_summary||{};
     
     var h='';
+    h+='<div class="drop-info"><strong>MSS:</strong> '+mss+'B | <strong>iperf3:</strong> '+baseline.toFixed(1)+' Mbps';
+    if(dropData.run_number){h+=' | <strong>Run:</strong> '+dropData.run_number;}
+    h+='</div>';
     
-    // MSS and baseline
-    h+='<div class="drop-info"><strong>MSS:</strong> '+mss+'B | <strong>iperf3:</strong> '+baseline.toFixed(1)+' Mbps</div>';
-    
-    // Performance summary
     if(perf.max_speed_mbps){
         h+='<div class="drop-info" style="margin-top:4px">';
         h+='<strong>Max:</strong> '+perf.max_speed_mbps.toFixed(1)+' Mbps | ';
         h+='<strong>Min:</strong> '+perf.min_speed_mbps.toFixed(1)+' Mbps | ';
         h+='<strong>Avg:</strong> '+perf.avg_speed_mbps.toFixed(1)+' Mbps';
-        if(perf.http_efficiency_percent){
-            h+=' | <strong>Eff:</strong> '+perf.http_efficiency_percent.toFixed(1)+'%';
-        }
+        if(perf.http_efficiency_percent){h+=' | <strong>Eff:</strong> '+perf.http_efficiency_percent.toFixed(1)+'%';}
         h+='</div>';
     }
     
-    // Speed history table
     if(speeds.length>0){
         h+='<table style="margin-top:6px"><thead><tr><th>File</th><th>Mbps</th><th>Change</th></tr></thead><tbody>';
         speeds.forEach(function(s,i){
@@ -358,7 +368,6 @@ function buildDropPanel(strategy,elementId){
         h+='</tbody></table>';
     }
     
-    // Drops detected
     if(drops.length>0){
         drops.forEach(function(drop,i){
             h+='<div class="drop-info" style="color:#ef4444;margin-top:6px;font-weight:600">';
@@ -395,30 +404,18 @@ function buildTable(data,tableId,isAvg){
 
 async function load(){
     try{
-        // Load test data from T2Rs.json
-        var r=await fetch('/api/test2');
-        var d=await r.json();
+        // Load test data
+        var r=await fetch('/api/test2');var d=await r.json();
         if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data available</p>';return}
         
-        // Load drop analysis data from separate JSON files
-        try{
-            var dsR=await fetch('/api/drop-analysis/dualstack');
-            allDropData['dualstack']=await dsR.json();
-        }catch(e){allDropData['dualstack']={};}
+        // Load drop analysis - now stored as arrays with run_number
+        try{var dsR=await fetch('/api/drop-analysis/dualstack');allDropData['dualstack']=await dsR.json();}catch(e){allDropData['dualstack']=[];}
+        try{var dlR=await fetch('/api/drop-analysis/dslite');allDropData['dslite']=await dlR.json();}catch(e){allDropData['dslite']=[];}
+        try{var n64R=await fetch('/api/drop-analysis/nat64');allDropData['nat64']=await n64R.json();}catch(e){allDropData['nat64']=[];}
         
-        try{
-            var dlR=await fetch('/api/drop-analysis/dslite');
-            allDropData['dslite']=await dlR.json();
-        }catch(e){allDropData['dslite']={};}
+        console.log('Drop data loaded:',allDropData);
         
-        try{
-            var n64R=await fetch('/api/drop-analysis/nat64');
-            allDropData['nat64']=await n64R.json();
-        }catch(e){allDropData['nat64']={};}
-        
-        console.log('Drop data loaded:', Object.keys(allDropData));
-        
-        // Create 3 runs from averaged data
+        // Create 3 runs from averaged test data
         var runs={};
         for(var run=1;run<=3;run++){runs[run]=d;}
         
@@ -434,7 +431,7 @@ async function load(){
         runs['avg']=avgData;
         allRuns=runs;
         
-        // Build all tables
+        // Build tables
         buildTable(runs[1],'run1-table',false);
         buildTable(runs[2],'run2-table',false);
         buildTable(runs[3],'run3-table',false);
@@ -442,12 +439,9 @@ async function load(){
         
         // Initial display
         updateChart(runs[1]);
-        updateDropPanels();
+        updateDropPanels(1);
         
-    }catch(e){
-        document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error: '+e.message+'</p>';
-        console.error(e);
-    }
+    }catch(e){document.body.innerHTML='<p style="color:#ef4444;padding:20px">Error: '+e.message+'</p>';console.error(e);}
 }
 load();
 </script>
