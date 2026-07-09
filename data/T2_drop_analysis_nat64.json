@@ -1,67 +1,140 @@
-{
-    "strategy": "nat64",
-    "mss_clamping": 1440,
-    "drops": [
-        {
-            "strategy": "nat64",
-            "drop_detected": true,
-            "previous_file": "100KB",
-            "previous_speed_mbps": 20.25,
-            "current_file": "200KB",
-            "current_speed_mbps": 2.0,
-            "drop_percentage": 90.11,
-            "drop_size_range": "100KB \u2192 200KB",
-            "threshold": 30,
-            "mss_clamping": 1440,
-            "possible_causes": [
-                "NAT64 protocol translation overhead (MSS 1440)",
-                "IPv6-to-IPv4 address mapping latency",
-                "Severe packet loss or retransmission",
-                "MSS Clamping: 1440 bytes - May need adjustment"
-            ]
+[
+    {
+        "strategy": "nat64",
+        "run_number": 1,
+        "mss_clamping": 1440,
+        "drops": [
+            {
+                "strategy": "nat64",
+                "drop_detected": true,
+                "previous_file": "100KB",
+                "previous_speed_mbps": 20.25,
+                "current_file": "200KB",
+                "current_speed_mbps": 2.0,
+                "drop_percentage": 90.11,
+                "drop_size_range": "100KB \u2192 200KB",
+                "threshold": 30,
+                "mss_clamping": 1440,
+                "possible_causes": [
+                    "NAT64 protocol translation overhead (MSS 1440)",
+                    "IPv6-to-IPv4 address mapping latency",
+                    "Severe packet loss or retransmission",
+                    "MSS Clamping: 1440 bytes - May need adjustment"
+                ]
+            }
+        ],
+        "exact_drop_range": "100KB \u2192 200KB",
+        "speed_history": [
+            {
+                "file": "1KB",
+                "speed_mbps": 0.662456
+            },
+            {
+                "file": "10KB",
+                "speed_mbps": 5.562568
+            },
+            {
+                "file": "100KB",
+                "speed_mbps": 20.25316
+            },
+            {
+                "file": "200KB",
+                "speed_mbps": 2.003736
+            },
+            {
+                "file": "300KB",
+                "speed_mbps": 1.433552
+            },
+            {
+                "file": "400KB",
+                "speed_mbps": 1.2468
+            },
+            {
+                "file": "500KB",
+                "speed_mbps": 1.162464
+            },
+            {
+                "file": "1MB",
+                "speed_mbps": 1.026224
+            }
+        ],
+        "iperf_baseline_mbps": 7.34,
+        "performance_summary": {
+            "max_speed_mbps": 20.25,
+            "min_speed_mbps": 0.66,
+            "avg_speed_mbps": 4.17,
+            "speed_range_mbps": 19.59,
+            "http_efficiency_percent": 14.0
         }
-    ],
-    "exact_drop_range": "100KB \u2192 200KB",
-    "speed_history": [
-        {
-            "file": "1KB",
-            "speed_mbps": 0.662456
+    },
+    {
+        "strategy": "nat64",
+        "run_number": 2,
+        "mss_clamping": 1440,
+        "mtu": 1500,
+        "drops": [
+            {
+                "strategy": "nat64",
+                "drop_detected": true,
+                "previous_file": "100KB",
+                "previous_speed_mbps": 28.87,
+                "current_file": "200KB",
+                "current_speed_mbps": 2.03,
+                "drop_percentage": 92.96,
+                "drop_size_range": "100KB \u2192 200KB",
+                "threshold": 30,
+                "mss_clamping": 1440,
+                "possible_causes": [
+                    "NAT64 protocol translation overhead (MSS 1440)",
+                    "IPv6-to-IPv4 address mapping latency",
+                    "Severe packet loss or retransmission",
+                    "MSS Clamping: 1440 bytes - May need adjustment"
+                ]
+            }
+        ],
+        "exact_drop_range": "100KB \u2192 200KB",
+        "speed_history": [
+            {
+                "file": "1KB",
+                "speed_mbps": 0.67972
+            },
+            {
+                "file": "10KB",
+                "speed_mbps": 3.223544
+            },
+            {
+                "file": "100KB",
+                "speed_mbps": 28.873536
+            },
+            {
+                "file": "200KB",
+                "speed_mbps": 2.033984
+            },
+            {
+                "file": "300KB",
+                "speed_mbps": 1.453008
+            },
+            {
+                "file": "400KB",
+                "speed_mbps": 1.270896
+            },
+            {
+                "file": "500KB",
+                "speed_mbps": 1.173792
+            },
+            {
+                "file": "1MB",
+                "speed_mbps": 1.025912
+            }
+        ],
+        "iperf_baseline_mbps": 6.28,
+        "performance_summary": {
+            "max_speed_mbps": 28.87,
+            "min_speed_mbps": 0.68,
+            "avg_speed_mbps": 4.97,
+            "speed_range_mbps": 28.19,
+            "http_efficiency_percent": 16.3
         },
-        {
-            "file": "10KB",
-            "speed_mbps": 5.562568
-        },
-        {
-            "file": "100KB",
-            "speed_mbps": 20.25316
-        },
-        {
-            "file": "200KB",
-            "speed_mbps": 2.003736
-        },
-        {
-            "file": "300KB",
-            "speed_mbps": 1.433552
-        },
-        {
-            "file": "400KB",
-            "speed_mbps": 1.2468
-        },
-        {
-            "file": "500KB",
-            "speed_mbps": 1.162464
-        },
-        {
-            "file": "1MB",
-            "speed_mbps": 1.026224
-        }
-    ],
-    "iperf_baseline_mbps": 7.34,
-    "performance_summary": {
-        "max_speed_mbps": 20.25,
-        "min_speed_mbps": 0.66,
-        "avg_speed_mbps": 4.17,
-        "speed_range_mbps": 19.59,
-        "http_efficiency_percent": 14.0
+        "run_timestamp": "2026-07-09 19:39:16"
     }
-}
+]
