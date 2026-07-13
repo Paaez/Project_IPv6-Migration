@@ -1046,5 +1046,131 @@
         "run": 3,
         "value": 200.0,
         "timestamp": "2026-07-14 06:30:34"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_MSS_Clamping_Value",
+        "run": 1,
+        "value": 1460.0,
+        "timestamp": "2026-07-14 07:20:24"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_iperf3_Throughput_Mbps",
+        "run": 3,
+        "value": 6.29,
+        "timestamp": "2026-07-14 07:20:57"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
+        "run": 3,
+        "value": 0.941496,
+        "timestamp": "2026-07-14 07:23:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:23:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
+        "run": 3,
+        "value": 8.315904,
+        "timestamp": "2026-07-14 07:23:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:23:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
+        "run": 3,
+        "value": 28.324456,
+        "timestamp": "2026-07-14 07:24:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:24:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_200KB_Speed_Mbps",
+        "run": 3,
+        "value": 2.073856,
+        "timestamp": "2026-07-14 07:24:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_200KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:24:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_300KB_Speed_Mbps",
+        "run": 3,
+        "value": 1.450776,
+        "timestamp": "2026-07-14 07:25:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_300KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:25:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_400KB_Speed_Mbps",
+        "run": 3,
+        "value": 1.268016,
+        "timestamp": "2026-07-14 07:25:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_400KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:25:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_500KB_Speed_Mbps",
+        "run": 3,
+        "value": 1.18128,
+        "timestamp": "2026-07-14 07:26:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_500KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:26:25"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
+        "run": 3,
+        "value": 1.037768,
+        "timestamp": "2026-07-14 07:26:55"
+    },
+    {
+        "strategy": "dualstack",
+        "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 07:26:55"
     }
 ]
