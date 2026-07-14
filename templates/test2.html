@@ -303,16 +303,36 @@ function updateDropPanels(run){
 function buildDropPanel(strategy,elementId,run){
     var dropDataArray=allDropData[strategy];
     
+    console.log('buildDropPanel:',strategy,'run:',run,'data length:',dropDataArray?dropDataArray.length:0);
+    
     if(!dropDataArray||!Array.isArray(dropDataArray)||dropDataArray.length===0){
         document.getElementById(elementId).innerHTML='<span class="drop-info">No drop analysis data available</span>';
         return;
     }
     
     var dropData=null;
-    if(run==='avg'){dropData=dropDataArray[0];}
-    else{var runNum=parseInt(run);dropData=dropDataArray.find(function(d){return d.run_number===runNum;});if(!dropData)dropData=dropDataArray[0];}
+    if(run==='avg'){
+        dropData=dropDataArray[0];
+    }else{
+        var runNum=parseInt(run);
+        for(var i=0;i<dropDataArray.length;i++){
+            if(dropDataArray[i].run_number===runNum){
+                dropData=dropDataArray[i];
+                break;
+            }
+        }
+        if(!dropData){
+            console.log('  Run '+runNum+' not found for '+strategy+', using first entry');
+            dropData=dropDataArray[0];
+        }
+    }
     
-    if(!dropData){document.getElementById(elementId).innerHTML='<span class="drop-info">No data for this run</span>';return;}
+    if(!dropData){
+        document.getElementById(elementId).innerHTML='<span class="drop-info">No data for this run</span>';
+        return;
+    }
+    
+    console.log('  Using run_number:',dropData.run_number);
     
     var mss=dropData.mss_clamping||'N/A';
     var drops=dropData.drops||[];
@@ -390,17 +410,35 @@ async function load(){
         var rawData=null;
         try{var rawR=await fetch('/api/test2-raw');rawData=await rawR.json();if(rawData.error)rawData=null;}catch(e){rawData=null;}
         
-        // Load drop analysis
-        try{var dsR=await fetch('/api/drop-analysis/dualstack');allDropData['dualstack']=await dsR.json();}catch(e){allDropData['dualstack']=[];}
-        try{var dlR=await fetch('/api/drop-analysis/dslite');allDropData['dslite']=await dlR.json();}catch(e){allDropData['dslite']=[];}
-        try{var n64R=await fetch('/api/drop-analysis/nat64');allDropData['nat64']=await n64R.json();}catch(e){allDropData['nat64']=[];}
+        // Load drop analysis - ensure arrays
+        allDropData={};
+        
+        try{
+            var dsR=await fetch('/api/drop-analysis/dualstack');
+            var dsData=await dsR.json();
+            allDropData['dualstack']=Array.isArray(dsData)?dsData:[dsData];
+            console.log('Dual Stack drop entries:',allDropData['dualstack'].length);
+        }catch(e){allDropData['dualstack']=[];console.log('Dual Stack error:',e);}
+        
+        try{
+            var dlR=await fetch('/api/drop-analysis/dslite');
+            var dlData=await dlR.json();
+            allDropData['dslite']=Array.isArray(dlData)?dlData:[dlData];
+            console.log('DS-Lite drop entries:',allDropData['dslite'].length);
+        }catch(e){allDropData['dslite']=[];console.log('DS-Lite error:',e);}
+        
+        try{
+            var n64R=await fetch('/api/drop-analysis/nat64');
+            var n64Data=await n64R.json();
+            allDropData['nat64']=Array.isArray(n64Data)?n64Data:[n64Data];
+            console.log('NAT64 drop entries:',allDropData['nat64'].length);
+        }catch(e){allDropData['nat64']=[];console.log('NAT64 error:',e);}
         
         var runs={};
         var files=['1KB','10KB','100KB','200KB','300KB','400KB','500KB','600KB','700KB','800KB','900KB','1MB'];
         var strategies=['dualstack','dslite','nat64'];
         
         if(rawData&&Array.isArray(rawData)&&rawData.length>0){
-            // Group raw data by run number
             rawData.forEach(function(e){
                 var rn=e.run||1;
                 if(!runs[rn])runs[rn]={};
@@ -409,19 +447,16 @@ async function load(){
                 runs[rn][m][s]=v;
             });
         }else{
-            // Fallback to averaged API
             var r=await fetch('/api/test2');var d=await r.json();
             if(d.error){document.body.innerHTML='<p style="color:#ef4444;padding:20px">No data available</p>';return}
             for(var run=1;run<=3;run++){runs[run]=d;}
         }
         
-        // Ensure run 1 exists
         if(!runs[1]||Object.keys(runs[1]).length===0){
             var r2=await fetch('/api/test2');var d2=await r2.json();
             for(var run=1;run<=3;run++){runs[run]=d2;}
         }
         
-        // Calculate true average across runs
         var avgData={};
         files.forEach(function(f){
             var key='T2_HTTP_PC2_'+f+'_Speed_Mbps';
@@ -437,15 +472,11 @@ async function load(){
         runs['avg']=avgData;
         allRuns=runs;
         
-        console.log('Available runs:',Object.keys(runs));
-        
-        // Build tables
         buildTable(runs[1]||{},'run1-table',false);
         buildTable(runs[2]||{},'run2-table',false);
         buildTable(runs[3]||{},'run3-table',false);
         buildTable(avgData,'runavg-table',true);
         
-        // Initial display
         updateChart(runs[1]||{});
         updateDropPanels(1);
         
