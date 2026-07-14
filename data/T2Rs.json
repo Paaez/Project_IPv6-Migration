@@ -1172,5 +1172,131 @@
         "run": 3,
         "value": 200.0,
         "timestamp": "2026-07-14 07:26:55"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_MSS_Clamping_Value",
+        "run": 1,
+        "value": 1440.0,
+        "timestamp": "2026-07-14 08:11:12"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_iperf3_Throughput_Mbps",
+        "run": 3,
+        "value": 2.1,
+        "timestamp": "2026-07-14 08:11:45"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1KB_Speed_Mbps",
+        "run": 3,
+        "value": 0.66628,
+        "timestamp": "2026-07-14 08:14:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:14:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_10KB_Speed_Mbps",
+        "run": 3,
+        "value": 3.249112,
+        "timestamp": "2026-07-14 08:14:43"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_10KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:14:43"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_100KB_Speed_Mbps",
+        "run": 3,
+        "value": 24.179456,
+        "timestamp": "2026-07-14 08:15:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_100KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:15:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_200KB_Speed_Mbps",
+        "run": 3,
+        "value": 1.98696,
+        "timestamp": "2026-07-14 08:15:43"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_200KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:15:43"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_300KB_Speed_Mbps",
+        "run": 3,
+        "value": 1.410776,
+        "timestamp": "2026-07-14 08:16:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_300KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:16:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_400KB_Speed_Mbps",
+        "run": 3,
+        "value": 1.2604,
+        "timestamp": "2026-07-14 08:16:43"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_400KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:16:43"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_500KB_Speed_Mbps",
+        "run": 3,
+        "value": 1.151648,
+        "timestamp": "2026-07-14 08:17:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_500KB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:17:13"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1MB_Speed_Mbps",
+        "run": 3,
+        "value": 1.02076,
+        "timestamp": "2026-07-14 08:17:43"
+    },
+    {
+        "strategy": "nat64",
+        "metric": "T2_HTTP_PC2_1MB_HTTP_Code",
+        "run": 3,
+        "value": 200.0,
+        "timestamp": "2026-07-14 08:17:43"
     }
 ]

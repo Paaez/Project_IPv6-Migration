@@ -295,9 +295,9 @@ function updateChart(d){
 }
 
 function updateDropPanels(run){
-    var strategies=['dualstack','dslite','nat64'];
-    var panelIds=['dropDS','dropDL','dropN64'];
-    strategies.forEach(function(s,i){buildDropPanel(s,panelIds[i],run);});
+    buildDropPanel('dualstack','dropDS',run);
+    buildDropPanel('dslite','dropDL',run);
+    buildDropPanel('nat64','dropN64',run);
 }
 
 function buildDropPanel(strategy,elementId,run){
@@ -310,19 +310,22 @@ function buildDropPanel(strategy,elementId,run){
         return;
     }
     
+    // Find the matching run - using parseInt on both sides for reliable comparison
     var dropData=null;
     if(run==='avg'){
         dropData=dropDataArray[0];
     }else{
-        var runNum=parseInt(run);
+        var targetRun=parseInt(run);
         for(var i=0;i<dropDataArray.length;i++){
-            if(dropDataArray[i].run_number===runNum){
+            var entryRun=parseInt(dropDataArray[i].run_number);
+            console.log('  checking entry',i,'run_number:',entryRun,'target:',targetRun,'match:',entryRun===targetRun);
+            if(entryRun===targetRun){
                 dropData=dropDataArray[i];
                 break;
             }
         }
         if(!dropData){
-            console.log('  Run '+runNum+' not found for '+strategy+', using first entry');
+            console.log('  Run '+targetRun+' not found for '+strategy+', using first entry');
             dropData=dropDataArray[0];
         }
     }
@@ -332,7 +335,7 @@ function buildDropPanel(strategy,elementId,run){
         return;
     }
     
-    console.log('  Using run_number:',dropData.run_number);
+    console.log('  Selected run_number:',dropData.run_number);
     
     var mss=dropData.mss_clamping||'N/A';
     var drops=dropData.drops||[];
